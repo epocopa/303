@@ -1,27 +1,59 @@
 package negocio.Cliente;
 
-import integracion.Cliente.ClienteDAO;
+import java.time.LocalDate;
 
-import java.util.List;
+public class TCliente {
+	private int id;
+	private boolean activo;
+	private LocalDate fecha_registro;
+	private String nombre;
 
-public class TCliente implements ClienteDAO {
-	public void insertar(TCliente e) {
-		
+	public TCliente(int id, boolean activo, LocalDate fecha_registro, String nombre) {
+		this.id = id;
+		this.activo = activo;
+		this.fecha_registro = fecha_registro;
+		this.nombre = nombre;
 	}
 
-	public TCliente mostrar(int id) {
-		return null;
+	public int getId() {
+		return id;
 	}
 
-	public List<TCliente> mostrarTodos() {
-		return null;
+	public void setId(int id) {
+		this.id = id;
 	}
 
-	public void modificar(TCliente e) {
-
+	public boolean isActivo() {
+		return activo;
 	}
 
-	public void eliminar(int id) {
+	public void setActivo(boolean activo) {
+		this.activo = activo;
+	}
 
+	public LocalDate getFecha_registro() {
+		return fecha_registro;
+	}
+
+	public void setFecha_registro(LocalDate fecha_registro) {
+		this.fecha_registro = fecha_registro;
+	}
+
+	public String getNombre() {
+		return nombre;
+	}
+
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
+	}
+
+	@Override
+	public String toString() {
+		return "TCliente{" +
+				"id=" + id +
+				", activo=" + activo +
+				", fecha_registro=" + fecha_registro +
+				", nombre='" + nombre + '\'' +
+				'}';
 	}
 }
