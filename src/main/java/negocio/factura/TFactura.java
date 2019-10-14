@@ -1,4 +1,4 @@
-package negocio.Factura;
+package negocio.factura;
 
 public class TFactura {
 }

@@ -1,6 +1,6 @@
-package integracion.Cliente;
+package integracion.cliente;
 
-import negocio.Cliente.TCliente;
+import negocio.cliente.TCliente;
 
 import java.util.List;
 

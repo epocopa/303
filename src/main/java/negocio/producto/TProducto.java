@@ -1,4 +1,4 @@
-package negocio.Producto;
+package negocio.producto;
 
 public class TProducto {
 }

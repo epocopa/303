@@ -1,11 +1,11 @@
-package integracion.FactoriaDAO;
+package integracion.factoriaDAO;
 
-import integracion.Cliente.ClienteDAO;
-import integracion.Cliente.ClienteDAOImp;
-import integracion.Factura.FacturaDAO;
-import integracion.Factura.FacturaDAOImp;
-import integracion.Producto.ProductoDAO;
-import integracion.Producto.ProductoDAOImp;
+import integracion.cliente.ClienteDAO;
+import integracion.cliente.ClienteDAOImp;
+import integracion.factura.FacturaDAO;
+import integracion.factura.FacturaDAOImp;
+import integracion.producto.ProductoDAO;
+import integracion.producto.ProductoDAOImp;
 
 public class FactoriaDAOImp extends FactoriaDAO{
 	@Override

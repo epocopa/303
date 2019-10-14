@@ -1,8 +1,8 @@
-package integracion.FactoriaDAO;
+package integracion.factoriaDAO;
 
-import integracion.Cliente.ClienteDAO;
-import integracion.Factura.FacturaDAO;
-import integracion.Producto.ProductoDAO;
+import integracion.cliente.ClienteDAO;
+import integracion.factura.FacturaDAO;
+import integracion.producto.ProductoDAO;
 
 public abstract class FactoriaDAO {
 	private static FactoriaDAO instancia = null;

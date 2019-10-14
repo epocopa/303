@@ -1,7 +1,7 @@
-package integracion.Factura;
+package integracion.factura;
 
 import integracion.DAO;
-import negocio.Factura.TFactura;
+import negocio.factura.TFactura;
 
 public interface FacturaDAO extends DAO<TFactura> {
 }

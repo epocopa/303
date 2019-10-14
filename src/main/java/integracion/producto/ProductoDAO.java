@@ -1,7 +1,7 @@
-package integracion.Producto;
+package integracion.producto;
 
 import integracion.DAO;
-import negocio.Producto.TProducto;
+import negocio.producto.TProducto;
 
 public interface ProductoDAO extends DAO<TProducto> {
 }
