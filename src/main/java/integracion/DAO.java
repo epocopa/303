@@ -4,7 +4,7 @@ import java.util.List;
 
 public interface DAO<T> {
 
-	void insertar(T e);
+	void insertar(T e) throws Exception;
 
 	T mostrar(int id);
 

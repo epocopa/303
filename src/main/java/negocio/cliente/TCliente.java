@@ -8,6 +8,9 @@ public class TCliente {
 	private LocalDate fecha_registro;
 	private String nombre;
 
+	public TCliente() {
+	}
+
 	public TCliente(int id, boolean activo, LocalDate fecha_registro, String nombre) {
 		this.id = id;
 		this.activo = activo;
