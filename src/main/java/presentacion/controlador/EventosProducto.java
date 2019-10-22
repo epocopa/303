@@ -7,9 +7,9 @@ public class EventosProducto {
 	public static final int BAJA_PRODUCTO = 15;
 	public static final int MOSTRAR_PRODUCTO = 16;
 	public static final int LISTAR_PRODUCTOS = 17;
-	public static final int MODIFICAR_BUSCAR_PRODUCTO = 18;	// Para modificar un PRODUCTO, primero tenemos que buscar si est√° o no en la BBDD.
+	public static final int MODIFICAR_BUSCAR_PRODUCTO = 18;	// Para modificar un PRODUCTO, primero tenemos que buscar si est·, o no en la BBDD.
 	
-	// Eventos para actualizar la vista si la operaci√≥n se ha realizado correctamente (_OK) o incorrectamente (_KO).
+	// Eventos para actualizar la vista si la operaciÛn se ha realizado correctamente (_OK) o incorrectamente (_KO).
 	
 	public static final int ANADIR_PRODUCTO_OK = 26;
 	public static final int ANADIR_PRODUCTO_KO = 27;
