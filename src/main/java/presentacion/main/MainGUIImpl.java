@@ -1,4 +1,4 @@
-package presentacion.mainGUI;
+package main.java.presentacion.main;
 
 import java.awt.CardLayout;
 import java.awt.Color;
@@ -21,17 +21,15 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 
-import presentacion.clienteGUI.ClienteGUIImpl;
-import presentacion.controlador.EventosCliente;
-import presentacion.controlador.EventosFactura;
-import presentacion.controlador.EventosMenu;
-import presentacion.controlador.EventosProducto;
-import presentacion.controlador.SingletonControlador;
-import presentacion.factoria.FactoriaPresentacion;
-import presentacion.facturaGUI.FacturaGUIImpl;
-import presentacion.productoGUI.ProductoGUIImpl;
+import main.java.presentacion.cliente.ClienteGUIImpl;
+import main.java.presentacion.controladorAplicacion.ControladorAplicacion;
+import main.java.presentacion.controladorAplicacion.EventosCliente;
+import main.java.presentacion.controladorAplicacion.EventosFactura;
+import main.java.presentacion.controladorAplicacion.EventosMenu;
+import main.java.presentacion.controladorAplicacion.EventosProducto;
+import main.java.presentacion.factoriaPresentacion.FactoriaPresentacion;
 
-public class MainGUIImpl extends JFrame implements MainGUI {
+public class MainGUIImpl extends JFrame implements MainGUI{
 
 	private static final long serialVersionUID = 1L;
 
@@ -45,7 +43,7 @@ public class MainGUIImpl extends JFrame implements MainGUI {
 	private FacturaGUIImpl facturasPanel;
 	
 	private static FactoriaPresentacion presentacion;
-	private static SingletonControlador controlador;
+	private static ControladorAplicacion controlador;
 
 	private JPanel pathPanel = presentacion.generarPath();
 	
@@ -54,7 +52,7 @@ public class MainGUIImpl extends JFrame implements MainGUI {
 			public void run() {
 				try {			
 					presentacion = FactoriaPresentacion.getInstancia();
-					controlador =  SingletonControlador.getInstancia();
+					controlador =  ControladorAplicacion.getInstance();
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -288,11 +286,11 @@ public class MainGUIImpl extends JFrame implements MainGUI {
 				
 			//--- ACTUALIZAR CLIENTE ---//
 				
-			case EventosCliente.REGISTRAR_CLIENTE_OK:
+			case EventosCliente.ANADIR_CLIENTE_OK:
 				clientesPanel.actualizar(evento, datos);
 				System.out.println("Delegando a panel clientes");
 				break;
-			case EventosCliente.REGISTRAR_CLIENTE_KO:
+			case EventosCliente.ANADIR_CLIENTE_KO:
 				clientesPanel.actualizar(evento, datos);
 				System.out.println("Delegando a panel clientes");
 				break;

@@ -1,4 +1,4 @@
-package presentacion.clienteGUI;
+package main.java.presentacion.cliente;
 
 import java.awt.Color;
 

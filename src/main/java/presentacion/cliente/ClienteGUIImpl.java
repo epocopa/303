@@ -1,4 +1,4 @@
-package presentacion.clienteGUI;
+package main.java.presentacion.cliente;
 
 import java.awt.CardLayout;
 import java.awt.Color;
@@ -18,6 +18,7 @@ import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComponent;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -27,12 +28,11 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableModel;
 
-import negocio.negocioCliente.TCliente;
-import presentacion.controlador.EventosCliente;
-import presentacion.controlador.SingletonControlador;
-import presentacion.factoria.FactoriaPresentacion;
+import main.java.negocio.cliente.TCliente;
+import main.java.presentacion.controladorAplicacion.EventosCliente;
+import main.java.presentacion.factoriaPresentacion.FactoriaPresentacion;
 
-public class ClienteGUIImpl extends JPanel implements ClienteGUI {
+public class ClienteGUIImpl extends JFrame implements ClienteGUI{
 	private static final long serialVersionUID = 1L;
 
 	private String name = "CLIENTES";
@@ -104,21 +104,10 @@ public class ClienteGUIImpl extends JPanel implements ClienteGUI {
 			public void actionPerformed(ActionEvent e){
 				addPathSeparator();
 				createPathButton("EDITAR CLIENTE");
-				editarPanel();
+				editarPanel();;
 			}
 		});
 		_homePanel.add(editarBtn, c);
-
-		c.gridx++;	// AÑADIDO BOTON DE BAJA CLIENTE.
-		JButton bajaBtn = createMenuButton("resources/icons/clientes/editar-cliente.png", new Color(240, 178, 44));	// CAMBIAR IMAGEN
-		editarBtn.addActionListener(new ActionListener(){
-			public void actionPerformed(ActionEvent e){
-				addPathSeparator();
-				createPathButton("ELIMINAR CLIENTE");
-				bajaPanel();
-			}
-		});
-		_homePanel.add(bajaBtn, c);
 		
 		c.gridx = 0;
 		c.gridy++;
@@ -252,7 +241,7 @@ public class ClienteGUIImpl extends JPanel implements ClienteGUI {
 				String nombre = nombreField.getText();	
 				TCliente cliente = new TCliente(nombre);
 				if (nombre.length() > 0 && !nombre.equals(" ")) {
-					SingletonControlador.getInstancia().accion(EventosCliente.REGISTRAR_CLIENTE, cliente);
+					SingletonControlador.getInstancia().accion(EventosCliente.ANADIR_CLIENTE, cliente);
 				} else {
 					showOutputMsg(anadirOutputArea, anadirOutputLabel, "ERROR: El nombre introducido no es valido.", false);
 				}
@@ -445,90 +434,7 @@ public class ClienteGUIImpl extends JPanel implements ClienteGUI {
 		_localCL.show(this, "EDITAR");
 		_currentPanel = editarClientePanel;
 	}
-
-	public void bajaPanel() {
-		JPanel panel = new JPanel();
-		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-		panel.setBackground(new Color(235, 237, 241));
-		panel.setMaximumSize(new Dimension(1024, 460));
-		
-		//--
-		
-		JPanel outputPanel = new JPanel();
-		outputPanel.setLayout(new BoxLayout(outputPanel, BoxLayout.Y_AXIS));
-		outputPanel.setBackground(new Color(235, 237, 241));
-		outputPanel.setMaximumSize(new Dimension(1024, 50));
-		
-		anadirOutputArea = new JPanel();
-		anadirOutputArea.setLayout(new BoxLayout(anadirOutputArea, BoxLayout.X_AXIS));
-		anadirOutputArea.setBackground(new Color(172, 40, 40));
-		anadirOutputArea.setMaximumSize(new Dimension(800, 50));
-		
-		anadirOutputLabel = new JLabel("ERROR: El ID introducido no es valido.");
-		anadirOutputLabel.setFont(new Font("Arial", Font.PLAIN, 16));
-		anadirOutputLabel.setForeground(new Color(230,230,230));
-		
-		anadirOutputArea.add(Box.createRigidArea(new Dimension(40, 0)));
-		anadirOutputArea.add(anadirOutputLabel);
-		anadirOutputArea.setVisible(false);
-		outputPanel.add(anadirOutputArea);
-		
-		//--
-		
-		JPanel formPanel = new JPanel(new GridBagLayout());
-		formPanel.setBackground(new Color(235, 237, 241));
-		formPanel.setAlignmentX(JComponent.CENTER_ALIGNMENT);
-		formPanel.setMaximumSize(new Dimension(1024, 70));
-		
-		GridBagConstraints c = new GridBagConstraints();
-		c.gridx = 0;
-		c.gridy = 0;
-		c.anchor = GridBagConstraints.LINE_END;
-		c.insets = new Insets(5,5,0,0);
-		JLabel nombreLabel = new JLabel("Nombre: ");
-		nombreLabel.setFont(new Font("Arial", Font.PLAIN, 18));
-		formPanel.add(nombreLabel, c);
-		
-		c.gridx++;
-		c.gridy = 0;
-		c.anchor = GridBagConstraints.LINE_START;
-		JTextField nombreField = new JTextField(15);
-		formPanel.add(nombreField, c);
-		
-		//--
-		
-		JButton enviarBtn = new JButton("ENVIAR");
-		enviarBtn.setFocusPainted(false);
-		enviarBtn.setFont(new Font("Arial", Font.PLAIN, 18));
-		enviarBtn.setBackground(new Color(230,230,230));
-		enviarBtn.setMaximumSize(new Dimension(125, 30));
-		enviarBtn.setAlignmentX(JComponent.CENTER_ALIGNMENT);
-		enviarBtn.addActionListener(new ActionListener(){
-			public void actionPerformed(ActionEvent e){
-				String nombre = nombreField.getText();	
-				TCliente cliente = new TCliente(nombre);
-				if (nombre.length() > 0 && !nombre.equals(" ")) {
-					SingletonControlador.getInstancia().accion(EventosCliente.REGISTRAR_CLIENTE, cliente);
-				} else {
-					showOutputMsg(anadirOutputArea, anadirOutputLabel, "ERROR: El nombre introducido no es valido.", false);
-				}
-			}
-		});
-		
-		//--
-		
-		panel.add(Box.createRigidArea(new Dimension(0, 40)));
-		panel.add(outputPanel);
-		panel.add(Box.createRigidArea(new Dimension(0, 60)));
-		panel.add(formPanel);
-		panel.add(enviarBtn);
-		
-		//--
-		
-		add(panel, "ANADIR");
-		_localCL.show(this, "ANADIR");
-		_currentPanel = panel;
-	}
+	
 
 	
 	public void mostrarPanel() {
@@ -679,7 +585,7 @@ public class ClienteGUIImpl extends JPanel implements ClienteGUI {
 			public void actionPerformed(ActionEvent e){
 				String ID = IDField.getText();	
 				if (ID.length() > 0 && !ID.equals(" ")) {
-					SingletonControlador.getInstancia().accion(EventosCliente.BUSCAR_CLIENTE, Integer.valueOf(ID));
+					SingletonControlador.getInstancia().accion(EventosCliente.MOSTRAR_CLIENTE, Integer.valueOf(ID));
 				} else {
 					showOutputMsg(mostrarErrorArea, mostrarErrorLabel, "ERROR: El ID introducido no es valido.", false);
 				}
@@ -737,12 +643,12 @@ public class ClienteGUIImpl extends JPanel implements ClienteGUI {
 		String mensaje;
 		TCliente cliente;
 		switch (evento){
-			case EventosCliente.REGISTRAR_CLIENTE_OK:
+			case EventosCliente.ANADIR_CLIENTE_OK:
 				mensaje = (String) datos;
 				showOutputMsg(anadirOutputArea, anadirOutputLabel, mensaje, true);
 				System.out.println("Anadir Cliente OK");
 				break;
-			case EventosCliente.REGISTRAR_CLIENTE_KO: {
+			case EventosCliente.ANADIR_CLIENTE_KO: {
 				mensaje = (String) datos;
 				showOutputMsg(anadirOutputArea, anadirOutputLabel, mensaje, false);
 				System.out.println("Anadir Cliente KO");
@@ -766,7 +672,7 @@ public class ClienteGUIImpl extends JPanel implements ClienteGUI {
 				JOptionPane.showMessageDialog(null, mensaje, "Error", JOptionPane.ERROR_MESSAGE);
 				System.out.println("Listar Clientes KO");
 				break;
-			case EventosCliente.BUSCAR_CLIENTE_OK:
+			case EventosCliente.MOSTRAR_CLIENTE_OK:
 				cliente = (TCliente) datos;
 				
 				mostrarIDText.setText(cliente.getId().toString());
@@ -775,7 +681,7 @@ public class ClienteGUIImpl extends JPanel implements ClienteGUI {
 				mostrarClientePanelCL.show(mostrarClientePanel, "CLIENTE");
 				System.out.println("Mostrar Cliente OK");
 				break;
-			case EventosCliente.BUSCAR_CLIENTE_KO:
+			case EventosCliente.MOSTRAR_CLIENTE_KO:
 				mensaje = (String) datos;
 				
 				showOutputMsg(mostrarErrorArea, mostrarErrorLabel, mensaje, false);
