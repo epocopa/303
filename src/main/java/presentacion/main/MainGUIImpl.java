@@ -1,56 +1,38 @@
-package main.java.presentacion.main;
+package presentacion.main;
 
-import java.awt.CardLayout;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Insets;
+import presentacion.cliente.ClienteGUIImpl;
+import presentacion.controladorAplicacion.ControladorAplicacion;
+import presentacion.factoria.FactoriaPresentacion;
+import presentacion.factura.FacturaGUIImpl;
+import presentacion.producto.ProductoGUIImpl;
+
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
-import javax.swing.Box;
-import javax.swing.BoxLayout;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.SwingConstants;
-import javax.swing.SwingUtilities;
-
-import main.java.presentacion.cliente.ClienteGUIImpl;
-import main.java.presentacion.controladorAplicacion.ControladorAplicacion;
-import main.java.presentacion.controladorAplicacion.EventosCliente;
-import main.java.presentacion.controladorAplicacion.EventosFactura;
-import main.java.presentacion.controladorAplicacion.EventosMenu;
-import main.java.presentacion.controladorAplicacion.EventosProducto;
-import main.java.presentacion.factoriaPresentacion.FactoriaPresentacion;
 
 public class MainGUIImpl extends JFrame implements MainGUI{
 
 	private static final long serialVersionUID = 1L;
 
 	private String name = "HOME";
-	
+
 	private CardLayout cl;
 	private JPanel mainPanel, homePanel;
-	
+
 	private ClienteGUIImpl clientesPanel;
 	private ProductoGUIImpl productosPanel;
 	private FacturaGUIImpl facturasPanel;
-	
+
 	private static FactoriaPresentacion presentacion;
 	private static ControladorAplicacion controlador;
 
 	private JPanel pathPanel = presentacion.generarPath();
-	
+
 	public static void main(String[] args) {
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
-				try {			
+				try {
 					presentacion = FactoriaPresentacion.getInstancia();
 					controlador =  ControladorAplicacion.getInstance();
 				} catch (Exception e) {
@@ -70,27 +52,27 @@ public class MainGUIImpl extends JFrame implements MainGUI{
 		setBounds(100, 100, 1024, 620);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
-		
+
 		JPanel topBar = new JPanel();
 		topBar.setLayout(new BoxLayout(topBar, BoxLayout.X_AXIS));
 		topBar.setBackground(new Color(41, 48, 64));
 		topBar.setMaximumSize(new Dimension(1024, 50));
-		
+
 		topBar.add(Box.createRigidArea(new Dimension(20,0)));
-		
+
 		JLabel groupLogo = new JLabel();
 		groupLogo.setIcon(new ImageIcon("resources/icons/home/G202-logo-small.png"));
 		topBar.add(groupLogo);
-		
+
 		topBar.add(Box.createRigidArea(new Dimension(8,0)));
-		
+
 		JLabel appName = new JLabel("APPLICATION");
 		appName.setFont(new Font("Arial", Font.BOLD, 14));
 		appName.setForeground(new Color(215,215,215));
 		topBar.add(appName);
-		
+
 		topBar.add(Box.createRigidArea(new Dimension(820,0)));
-		
+
 		JButton exitBtn = new JButton("X");
 		exitBtn.setFocusPainted(false);
 		exitBtn.setBorder(null);
@@ -101,16 +83,16 @@ public class MainGUIImpl extends JFrame implements MainGUI{
 		exitBtn.setForeground(new Color(110,120,140));
 		exitBtn.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
-				int confirmacion = JOptionPane.showConfirmDialog(null, "¿Desea cerrar el programa?", "Salir", JOptionPane.YES_NO_OPTION);
-				
+				int confirmacion = JOptionPane.showConfirmDialog(null, "ï¿½Desea cerrar el programa?", "Salir", JOptionPane.YES_NO_OPTION);
+
 				if(confirmacion == JOptionPane.YES_OPTION)
 					System.exit(0);
 			}
 		});
 		topBar.add(exitBtn);
-		
 
-		pathPanel.add(Box.createRigidArea(new Dimension(35,0)));		
+
+		pathPanel.add(Box.createRigidArea(new Dimension(35,0)));
 		JButton homePathBtn = createPathButton(name);
 		homePathBtn.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
@@ -123,15 +105,15 @@ public class MainGUIImpl extends JFrame implements MainGUI{
 		mainPanel = new JPanel(cl);
 		mainPanel.setBackground(new Color(235, 237, 241));
 		mainPanel.setMaximumSize(new Dimension(1024, 460));
-		
+
 		clientesPanel = presentacion.generarClienteGUI();
 		productosPanel = presentacion.generarProductoGUI();
 		facturasPanel = presentacion.generarFacturaGUI();
-		
+
 		homePanel = new JPanel(new GridBagLayout());
 		homePanel.setBackground(new Color(235, 237, 241));
 		homePanel.setMaximumSize(new Dimension(1024, 460));
-		
+
 		GridBagConstraints c = new GridBagConstraints();
 		c.gridx = 0;
 		c.gridy = 0;
@@ -152,7 +134,7 @@ public class MainGUIImpl extends JFrame implements MainGUI{
 			}
 		});
 		homePanel.add(productosBtn, c);
-		
+
 		c.gridx++;
 		JButton facturasBtn = createMenuButton("resources/icons/home/facturas.png", new Color(248, 155, 20));
 		facturasBtn.addActionListener(new ActionListener(){
@@ -161,22 +143,22 @@ public class MainGUIImpl extends JFrame implements MainGUI{
 			}
 		});
 		homePanel.add(facturasBtn, c);
-		
+
 		mainPanel.add(homePanel, name);
 		mainPanel.add(clientesPanel, clientesPanel.getName());
 		mainPanel.add(productosPanel, productosPanel.getName());
 		mainPanel.add(facturasPanel, facturasPanel.getName());
 		cl.show(mainPanel, name);
-		
+
 		add(topBar);
 		add(pathPanel);
 		add(mainPanel);
-		
+
 		setLocationRelativeTo(null);
 		setVisible(true);
 	}
-	
-	public JButton createPathButton(String name) {		
+
+	public JButton createPathButton(String name) {
 		JButton pathBtn = new JButton(name);
 		pathBtn.setFocusPainted(false);
 		pathBtn.setBorderPainted(false);
@@ -185,7 +167,7 @@ public class MainGUIImpl extends JFrame implements MainGUI{
 		pathBtn.setMaximumSize(new Dimension(170, 50));
 		return pathBtn;
 	}
-	
+
 	public void addPathSeparator() {
 		JLabel pathSeparator = new JLabel(">", SwingConstants.CENTER);
 		pathSeparator.setOpaque(false);
@@ -193,7 +175,7 @@ public class MainGUIImpl extends JFrame implements MainGUI{
 		pathSeparator.setMaximumSize(new Dimension(50, 50));
 		pathPanel.add(pathSeparator);
 	}
-	
+
 	public JButton createMenuButton(String iconPath, Color color) {
 		JButton button = new JButton();
 		button.setPreferredSize(new Dimension(200,125));
@@ -201,16 +183,16 @@ public class MainGUIImpl extends JFrame implements MainGUI{
 		button.setBorder(null);
 		button.setFocusPainted(false);
 		button.setIcon(new ImageIcon(iconPath));
-		
+
 		return button;
 	}
-	
-	
+
+
 	public void actualizarPath() {
 		pathPanel.removeAll();
-		
+
 		pathPanel.add(Box.createRigidArea(new Dimension(35,0)));
-		
+
 		JButton homePathBtn = createPathButton(name);
 		homePathBtn.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
@@ -218,11 +200,11 @@ public class MainGUIImpl extends JFrame implements MainGUI{
 			}
 		});
 		pathPanel.add(homePathBtn);
-		
+
 		pathPanel.revalidate();
 		pathPanel.repaint();
 	}
-		
+
 	public void mostrar() {
 		actualizarPath();
 		cl.show(mainPanel, name);
@@ -230,9 +212,9 @@ public class MainGUIImpl extends JFrame implements MainGUI{
 
 	public void actualizar(int evento, Object datos) {
 		switch (evento){
-		
+
 			//--- ACTUALIZAR MENU ---//
-		
+
 			case EventosMenu.MOSTRAR_HOME_GUI:
 				mostrar();
 				System.out.println("Retornando a MainGUI");
@@ -240,7 +222,7 @@ public class MainGUIImpl extends JFrame implements MainGUI{
 
 			case EventosMenu.MOSTRAR_CLIENTE_GUI:
 				addPathSeparator();
-				
+
 				JButton clientesPathBtn = createPathButton(clientesPanel.getName());
 				clientesPathBtn.addActionListener(new ActionListener(){
 					public void actionPerformed(ActionEvent e){
@@ -248,14 +230,14 @@ public class MainGUIImpl extends JFrame implements MainGUI{
 					}
 				});
 				pathPanel.add(clientesPathBtn);
-				
+
 				clientesPanel.mostrar();
 				cl.show(mainPanel, clientesPanel.getName());
 				System.out.println("ClienteGUI");
 				break;
 			case EventosMenu.MOSTRAR_PRODUCTO_GUI:
 				addPathSeparator();
-				
+
 				JButton productosPathBtn = createPathButton(productosPanel.getName());
 				productosPathBtn.addActionListener(new ActionListener(){
 					public void actionPerformed(ActionEvent e){
@@ -263,14 +245,14 @@ public class MainGUIImpl extends JFrame implements MainGUI{
 					}
 				});
 				pathPanel.add(productosPathBtn);
-				
+
 				productosPanel.mostrar();
 				cl.show(mainPanel, productosPanel.getName());
 				System.out.println("ProductoGUI");
 				break;
 			case EventosMenu.MOSTRAR_FACTURA_GUI:
 				addPathSeparator();
-				
+
 				JButton facturasPathBtn = createPathButton(facturasPanel.getName());
 				facturasPathBtn.addActionListener(new ActionListener(){
 					public void actionPerformed(ActionEvent e){
@@ -278,14 +260,14 @@ public class MainGUIImpl extends JFrame implements MainGUI{
 					}
 				});
 				pathPanel.add(facturasPathBtn);
-				
+
 				facturasPanel.mostrar();
 				cl.show(mainPanel, facturasPanel.getName());
 				System.out.println("FacturaGUI");
 				break;
-				
+
 			//--- ACTUALIZAR CLIENTE ---//
-				
+
 			case EventosCliente.ANADIR_CLIENTE_OK:
 				clientesPanel.actualizar(evento, datos);
 				System.out.println("Delegando a panel clientes");
@@ -326,9 +308,9 @@ public class MainGUIImpl extends JFrame implements MainGUI{
 				clientesPanel.actualizar(evento, datos);
 				System.out.println("Delegando a panel clientes");
 				break;
-				
+
 			//--- ACTUALIZAR PRODUCTO ---//
-			
+
 			case EventosProducto.ANADIR_PRODUCTO_OK:
 				productosPanel.actualizar(evento, datos);
 				System.out.println("Delegando a panel productos");
@@ -336,7 +318,7 @@ public class MainGUIImpl extends JFrame implements MainGUI{
 			case EventosProducto.ANADIR_PRODUCTO_KO:
 				productosPanel.actualizar(evento, datos);
 				System.out.println("Delegando a panel productos");
-				break;	
+				break;
 			case EventosProducto.EDITAR_BUSCAR_PRODUCTO_OK:
 				productosPanel.actualizar(evento, datos);
 				System.out.println("Delegando a panel productos");
@@ -377,9 +359,9 @@ public class MainGUIImpl extends JFrame implements MainGUI{
 				productosPanel.actualizar(evento, datos);
 				System.out.println("Delegando a panel productos");
 				break;
-				
+
 			//--- ACTUALIZAR FACTURA ---//
-				
+
 			case EventosFactura.MOSTRAR_FACTURA_OK:
 				facturasPanel.actualizar(evento, datos);
 				System.out.println("Delegando a panel facturas");

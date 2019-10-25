@@ -1,14 +1,8 @@
 package presentacion.controlador;
 
 import negocio.factoriaSA.FactoriaSA;
-import negocio.negocioCliente.SACliente;
-import negocio.negocioCliente.TCliente;
-import negocio.negocioFactura.SAFactura;
-import negocio.negocioFactura.TFactura;
-import negocio.negocioProducto.SAProducto;
-import negocio.negocioProducto.TProducto;
 import presentacion.factoria.FactoriaPresentacion;
-import presentacion.mainGUI.MainGUIImpl;
+import presentacion.main.MainGUIImpl;
 
 public class Controlador extends SingletonControlador{
 	
@@ -20,7 +14,7 @@ public class Controlador extends SingletonControlador{
 		String mensaje = new String();
 		switch(evento){
 		
-			//--- OPERACIONES MÓDULO CLIENTE ---//
+			//--- OPERACIONES Mï¿½DULO CLIENTE ---//
 			case EventosCliente.ANADIR_CLIENTE: {	
 				
 			}; break;
@@ -28,7 +22,7 @@ public class Controlador extends SingletonControlador{
 				
 			}; break;
 			case EventosFactura.BAJA_CLIENTE: {
-				// NUEVO BOTÓN
+				// NUEVO BOTï¿½N
 			}; break;
 			case EventosCliente.MOSTRAR_CLIENTE: {
 				
@@ -37,10 +31,10 @@ public class Controlador extends SingletonControlador{
 				
 			}; break;
 			case EventosCliente.LISTAR_CLIENTES_POR_FECHA_ALTA: {
-				// NUEVO BOTÓN
+				// NUEVO BOTï¿½N
 			}; break;
 			
-			//--- OPERACIONES MÓDULO PRODUCTO ---//
+			//--- OPERACIONES Mï¿½DULO PRODUCTO ---//
 			case EventosProducto.ANADIR_PRODUCTO:{
 				
 			}; break;
@@ -57,7 +51,7 @@ public class Controlador extends SingletonControlador{
 				
 			}; break;
 			
-			//--- OPERACIONES MÓDULO FACTURA ---//
+			//--- OPERACIONES Mï¿½DULO FACTURA ---//
 			case EventosFactura.ABRIR_FACTURA:{
 				
 			}; break;
@@ -74,7 +68,7 @@ public class Controlador extends SingletonControlador{
 				
 			}; break;
 			case EventosFactura.LISTAR_PRODUCTOS_COMPRADOS_POR_FECHA:{
-				// NUEVO BOTÓN.
+				// NUEVO BOTï¿½N.
 			}; break;
 			case EventosCliente.MODIFICAR_BUSCAR_CLIENTE:{
 				
@@ -83,7 +77,7 @@ public class Controlador extends SingletonControlador{
 
 			}; break;
 			
-			//--- ACTUALIZACIÓN DE LA VISTA ---//
+			//--- ACTUALIZACIï¿½N DE LA VISTA ---//
 			case EventosMenu.MOSTRAR_HOME_GUI:{
 				gui.actualizar(EventosMenu.MOSTRAR_HOME_GUI, null);
 			}; break;

@@ -1,8 +1,8 @@
-package main.java.presentacion.factoriaCommand;
+package presentacion.factoriaCommand;
 
-import main.java.presentacion.command.Command;
-import main.java.presentacion.command.cliente.AnadirClienteCommand;
-import main.java.presentacion.controladorAplicacion.EventosCliente;
+import presentacion.command.Command;
+import presentacion.command.cliente.AnadirClienteCommand;
+import presentacion.controladorAplicacion.EventosCliente;
 
 public class FactoriaCommandImpl extends FactoriaCommand{
 
@@ -11,7 +11,7 @@ public class FactoriaCommandImpl extends FactoriaCommand{
 		Command comando = null;
 		switch(evento){
 			case EventosCliente.ANADIR_CLIENTE: comando = new AnadirClienteCommand(); break;
-			//--- RESTO DE COMANDOS --- ¿Por cada caso de uso hay que hacer un command (BajaClienteCommand, etc.)?//
+			//--- RESTO DE COMANDOS --- ï¿½Por cada caso de uso hay que hacer un command (BajaClienteCommand, etc.)?//
 		}
 
 		return comando;	

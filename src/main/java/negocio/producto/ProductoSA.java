@@ -1,4 +1,4 @@
 package negocio.producto;
 
-public class TProducto {
+public class ProductoSA {
 }

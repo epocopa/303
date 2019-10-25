@@ -1,11 +1,11 @@
 package presentacion.factoria;
 
-import javax.swing.JPanel;
+import presentacion.cliente.ClienteGUIImpl;
+import presentacion.factura.FacturaGUIImpl;
+import presentacion.main.MainGUIImpl;
+import presentacion.producto.ProductoGUIImpl;
 
-import presentacion.clienteGUI.ClienteGUIImpl;
-import presentacion.facturaGUI.FacturaGUIImpl;
-import presentacion.mainGUI.*;
-import presentacion.productoGUI.ProductoGUIImpl;
+import javax.swing.*;
 
 public abstract class FactoriaPresentacion {
 	

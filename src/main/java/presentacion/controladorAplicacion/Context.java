@@ -1,4 +1,4 @@
-package main.java.presentacion.controladorAplicacion;
+package presentacion.controladorAplicacion;
 
 public class Context {
 	private Object datos;

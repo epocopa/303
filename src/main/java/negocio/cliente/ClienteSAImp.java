@@ -1,4 +1,5 @@
+package negocio.cliente;
 
-public class ClienteSAImp {
+public class ClienteSAImp extends ClienteSA {
 
 }

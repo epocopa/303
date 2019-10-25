@@ -1,15 +1,12 @@
 package presentacion.factoria;
 
-import java.awt.Color;
-import java.awt.Dimension;
+import presentacion.cliente.ClienteGUIImpl;
+import presentacion.factura.FacturaGUIImpl;
+import presentacion.main.MainGUIImpl;
+import presentacion.producto.ProductoGUIImpl;
 
-import javax.swing.BoxLayout;
-import javax.swing.JPanel;
-
-import presentacion.clienteGUI.ClienteGUIImpl;
-import presentacion.facturaGUI.FacturaGUIImpl;
-import presentacion.mainGUI.*;
-import presentacion.productoGUI.ProductoGUIImpl;
+import javax.swing.*;
+import java.awt.*;
 
 public class FactoriaPresentacionImpl extends FactoriaPresentacion {
 	

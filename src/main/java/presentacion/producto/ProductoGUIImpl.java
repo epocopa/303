@@ -1,4 +1,4 @@
-package main.java.presentacion.producto;
+package presentacion.producto;
 
 public class ProductoGUIImpl {
 

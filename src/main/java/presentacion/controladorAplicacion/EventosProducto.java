@@ -1,4 +1,4 @@
-package main.java.presentacion.controladorAplicacion;
+package presentacion.controladorAplicacion;
 
 public class EventosProducto {
 	public static final int ANADIR_PRODUCTO = 13;
@@ -6,9 +6,9 @@ public class EventosProducto {
 	public static final int BAJA_PRODUCTO = 15;
 	public static final int MOSTRAR_PRODUCTO = 16;
 	public static final int LISTAR_PRODUCTOS = 17;
-	public static final int MODIFICAR_BUSCAR_PRODUCTO = 18;	// Para modificar un PRODUCTO, primero tenemos que buscar si está, o no en la BBDD.
+	public static final int MODIFICAR_BUSCAR_PRODUCTO = 18;	// Para modificar un PRODUCTO, primero tenemos que buscar si estï¿½, o no en la BBDD.
 	
-	// Eventos para actualizar la vista si la operación se ha realizado correctamente (_OK) o incorrectamente (_KO).
+	// Eventos para actualizar la vista si la operaciï¿½n se ha realizado correctamente (_OK) o incorrectamente (_KO).
 	
 	public static final int ANADIR_PRODUCTO_OK = 26;
 	public static final int ANADIR_PRODUCTO_KO = 27;

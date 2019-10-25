@@ -1,15 +1,15 @@
 package negocio.factoriaSA;
 
-import negocio.negocioCliente.ClienteSA;
-import negocio.negocioFactura.FacturaSA;
-import negocio.negocioProducto.ProductoSA;
+import negocio.cliente.ClienteSA;
+import negocio.factura.FacturaSA;
+import negocio.producto.ProductoSA;
 
 public abstract class FactoriaSA {
 	private static FactoriaSA sa;
 	
 	public static FactoriaSA getInstancia() {
 		if(sa == null) {
-			sa = new FactoriaSAImpl();
+			sa = new FactoriaSAImp();
 		}
 		return sa;
 	}

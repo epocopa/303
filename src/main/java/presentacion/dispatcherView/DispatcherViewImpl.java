@@ -1,8 +1,8 @@
-package main.java.presentacion.dispatcherView;
+package presentacion.dispatcherView;
 
-import main.java.presentacion.controladorAplicacion.Context;
-import main.java.presentacion.controladorAplicacion.EventosMenu;
-import main.java.presentacion.factoriaPresentacion.FactoriaPresentacion;
+import presentacion.controlador.EventosMenu;
+import presentacion.factoria.FactoriaPresentacion;
+import presentacion.main.MainGUIImpl;
 
 public class DispatcherViewImpl extends DispatcherView{
 	private FactoriaPresentacion presentacion = FactoriaPresentacion.getInstancia();

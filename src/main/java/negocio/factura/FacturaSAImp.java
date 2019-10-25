@@ -1,4 +1,5 @@
+package negocio.factura;
 
-public class FacturaSAImp {
+public class FacturaSAImp extends FacturaSA {
 
 }

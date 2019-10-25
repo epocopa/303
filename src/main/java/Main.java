@@ -1,5 +1,3 @@
-package integracion;
-
 import integracion.cliente.ClienteDAO;
 import integracion.factoriaDAO.FactoriaDAO;
 import integracion.factoriaDAO.FactoriaDAOImp;

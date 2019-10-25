@@ -1,11 +1,12 @@
-package main.java.presentacion.command.cliente;
+package presentacion.command.cliente;
 
-import main.java.presentacion.command.Command;
-import main.java.presentacion.controladorAplicacion.Context;
-import main.java.presentacion.controladorAplicacion.EventosCliente;
-import main.java.negocio.cliente.TCliente;
 
-public class AnadirClienteCommand implements Command{
+import negocio.cliente.TCliente;
+import presentacion.command.Command;
+import presentacion.controladorAplicacion.Context;
+import presentacion.controladorAplicacion.EventosCliente;
+
+public class AnadirClienteCommand implements Command {
 
 	@Override
 	public Context execute(Object datos) {
@@ -16,7 +17,7 @@ public class AnadirClienteCommand implements Command{
 		try{
 			//Integer resultado = saCliente.altaCliente(cliente);
 			if(resultado != -1){
-				mensaje = "El cliente ha sido añadido correctamente. Su id es: " + resultado;
+				mensaje = "El cliente ha sido aï¿½adido correctamente. Su id es: " + resultado;
 				return new Context(EventosCliente.ANADIR_CLIENTE_OK, mensaje);
 			}
 			else{

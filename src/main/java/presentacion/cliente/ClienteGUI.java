@@ -1,10 +1,7 @@
-package main.java.presentacion.cliente;
+package presentacion.cliente;
 
-import java.awt.Color;
-
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
+import javax.swing.*;
+import java.awt.*;
 
 public interface ClienteGUI {
 	public abstract void initialize();

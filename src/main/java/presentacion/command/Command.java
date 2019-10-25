@@ -1,6 +1,7 @@
-package main.java.presentacion.command;
+package presentacion.command;
 
-import main.java.presentacion.controladorAplicacion.Context;
+
+import presentacion.controladorAplicacion.Context;
 
 public interface Command {
 	Context execute(Object datos);

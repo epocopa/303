@@ -1,4 +1,4 @@
-package main.java.presentacion.factura;
+package presentacion.factura;
 
 public class FacturaGUI {
 

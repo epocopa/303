@@ -1,4 +1,4 @@
-package main.java.presentacion.controladorAplicacion;
+package presentacion.controladorAplicacion;
 
 public class EventosFactura {
 	public static final int ABRIR_FACTURA = 7;
@@ -8,7 +8,7 @@ public class EventosFactura {
 	public static final int BORRAR_PRODUCTO = 11;
 	public static final int LISTAR_PRODUCTOS_COMPRADOS_POR_FECHA = 12;
 	
-	// Eventos para actualizar la vista si la operación se ha realizado correctamente (_OK) o incorrectamente (_KO).
+	// Eventos para actualizar la vista si la operaciï¿½n se ha realizado correctamente (_OK) o incorrectamente (_KO).
 	
 	public static final int ABRIR_FACTURA_OK = 14;
 	public static final int ABRIR_FACTURA_KO = 15;
