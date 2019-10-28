@@ -1,4 +1,4 @@
-package negocio.producto;
+package main.java.negocio.producto;
 
 public class TProducto {
 }

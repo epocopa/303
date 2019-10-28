@@ -1,11 +1,17 @@
-package integracion.producto;
+package test.java.integracion.producto;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.Assert.*;
+import org.junit.jupiter.api.*;
 
-import org.junit.jupiter.api.Test;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+
 
 class ClienteDAOImpTest {
+	private static Connection conn;
 
+	
 	@BeforeAll
 	static void beforeAll() {
 

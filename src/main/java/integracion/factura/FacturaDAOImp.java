@@ -1,6 +1,6 @@
-package integracion.factura;
+package main.java.integracion.factura;
 
-import negocio.factura.TFactura;
+import main.java.negocio.factura.TFactura;
 
 import java.util.List;
 

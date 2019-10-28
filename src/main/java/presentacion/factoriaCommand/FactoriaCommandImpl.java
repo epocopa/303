@@ -1,8 +1,8 @@
-package presentacion.factoriaCommand;
+package main.java.presentacion.factoriaCommand;
 
-import presentacion.command.Command;
-import presentacion.command.cliente.AnadirClienteCommand;
-import presentacion.controladorAplicacion.EventosCliente;
+import main.java.presentacion.command.Command;
+import main.java.presentacion.command.cliente.AnadirClienteCommand;
+import main.java.presentacion.controladorAplicacion.EventosCliente;
 
 public class FactoriaCommandImpl extends FactoriaCommand{
 

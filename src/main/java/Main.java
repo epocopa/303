@@ -1,7 +1,10 @@
-import integracion.cliente.ClienteDAO;
-import integracion.factoriaDAO.FactoriaDAO;
-import integracion.factoriaDAO.FactoriaDAOImp;
-import negocio.cliente.TCliente;
+package main.java;
+
+
+import main.java.integracion.cliente.ClienteDAO;
+import main.java.integracion.factoriaDAO.FactoriaDAO;
+//import main.java.integracion.factoriaDAO.FactoriaDAOImp;
+import main.java.negocio.cliente.TCliente;
 
 import java.time.LocalDate;
 

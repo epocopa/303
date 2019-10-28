@@ -1,6 +1,6 @@
-package integracion.transactionManager;
+package main.java.integracion.transactionManager;
 
-import integracion.transaction.Transaction;
+import main.java.integracion.transaction.Transaction;
 
 public abstract class TransactionManager {
 	private static TransactionManager instancia = null;

@@ -1,4 +1,4 @@
-package presentacion.controladorAplicacion;
+package main.java.presentacion.controladorAplicacion;
 
 public class EventosFactura {
 	public static final int ABRIR_FACTURA = 7;

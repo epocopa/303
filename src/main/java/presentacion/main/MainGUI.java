@@ -1,4 +1,4 @@
-package presentacion.main;
+package main.java.presentacion.main;
 
 import java.awt.Color;
 

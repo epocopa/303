@@ -1,4 +1,4 @@
-package presentacion.controladorAplicacion;
+package main.java.presentacion.controladorAplicacion;
 
 public class EventosMenu {
 	public static final int MOSTRAR_HOME_GUI = 50;

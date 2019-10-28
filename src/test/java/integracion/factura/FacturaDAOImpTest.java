@@ -1,10 +1,15 @@
-package integracion.factura;
+package test.java.integracion.factura;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.Assert.*;
+import org.junit.jupiter.api.*;
 
-import org.junit.jupiter.api.Test;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+
 
 class ClienteDAOImpTest {
+	private static Connection conn;
 
 	@BeforeAll
 	static void beforeAll() {

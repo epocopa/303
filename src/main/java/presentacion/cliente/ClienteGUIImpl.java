@@ -1,8 +1,8 @@
-package presentacion.cliente;
+package main.java.presentacion.cliente;
 
-import negocio.cliente.TCliente;
-import presentacion.controlador.SingletonControlador;
-import presentacion.factoria.FactoriaPresentacion;
+import main.java.negocio.cliente.TCliente;
+import main.java.presentacion.controladorAplicacion.*; //¿?
+import main.java.presentacion.factoria.FactoriaPresentacion;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;

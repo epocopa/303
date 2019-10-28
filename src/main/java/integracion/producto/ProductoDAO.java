@@ -1,7 +1,7 @@
-package integracion.producto;
+package main.java.integracion.producto;
 
-import integracion.DAO;
-import negocio.producto.TProducto;
+import main.java.integracion.DAO;
+import main.java.negocio.producto.TProducto;
 
 public interface ProductoDAO extends DAO<TProducto> {
 }

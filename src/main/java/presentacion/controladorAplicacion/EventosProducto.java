@@ -1,4 +1,4 @@
-package presentacion.controladorAplicacion;
+package main.java.presentacion.controladorAplicacion;
 
 public class EventosProducto {
 	public static final int ANADIR_PRODUCTO = 13;

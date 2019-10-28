@@ -1,7 +1,7 @@
-package presentacion.factoriaCommand;
+package main.java.presentacion.factoriaCommand;
 
 
-import presentacion.command.Command;
+import main.java.presentacion.command.Command;
 
 public abstract class FactoriaCommand {
 	private static FactoriaCommand instance;

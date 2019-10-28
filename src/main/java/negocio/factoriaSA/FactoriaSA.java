@@ -1,8 +1,8 @@
-package negocio.factoriaSA;
+package main.java.negocio.factoriaSA;
 
-import negocio.cliente.ClienteSA;
-import negocio.factura.FacturaSA;
-import negocio.producto.ProductoSA;
+import main.java.negocio.cliente.ClienteSA;
+import main.java.negocio.factura.FacturaSA;
+import main.java.negocio.producto.ProductoSA;
 
 public abstract class FactoriaSA {
 	private static FactoriaSA sa;

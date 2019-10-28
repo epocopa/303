@@ -1,4 +1,4 @@
-package negocio.cliente;
+package main.java.negocio.cliente;
 
 import java.time.LocalDate;
 

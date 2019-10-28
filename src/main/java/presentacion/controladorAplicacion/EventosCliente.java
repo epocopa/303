@@ -1,4 +1,4 @@
-package presentacion.controladorAplicacion;
+package main.java.presentacion.controladorAplicacion;
 
 public class EventosCliente {
 	public static final int ANADIR_CLIENTE = 0;

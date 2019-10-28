@@ -1,7 +1,7 @@
-package integracion.cliente;
+package main.java.integracion.cliente;
 
-import integracion.DAO;
-import negocio.cliente.TCliente;
+import main.java.integracion.DAO;
+import main.java.negocio.cliente.TCliente;
 
 public interface ClienteDAO extends DAO<TCliente> {
 }

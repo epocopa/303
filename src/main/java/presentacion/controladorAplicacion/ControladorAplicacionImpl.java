@@ -1,8 +1,8 @@
-package presentacion.controladorAplicacion;
+package main.java.presentacion.controladorAplicacion;
 
-import presentacion.command.Command;
-import presentacion.dispatcherView.DispatcherView;
-import presentacion.factoriaCommand.FactoriaCommand;
+import main.java.presentacion.command.Command;
+import main.java.presentacion.dispatcherView.DispatcherView;
+import main.java.presentacion.factoriaCommand.FactoriaCommand;
 
 public class ControladorAplicacionImpl extends ControladorAplicacion{
 
