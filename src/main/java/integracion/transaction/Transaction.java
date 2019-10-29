@@ -1,4 +1,4 @@
-package main.java.integracion.transaction;
+package integracion.transaction;
 
 import java.sql.SQLException;
 

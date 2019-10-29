@@ -1,12 +1,12 @@
-package main.java.negocio.factoriaSA;
+package negocio.factoriaSA;
 
 
-import main.java.negocio.cliente.ClienteSA;
-import main.java.negocio.cliente.ClienteSAImp;
-import main.java.negocio.factura.FacturaSA;
-import main.java.negocio.factura.FacturaSAImp;
-import main.java.negocio.producto.ProductoSA;
-import main.java.negocio.producto.ProductoSAImp;
+import negocio.cliente.ClienteSA;
+import negocio.cliente.ClienteSAImp;
+import negocio.factura.FacturaSA;
+import negocio.factura.FacturaSAImp;
+import negocio.producto.ProductoSA;
+import negocio.producto.ProductoSAImp;
 
 public class FactoriaSAImp extends FactoriaSA{
 	

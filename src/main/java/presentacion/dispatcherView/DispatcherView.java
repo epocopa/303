@@ -1,7 +1,7 @@
-package main.java.presentacion.dispatcherView;
+package presentacion.dispatcherView;
 
-import main.java.presentacion.controladorAplicacion.Context;
-import main.java.presentacion.dispatcherView.DispatcherViewImpl;
+import presentacion.controladorAplicacion.Context;
+import presentacion.dispatcherView.DispatcherViewImpl;
 
 public abstract class DispatcherView {
 	private static DispatcherView instance;

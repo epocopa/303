@@ -1,4 +1,4 @@
-package main.java.integracion;
+package integracion;
 
 import java.util.List;
 

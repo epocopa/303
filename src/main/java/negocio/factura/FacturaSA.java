@@ -1,4 +1,4 @@
-package main.java.negocio.factura;
+package negocio.factura;
 
 public class FacturaSA {
 

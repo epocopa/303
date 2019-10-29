@@ -1,4 +1,4 @@
-package main.java.presentacion.cliente;
+package presentacion.cliente;
 
 import javax.swing.*;
 import java.awt.*;

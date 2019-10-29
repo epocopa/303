@@ -1,7 +1,7 @@
-package main.java.integracion.factura;
+package integracion.factura;
 
-import main.java.integracion.DAO;
-import main.java.negocio.factura.TFactura;
+import integracion.DAO;
+import negocio.factura.TFactura;
 
 public interface FacturaDAO extends DAO<TFactura> {
 }

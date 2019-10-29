@@ -1,7 +1,7 @@
-package main.java.integracion.transactionManager;
+package integracion.transactionManager;
 
-import main.java.integracion.transaction.Transaction;
-import main.java.integracion.transaction.TransactionImp;
+import integracion.transaction.Transaction;
+import integracion.transaction.TransactionImp;
 
 public class TransactionManagerImp extends TransactionManager {
 	//Transaktionsabwicklung

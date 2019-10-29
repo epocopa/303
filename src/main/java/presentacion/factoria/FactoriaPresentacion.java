@@ -1,9 +1,9 @@
-package main.java.presentacion.factoria;
+package presentacion.factoria;
 
-import main.java.presentacion.cliente.ClienteGUIImpl;
-//import main.java.presentacion.factura.FacturaGUIImpl;
-import main.java.presentacion.main.MainGUIImpl;
-import main.java.presentacion.producto.ProductoGUIImpl;
+import presentacion.cliente.ClienteGUIImpl;
+import presentacion.factura.FacturaGUIImpl;
+import presentacion.main.MainGUIImpl;
+import presentacion.producto.ProductoGUIImpl;
 
 import javax.swing.*;
 

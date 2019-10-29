@@ -1,6 +1,6 @@
-package main.java.integracion.producto;
+package integracion.producto;
 
-import main.java.negocio.producto.TProducto;
+import negocio.producto.TProducto;
 
 import java.util.List;
 

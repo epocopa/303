@@ -1,6 +1,7 @@
-package main.java.integracion.cliente;
-import main.java.integracion.ConnectionFactory;
-import main.java.negocio.cliente.TCliente;
+package integracion.cliente;
+
+import integracion.ConnectionFactory;
+import negocio.cliente.TCliente;
 
 import java.sql.*;
 import java.util.List;

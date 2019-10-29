@@ -1,10 +1,10 @@
-package main.java.presentacion.command.cliente;
+package presentacion.command.cliente;
 
 
-import main.java.negocio.cliente.TCliente;
-import main.java.presentacion.command.Command;
-import main.java.presentacion.controladorAplicacion.Context;
-import main.java.presentacion.controladorAplicacion.EventosCliente;
+import negocio.cliente.TCliente;
+import presentacion.command.Command;
+import presentacion.controladorAplicacion.Context;
+import presentacion.controladorAplicacion.EventosCliente;
 
 public class AnadirClienteCommand implements Command {
 

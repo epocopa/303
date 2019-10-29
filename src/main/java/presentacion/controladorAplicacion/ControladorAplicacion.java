@@ -1,4 +1,4 @@
-package main.java.presentacion.controladorAplicacion;
+package presentacion.controladorAplicacion;
 
 public abstract class ControladorAplicacion {
 	private static ControladorAplicacion instance;

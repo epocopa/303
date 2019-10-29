@@ -1,10 +1,10 @@
-package main.java.presentacion.main;
+package presentacion.main;
 
-import main.java.presentacion.cliente.ClienteGUIImpl;
-import main.java.presentacion.controladorAplicacion.ControladorAplicacion;
-import main.java.presentacion.factoria.FactoriaPresentacion;
-//import main.java.presentacion.factura.FacturaGUIImpl;
-import main.java.presentacion.producto.ProductoGUIImpl;
+import presentacion.cliente.ClienteGUIImpl;
+import presentacion.controladorAplicacion.ControladorAplicacion;
+import presentacion.factoria.FactoriaPresentacion;
+import presentacion.factura.FacturaGUIImpl;
+import presentacion.producto.ProductoGUIImpl;
 
 import javax.swing.*;
 import java.awt.*;
