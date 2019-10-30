@@ -7,26 +7,25 @@ import presentacion.controladorAplicacion.EventosCliente;
 import negocio.cliente.ClienteSA;
 import negocio.factoriaSA.FactoriaSA;
 
-public class AnadirClienteCommand implements Command {
+public class ModificarBuscarClienteCommand implements Command{
 
 	@Override
 	public Context execute(Object datos) {
+		int id = (int) datos;
 		String mensaje;
-		TCliente cliente = (TCliente) datos;
 		ClienteSA clienteSA = FactoriaSA.getInstancia().generaClienteSA();
 		try{
-			int resultado = clienteSA.altaCliente(cliente);
-			if(resultado != -1){
-				mensaje = "El cliente ha sido anadido correctamente. Su id es: " + resultado;
-				return new Context(EventosCliente.ANADIR_CLIENTE_OK, mensaje);
+			TCliente cliente = clienteSA.mostrarCliente(id);
+			if(cliente != null) {
+				return new Context(EventosCliente.MODIFICAR_BUSCAR_CLIENTE_OK, cliente);
 			}
 			else{
-				mensaje = "No pueden existir dos clientes con el mismo Nombre.";
-				return new Context(EventosCliente.ANADIR_CLIENTE_KO, mensaje);
+				mensaje = "No se ha encontrado ningún empleado con el ID introducido.";
+				return new Context(EventosCliente.MODIFICAR_BUSCAR_CLIENTE_KO, mensaje);
 			}
 		} catch(Exception e){
 			mensaje = "No se ha podido conectar con la base de datos.";
-			return new Context(EventosCliente.ANADIR_CLIENTE_KO, mensaje);
+			return new Context(EventosCliente.MODIFICAR_BUSCAR_CLIENTE_KO, mensaje);
 		}
 	}
 }

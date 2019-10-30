@@ -8,7 +8,7 @@ public class EventosFactura {
 	public static final int BORRAR_PRODUCTO = 11;
 	public static final int LISTAR_PRODUCTOS_COMPRADOS_POR_FECHA = 12;
 	
-	// Eventos para actualizar la vista si la operaci�n se ha realizado correctamente (_OK) o incorrectamente (_KO).
+	// Eventos para actualizar la vista si la operacion se ha realizado correctamente (_OK) o incorrectamente (_KO).
 	
 	public static final int ABRIR_FACTURA_OK = 14;
 	public static final int ABRIR_FACTURA_KO = 15;

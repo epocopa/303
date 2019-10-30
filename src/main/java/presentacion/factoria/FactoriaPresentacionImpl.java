@@ -1,7 +1,8 @@
 package presentacion.factoria;
 
 import presentacion.cliente.ClienteGUIImpl;
-import presentacion.factura.FacturaGUIImp;
+import presentacion.controladorAplicacion.EventosMenu;
+import presentacion.factura.FacturaGUIImpl;
 import presentacion.main.MainGUIImpl;
 import presentacion.producto.ProductoGUIImpl;
 
@@ -9,25 +10,17 @@ import javax.swing.*;
 import java.awt.*;
 
 public class FactoriaPresentacionImpl extends FactoriaPresentacion {
-	
 	JPanel pathPanel;
-
-	public MainGUIImpl generarMainGUI() {
-		return new MainGUIImpl();
+	
+	public GUI generarVista(int evento){
+		switch(evento){
+		case EventosMenu.MOSTRAR_HOME_GUI: return new MainGUIImpl();
+		case EventosMenu.MOSTRAR_CLIENTE_GUI: return new ClienteGUIImpl(); 
+		case EventosMenu.MOSTRAR_FACTURA_GUI: return new FacturaGUIImpl(); 
+		case EventosMenu.MOSTRAR_PRODUCTO_GUI: return new ProductoGUIImpl(); 
+		default: return null;
+		}
 	}
-
-	public ClienteGUIImpl generarClienteGUI() {
-		return new ClienteGUIImpl();
-	}
-
-	public FacturaGUIImp generarFacturaGUI() {
-		return new FacturaGUIImp();
-	}
-
-	public ProductoGUIImpl generarProductoGUI() {
-		return new ProductoGUIImpl();
-	}
-
 	
 	public JPanel generarPath() {
 		if (pathPanel == null) {
@@ -38,5 +31,4 @@ public class FactoriaPresentacionImpl extends FactoriaPresentacion {
 		}
 		return pathPanel;
 	}
-
 }

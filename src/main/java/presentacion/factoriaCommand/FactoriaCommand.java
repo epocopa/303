@@ -1,6 +1,5 @@
 package presentacion.factoriaCommand;
 
-
 import presentacion.command.Command;
 
 public abstract class FactoriaCommand {

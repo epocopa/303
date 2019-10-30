@@ -7,9 +7,9 @@ public class EventosCliente {
 	public static final int MOSTRAR_CLIENTE = 3;
 	public static final int LISTAR_CLIENTES = 4;
 	public static final int LISTAR_CLIENTES_POR_FECHA_ALTA = 5;
-	public static final int MODIFICAR_BUSCAR_CLIENTE = 6;	// Para modificar un CLIENTE, primero tenemos que buscar si est�, o no en la BBDD.
+	public static final int MODIFICAR_BUSCAR_CLIENTE = 6;	// Para modificar un CLIENTE, primero tenemos que buscar si esta, o no en la BBDD.
 
-	// Eventos para actualizar la vista si la operaci�n se ha realizado correctamente (_OK) o incorrectamente (_KO).
+	// Eventos para actualizar la vista si la operacion se ha realizado correctamente (_OK) o incorrectamente (_KO).
 	
 	public static final int ANADIR_CLIENTE_OK = 0;
 	public static final int ANADIR_CLIENTE_KO = 1;

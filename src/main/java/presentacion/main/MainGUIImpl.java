@@ -1,8 +1,14 @@
 package presentacion.main;
 
 import presentacion.cliente.ClienteGUIImpl;
-import presentacion.controladorAplicacion.*;
+import presentacion.controladorAplicacion.Context;
+import presentacion.controladorAplicacion.ControladorAplicacion;
+import presentacion.controladorAplicacion.EventosCliente;
+import presentacion.controladorAplicacion.EventosFactura;
+import presentacion.controladorAplicacion.EventosMenu;
+import presentacion.controladorAplicacion.EventosProducto;
 import presentacion.factoria.FactoriaPresentacion;
+import presentacion.factoria.GUI;
 import presentacion.factura.FacturaGUIImpl;
 import presentacion.producto.ProductoGUIImpl;
 
@@ -11,7 +17,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class MainGUIImpl extends JFrame implements MainGUI{
+public class MainGUIImpl extends JFrame implements MainGUI, GUI{
 
 	private static final long serialVersionUID = 1L;
 
@@ -33,8 +39,9 @@ public class MainGUIImpl extends JFrame implements MainGUI{
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					presentacion = FactoriaPresentacion.getInstancia();
+					presentacion = FactoriaPresentacion.getInstance();
 					controlador =  ControladorAplicacion.getInstance();
+
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -60,13 +67,9 @@ public class MainGUIImpl extends JFrame implements MainGUI{
 
 		topBar.add(Box.createRigidArea(new Dimension(20,0)));
 
-		JLabel groupLogo = new JLabel();
-		groupLogo.setIcon(new ImageIcon("resources/icons/home/G202-logo-small.png"));
-		topBar.add(groupLogo);
-
 		topBar.add(Box.createRigidArea(new Dimension(8,0)));
 
-		JLabel appName = new JLabel("APPLICATION");
+		JLabel appName = new JLabel("303 APPLICATION");
 		appName.setFont(new Font("Arial", Font.BOLD, 14));
 		appName.setForeground(new Color(215,215,215));
 		topBar.add(appName);
@@ -83,7 +86,7 @@ public class MainGUIImpl extends JFrame implements MainGUI{
 		exitBtn.setForeground(new Color(110,120,140));
 		exitBtn.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
-				int confirmacion = JOptionPane.showConfirmDialog(null, "ï¿½Desea cerrar el programa?", "Salir", JOptionPane.YES_NO_OPTION);
+				int confirmacion = JOptionPane.showConfirmDialog(null, "¿Desea cerrar el programa?", "Salir", JOptionPane.YES_NO_OPTION);
 
 				if(confirmacion == JOptionPane.YES_OPTION)
 					System.exit(0);
@@ -96,7 +99,8 @@ public class MainGUIImpl extends JFrame implements MainGUI{
 		JButton homePathBtn = createPathButton(name);
 		homePathBtn.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
-				controlador.accion(EventosMenu.MOSTRAR_HOME_GUI, null);
+				Context contexto = new Context(EventosMenu.MOSTRAR_HOME_GUI, null);
+				controlador.accion(contexto);
 			}
 		});
 		pathPanel.add(homePathBtn);
@@ -105,10 +109,10 @@ public class MainGUIImpl extends JFrame implements MainGUI{
 		mainPanel = new JPanel(cl);
 		mainPanel.setBackground(new Color(235, 237, 241));
 		mainPanel.setMaximumSize(new Dimension(1024, 460));
-
-		clientesPanel = presentacion.generarClienteGUI();
-		productosPanel = presentacion.generarProductoGUI();
-		facturasPanel = presentacion.generarFacturaGUI();
+		
+		clientesPanel = (ClienteGUIImpl)presentacion.generarVista(EventosMenu.MOSTRAR_CLIENTE_GUI);
+		productosPanel = (ProductoGUIImpl)presentacion.generarVista(EventosMenu.MOSTRAR_PRODUCTO_GUI);
+		facturasPanel = (FacturaGUIImpl)presentacion.generarVista(EventosMenu.MOSTRAR_FACTURA_GUI);
 
 		homePanel = new JPanel(new GridBagLayout());
 		homePanel.setBackground(new Color(235, 237, 241));
@@ -121,7 +125,8 @@ public class MainGUIImpl extends JFrame implements MainGUI{
 		JButton clientesBtn = createMenuButton("resources/icons/home/clientes.png", new Color(20,200,250));
 		clientesBtn.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
-				controlador.accion(EventosMenu.MOSTRAR_CLIENTE_GUI, null);
+				Context contexto = new Context(EventosMenu.MOSTRAR_CLIENTE_GUI, null);
+				controlador.accion(contexto);
 			}
 		});
 		homePanel.add(clientesBtn, c);
@@ -130,7 +135,8 @@ public class MainGUIImpl extends JFrame implements MainGUI{
 		JButton productosBtn = createMenuButton("resources/icons/home/productos.png", new Color(232, 57, 54));
 		productosBtn.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
-				controlador.accion(EventosMenu.MOSTRAR_PRODUCTO_GUI, null);
+				Context contexto = new Context(EventosMenu.MOSTRAR_PRODUCTO_GUI, null);
+				controlador.accion(contexto);
 			}
 		});
 		homePanel.add(productosBtn, c);
@@ -139,7 +145,8 @@ public class MainGUIImpl extends JFrame implements MainGUI{
 		JButton facturasBtn = createMenuButton("resources/icons/home/facturas.png", new Color(248, 155, 20));
 		facturasBtn.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
-				controlador.accion(EventosMenu.MOSTRAR_FACTURA_GUI, null);
+				Context contexto = new Context(EventosMenu.MOSTRAR_FACTURA_GUI, null);
+				controlador.accion(contexto);
 			}
 		});
 		homePanel.add(facturasBtn, c);
@@ -276,11 +283,11 @@ public class MainGUIImpl extends JFrame implements MainGUI{
 				clientesPanel.actualizar(evento, datos);
 				System.out.println("Delegando a panel clientes");
 				break;
-			case EventosCliente.BUSCAR_CLIENTE_OK:
+			case EventosCliente.MOSTRAR_CLIENTE_OK:
 				clientesPanel.actualizar(evento, datos);
 				System.out.println("Delegando a panel clientes");
 				break;
-			case EventosCliente.BUSCAR_CLIENTE_KO:
+			case EventosCliente.MOSTRAR_CLIENTE_KO:
 				clientesPanel.actualizar(evento, datos);
 				System.out.println("Delegando a panel clientes");
 				break;
@@ -319,27 +326,27 @@ public class MainGUIImpl extends JFrame implements MainGUI{
 				productosPanel.actualizar(evento, datos);
 				System.out.println("Delegando a panel productos");
 				break;
-			case EventosProducto.EDITAR_BUSCAR_PRODUCTO_OK:
+			case EventosProducto.MODIFICAR_BUSCAR_PRODUCTO_OK:
 				productosPanel.actualizar(evento, datos);
 				System.out.println("Delegando a panel productos");
 				break;
-			case EventosProducto.EDITAR_BUSCAR_PRODUCTO_KO:
+			case EventosProducto.MODIFICAR_BUSCAR_PRODUCTO_KO:
 				productosPanel.actualizar(evento, datos);
 				System.out.println("Delegando a panel productos");
 				break;
-			case EventosProducto.EDITAR_PRODUCTO_OK:
+			case EventosProducto.MODIFICAR_PRODUCTO_OK:
 				productosPanel.actualizar(evento, datos);
 				System.out.println("Delegando a panel productos");
 				break;
-			case EventosProducto.EDITAR_PRODUCTO_KO:
+			case EventosProducto.MODIFICAR_PRODUCTO_KO:
 				productosPanel.actualizar(evento, datos);
 				System.out.println("Delegando a panel productos");
 				break;
-			case EventosProducto.BORRAR_PRODUCTO_OK:
+			case EventosProducto.BAJA_PRODUCTO_OK:
 				productosPanel.actualizar(evento, datos);
 				System.out.println("Delegando a panel productos");
 				break;
-			case EventosProducto.BORRAR_PRODUCTO_KO:
+			case EventosProducto.BAJA_PRODUCTO_KO:
 				productosPanel.actualizar(evento, datos);
 				System.out.println("Delegando a panel productos");
 				break;
@@ -399,22 +406,6 @@ public class MainGUIImpl extends JFrame implements MainGUI{
 				System.out.println("Delegando a panel facturas");
 				break;
 			case EventosFactura.BORRAR_PRODUCTO_KO:
-				facturasPanel.actualizar(evento, datos);
-				System.out.println("Delegando a panel facturas");
-				break;
-			case EventosFactura.APLICAR_DESCUENTO_OK:
-				facturasPanel.actualizar(evento, datos);
-				System.out.println("Delegando a panel facturas");
-				break;
-			case EventosFactura.APLICAR_DESCUENTO_KO:
-				facturasPanel.actualizar(evento, datos);
-				System.out.println("Delegando a panel facturas");
-				break;
-			case EventosFactura.FACTURAS_CLIENTE_OK:
-				facturasPanel.actualizar(evento, datos);
-				System.out.println("Delegando a panel facturas");
-				break;
-			case EventosFactura.FACTURAS_CLIENTE_KO:
 				facturasPanel.actualizar(evento, datos);
 				System.out.println("Delegando a panel facturas");
 				break;

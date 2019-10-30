@@ -1,19 +1,23 @@
 package presentacion.cliente;
 
 import negocio.cliente.TCliente;
+import presentacion.controladorAplicacion.Context;
 import presentacion.controladorAplicacion.ControladorAplicacion;
 import presentacion.controladorAplicacion.EventosCliente;
 import presentacion.factoria.FactoriaPresentacion;
+import presentacion.factoria.GUI;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-public class ClienteGUIImpl extends JFrame implements ClienteGUI {
+public class ClienteGUIImpl extends JPanel implements ClienteGUI, GUI {
 	private static final long serialVersionUID = 1L;
 
 	private String name = "CLIENTES";
@@ -22,8 +26,7 @@ public class ClienteGUIImpl extends JFrame implements ClienteGUI {
 	private JPanel _homePanel;
 	private JPanel _currentPanel = _homePanel;
 	
-	private static FactoriaPresentacion presentacion = FactoriaPresentacion.getInstancia();
-	//private static SingletonControlador controlador = ControladorAplicacion.getInstance();
+	private static FactoriaPresentacion presentacion = FactoriaPresentacion.getInstance();
 
 	private JPanel pathPanel = presentacion.generarPath();
 	List<Component> _lastPathComponents = new LinkedList<Component>();
@@ -31,7 +34,13 @@ public class ClienteGUIImpl extends JFrame implements ClienteGUI {
 	//--- COMPONENTES ---//
 	
 	private JPanel anadirOutputArea;
-	private JLabel anadirOutputLabel;	
+	private JLabel anadirOutputLabel;
+	
+	private JPanel borrarOutputArea;
+	private JLabel borrarOutputLabel;
+	
+	private JPanel pedirFechasOutputArea;
+	private JLabel pedirFechasOutputLabel;
 	
 	private JPanel mostrarClientePanel;
 	private CardLayout mostrarClientePanelCL;
@@ -90,17 +99,18 @@ public class ClienteGUIImpl extends JFrame implements ClienteGUI {
 		});
 		_homePanel.add(editarBtn, c);
 		
-		c.gridx = 0;
-		c.gridy++;
+		c.gridx++;
 		JButton listarBtn = createMenuButton("resources/icons/clientes/mostrar-clientes.png", new Color(56, 176, 225));
 		listarBtn.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
-				ControladorAplicacion.getInstance().accion(EventosCliente.LISTAR_CLIENTES, null);
+				Context contexto = new Context(EventosCliente.LISTAR_CLIENTES, null);
+				ControladorAplicacion.getInstance().accion(contexto);
 			}
 		});
 		_homePanel.add(listarBtn, c);
 		
-		c.gridx++;
+		c.gridx = 0;
+		c.gridy++;
 		JButton buscarBtn = createMenuButton("resources/icons/clientes/buscar-cliente.png", new Color(47, 101, 175));
 		buscarBtn.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
@@ -110,6 +120,28 @@ public class ClienteGUIImpl extends JFrame implements ClienteGUI {
 			}
 		});
 		_homePanel.add(buscarBtn, c);
+		
+		c.gridx++;
+		JButton bajaBtn = createMenuButton("resources/icons/clientes/eliminar_cliente.png", new Color(47, 101, 175));
+		bajaBtn.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e){
+				addPathSeparator();
+				createPathButton("ELIMINAR CLIENTE");
+				bajaPanel();
+			}
+		});
+		_homePanel.add(bajaBtn, c);
+		
+		c.gridx++;
+		JButton clientesPorFechaBtn = createMenuButton("resources/icons/clientes/eliminar_cliente.png", new Color(47, 101, 175));
+		clientesPorFechaBtn.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e){
+				addPathSeparator();
+				createPathButton("LISTAR POR FECHA");
+				clientesPorFechaPanel();
+			}
+		});
+		_homePanel.add(clientesPorFechaBtn, c);
 
 		add(_homePanel, name);
 	}
@@ -219,10 +251,12 @@ public class ClienteGUIImpl extends JFrame implements ClienteGUI {
 		enviarBtn.setAlignmentX(JComponent.CENTER_ALIGNMENT);
 		enviarBtn.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
-				String nombre = nombreField.getText();	
-				TCliente cliente = new TCliente(nombre);
+				String nombre = nombreField.getText();
+				LocalDate fecha_registro = LocalDate.now();
+				TCliente cliente = new TCliente(nombre, fecha_registro);
 				if (nombre.length() > 0 && !nombre.equals(" ")) {
-					ControladorAplicacion.getInstance().accion(EventosCliente.ANADIR_CLIENTE, cliente);
+					Context contexto = new Context(EventosCliente.ANADIR_CLIENTE, cliente);
+					ControladorAplicacion.getInstance().accion(contexto);
 				} else {
 					showOutputMsg(anadirOutputArea, anadirOutputLabel, "ERROR: El nombre introducido no es valido.", false);
 				}
@@ -361,7 +395,8 @@ public class ClienteGUIImpl extends JFrame implements ClienteGUI {
 			public void actionPerformed(ActionEvent e){
 				String ID = IDField.getText();	
 				if (ID.length() > 0 && !ID.equals(" ")) {;
-					ControladorAplicacion.getInstance().accion(EventosCliente.MODIFICAR_BUSCAR_CLIENTE, Integer.valueOf(ID));
+					Context contexto = new Context(EventosCliente.MODIFICAR_BUSCAR_CLIENTE, Integer.valueOf(ID));
+					ControladorAplicacion.getInstance().accion(contexto);
 				} else {
 					showOutputMsg(editarBuscarErrorArea, editarBuscarErrorLabel, "ERROR: El ID introducido no es valido.", false);
 				}
@@ -382,7 +417,8 @@ public class ClienteGUIImpl extends JFrame implements ClienteGUI {
 				String nombre = editarNombreField.getText();	
 				if (nombre.length() > 0 && !nombre.equals(" ")) {;
 					TCliente cliente = new TCliente(ID, nombre);
-					ControladorAplicacion.getInstance().accion(EventosCliente.MODIFICAR_CLIENTE, cliente);
+					Context contexto = new Context(EventosCliente.MODIFICAR_CLIENTE, cliente);
+					ControladorAplicacion.getInstance().accion(contexto);
 				} else {
 					showOutputMsg(editarOutputArea, editarOutputLabel, "ERROR: El nombre introducido no es valido.", false);
 				}
@@ -416,6 +452,90 @@ public class ClienteGUIImpl extends JFrame implements ClienteGUI {
 		_currentPanel = editarClientePanel;
 	}
 	
+	public void bajaPanel() {
+		JPanel panel = new JPanel();
+		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+		panel.setBackground(new Color(235, 237, 241));
+		panel.setMaximumSize(new Dimension(1024, 460));
+	
+		//--
+		
+		JPanel outputPanel = new JPanel();
+		outputPanel.setLayout(new BoxLayout(outputPanel, BoxLayout.Y_AXIS));
+		outputPanel.setBackground(new Color(235, 237, 241));
+		outputPanel.setMaximumSize(new Dimension(1024, 50));
+		
+		borrarOutputArea = new JPanel();
+		borrarOutputArea.setLayout(new BoxLayout(borrarOutputArea, BoxLayout.X_AXIS));
+		borrarOutputArea.setBackground(new Color(172, 40, 40));
+		borrarOutputArea.setMaximumSize(new Dimension(800, 50));
+		
+		borrarOutputLabel = new JLabel("ERROR: El ID Cliente introducido no es valido.");
+		borrarOutputLabel.setFont(new Font("Arial", Font.PLAIN, 16));
+		borrarOutputLabel.setForeground(new Color(230,230,230));
+		
+		borrarOutputArea.add(Box.createRigidArea(new Dimension(40, 0)));
+		borrarOutputArea.add(borrarOutputLabel);
+		borrarOutputArea.setVisible(false);
+		outputPanel.add(borrarOutputArea);
+		
+		//--
+		
+		JPanel formPanel = new JPanel(new GridBagLayout());
+		formPanel.setBackground(new Color(235, 237, 241));
+		formPanel.setAlignmentX(JComponent.CENTER_ALIGNMENT);
+		formPanel.setMaximumSize(new Dimension(1024, 70));
+		
+		GridBagConstraints c = new GridBagConstraints();
+		c.gridx = 0;
+		c.gridy = 0;
+		c.anchor = GridBagConstraints.LINE_END;
+		c.insets = new Insets(5,5,0,0);
+		JLabel IDLabel = new JLabel("ID Producto: ");
+		IDLabel.setFont(new Font("Arial", Font.PLAIN, 18));
+		formPanel.add(IDLabel, c);
+		
+		c.gridx++;
+		c.gridy = 0;
+		c.anchor = GridBagConstraints.LINE_START;
+		JTextField IDField = new JTextField(15);
+		formPanel.add(IDField, c);
+		
+		//--
+		
+		JButton borrarBtn = new JButton("ENVIAR");
+		borrarBtn.setFocusPainted(false);
+		borrarBtn.setFont(new Font("Arial", Font.PLAIN, 18));
+		borrarBtn.setBackground(new Color(230,230,230));
+		borrarBtn.setMaximumSize(new Dimension(125, 30));
+		borrarBtn.setAlignmentX(JComponent.CENTER_ALIGNMENT);
+		borrarBtn.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e){
+				String ID = IDField.getText();	
+				if (ID.length() > 0 && !ID.equals(" ")) {
+					Context contexto = new Context(EventosCliente.BAJA_CLIENTE, Integer.valueOf(ID));
+					ControladorAplicacion.getInstance().accion(contexto);
+				} else {
+					showOutputMsg(borrarOutputArea, borrarOutputLabel, "ERROR: El ID introducido no es valido.", false);
+				}
+			}
+		});
+		
+		//--
+		
+		panel.add(Box.createRigidArea(new Dimension(0, 40)));
+		panel.add(outputPanel);
+		panel.add(Box.createRigidArea(new Dimension(0,60)));
+		panel.add(formPanel);
+		panel.add(borrarBtn);
+		
+		//--
+		
+		add(panel, "ELIMINAR");
+		
+		_localCL.show(this, "ELIMINAR");
+		_currentPanel = panel;
+	}
 
 	
 	public void mostrarPanel() {
@@ -556,7 +676,7 @@ public class ClienteGUIImpl extends JFrame implements ClienteGUI {
 		
 		//--
 		
-		JButton buscarBtn = new JButton("BUSCAR");
+		JButton buscarBtn = new JButton("ENVIAR");
 		buscarBtn.setFocusPainted(false);
 		buscarBtn.setFont(new Font("Arial", Font.PLAIN, 18));
 		buscarBtn.setBackground(new Color(230,230,230));
@@ -566,7 +686,8 @@ public class ClienteGUIImpl extends JFrame implements ClienteGUI {
 			public void actionPerformed(ActionEvent e){
 				String ID = IDField.getText();	
 				if (ID.length() > 0 && !ID.equals(" ")) {
-					ControladorAplicacion.getInstance().accion(EventosCliente.MOSTRAR_CLIENTE, Integer.valueOf(ID));
+					Context contexto = new Context(EventosCliente.MOSTRAR_CLIENTE, Integer.valueOf(ID));
+					ControladorAplicacion.getInstance().accion(contexto);
 				} else {
 					showOutputMsg(mostrarErrorArea, mostrarErrorLabel, "ERROR: El ID introducido no es valido.", false);
 				}
@@ -597,6 +718,106 @@ public class ClienteGUIImpl extends JFrame implements ClienteGUI {
 		_currentPanel = mostrarClientePanel;
 		
 		//--
+	}
+	
+	public void clientesPorFechaPanel(){
+		JPanel panel = new JPanel();
+		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+		panel.setBackground(new Color(235, 237, 241));
+		panel.setMaximumSize(new Dimension(1024, 460));
+	
+		//--
+		
+		JPanel outputPanel = new JPanel();
+		outputPanel.setLayout(new BoxLayout(outputPanel, BoxLayout.Y_AXIS));
+		outputPanel.setBackground(new Color(235, 237, 241));
+		outputPanel.setMaximumSize(new Dimension(1024, 50));
+		
+		pedirFechasOutputArea = new JPanel();
+		pedirFechasOutputArea.setLayout(new BoxLayout(pedirFechasOutputArea, BoxLayout.X_AXIS));
+		pedirFechasOutputArea.setBackground(new Color(172, 40, 40));
+		pedirFechasOutputArea.setMaximumSize(new Dimension(800, 50));
+		
+		pedirFechasOutputLabel = new JLabel("ERROR: Las fechas introducidas no son validas.");
+		pedirFechasOutputLabel.setFont(new Font("Arial", Font.PLAIN, 16));
+		pedirFechasOutputLabel.setForeground(new Color(230,230,230));
+		
+		pedirFechasOutputArea.add(Box.createRigidArea(new Dimension(40, 0)));
+		pedirFechasOutputArea.add(pedirFechasOutputLabel);
+		pedirFechasOutputArea.setVisible(false);
+		outputPanel.add(pedirFechasOutputArea);
+		
+		//--
+		
+		JPanel formPanel = new JPanel(new GridBagLayout());
+		formPanel.setBackground(new Color(235, 237, 241));
+		formPanel.setAlignmentX(JComponent.CENTER_ALIGNMENT);
+		formPanel.setMaximumSize(new Dimension(1024, 70));
+		
+		GridBagConstraints c = new GridBagConstraints();
+		c.gridx = 0;
+		c.gridy = 0;
+		c.anchor = GridBagConstraints.LINE_END;
+		c.insets = new Insets(5,5,0,0);
+		JLabel Fecha1Label = new JLabel("FECHA INICIO: ");
+		Fecha1Label.setFont(new Font("Arial", Font.PLAIN, 18));
+		formPanel.add(Fecha1Label, c);
+		
+		c.gridy++;
+		JLabel Fecha2Label = new JLabel("FECHA FIN: ");
+		Fecha2Label.setFont(new Font("Arial", Font.PLAIN, 18));
+		formPanel.add(Fecha2Label, c);
+		
+		c.gridx++;
+		c.gridy = 0;
+		c.anchor = GridBagConstraints.LINE_START;
+		JTextField Fecha1Field = new JTextField(15);
+		formPanel.add(Fecha1Field, c);
+		
+		c.gridy++;
+		JTextField Fecha2Field = new JTextField(15);
+		formPanel.add(Fecha2Field, c);
+		
+		//--
+		
+		JButton listarBtn = new JButton("ENVIAR");
+		listarBtn.setFocusPainted(false);
+		listarBtn.setFont(new Font("Arial", Font.PLAIN, 18));
+		listarBtn.setBackground(new Color(230,230,230));
+		listarBtn.setMaximumSize(new Dimension(125, 30));
+		listarBtn.setAlignmentX(JComponent.CENTER_ALIGNMENT);
+		listarBtn.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e){
+				String Fecha1 = Fecha1Field.getText();
+				String Fecha2 = Fecha2Field.getText();
+				if (Fecha1.length() > 0 && !Fecha1.equals(" ") && Fecha2.length() > 0 && !Fecha2.equals(" ")) {
+					LocalDate date1 = LocalDate.parse(Fecha1);
+					LocalDate date2 = LocalDate.parse(Fecha2);
+					List<LocalDate> listaFechas = new ArrayList<LocalDate>();
+					listaFechas.add(date1);
+					listaFechas.add(date2);
+					Context contexto = new Context(EventosCliente.LISTAR_CLIENTES_POR_FECHA_ALTA, listaFechas);
+					ControladorAplicacion.getInstance().accion(contexto);
+				} else {
+					showOutputMsg(pedirFechasOutputArea, pedirFechasOutputLabel, "ERROR: Las fechas introducidas no son validas.", false);
+				}
+			}
+		});
+		
+		//--
+		
+		panel.add(Box.createRigidArea(new Dimension(0, 40)));
+		panel.add(outputPanel);
+		panel.add(Box.createRigidArea(new Dimension(0,60)));
+		panel.add(formPanel);
+		panel.add(listarBtn);
+		
+		//--
+		
+		add(panel, "LISTAR POR FECHA");
+		
+		_localCL.show(this, "LISTAR POR FECHA");
+		_currentPanel = panel;
 	}
 	
 	public void clear() {
@@ -635,6 +856,18 @@ public class ClienteGUIImpl extends JFrame implements ClienteGUI {
 				System.out.println("Anadir Cliente KO");
 				}
 				break;
+			case EventosCliente.BAJA_CLIENTE_OK:{
+				mensaje = (String) datos;
+				showOutputMsg(borrarOutputArea, borrarOutputLabel, mensaje, true);
+				System.out.println("Eliminar Cliente OK");
+				};
+				break;
+			case EventosCliente.BAJA_CLIENTE_KO:{
+				mensaje = (String) datos;
+				showOutputMsg(borrarOutputArea, borrarOutputLabel, mensaje, false);
+				System.out.println("Eliminar Cliente KO");
+				};
+				break;	
 			case EventosCliente.LISTAR_CLIENTES_OK:
 				@SuppressWarnings("unchecked") List<TCliente> listaClientes = (List<TCliente>) datos;
 				
@@ -643,7 +876,7 @@ public class ClienteGUIImpl extends JFrame implements ClienteGUI {
 				mostrarPanel();
 				
 				for (TCliente c : listaClientes) {
-					mostrarModel.addRow(new Object[]{String.valueOf(cliente.getId()), c.getNombre()});
+					mostrarModel.addRow(new Object[]{c.getId(), c.getNombre()});
 				}
 				System.out.println("Listar Clientes OK");
 				break;
@@ -655,8 +888,8 @@ public class ClienteGUIImpl extends JFrame implements ClienteGUI {
 				break;
 			case EventosCliente.MOSTRAR_CLIENTE_OK:
 				cliente = (TCliente) datos;
-				
-				mostrarIDText.setText(String.valueOf(cliente.getId()));
+				Integer id = cliente.getId();
+				mostrarIDText.setText(id.toString());
 				mostrarNombreText.setText(cliente.getNombre());
 				
 				mostrarClientePanelCL.show(mostrarClientePanel, "CLIENTE");
@@ -693,6 +926,24 @@ public class ClienteGUIImpl extends JFrame implements ClienteGUI {
 				showOutputMsg(editarOutputArea, editarOutputLabel, mensaje, false);
 				System.out.println("Editar Cliente KO");
 				break;
+			case EventosCliente.LISTAR_CLIENTES_POR_FECHA_ALTA_OK:{
+				@SuppressWarnings("unchecked") List<TCliente> listaClientesFecha = (List<TCliente>) datos;
+				
+				addPathSeparator();
+				createPathButton("MOSTRAR CLIENTES");
+				mostrarPanel();
+				
+				for (TCliente c : listaClientesFecha) {
+					mostrarModel.addRow(new Object[]{c.getId(), c.getNombre()});
+				}
+				System.out.println("Listar Clientes OK");
+			}; break;
+			case EventosCliente.LISTAR_CLIENTES_POR_FECHA_ALTA_KO:{
+				mensaje = (String) datos;
+				
+				JOptionPane.showMessageDialog(null, mensaje, "Error", JOptionPane.ERROR_MESSAGE);
+				System.out.println("Listar Clientes KO");
+			}; break;
 		}
 	}
 }
