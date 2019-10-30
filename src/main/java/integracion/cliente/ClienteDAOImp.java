@@ -4,9 +4,10 @@ import integracion.ConnectionFactory;
 import negocio.cliente.TCliente;
 
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 
-public class ClienteDAOImp implements ClienteDAO{
+public class ClienteDAOImp implements ClienteDAO {
 	private Connection conn;
 	//TODO QUERY
 
@@ -28,7 +29,7 @@ public class ClienteDAOImp implements ClienteDAO{
 			st.setBoolean(3, e.isActivo());
 
 			st.executeUpdate();
-			try(ResultSet rs = st.getGeneratedKeys()) {
+			try (ResultSet rs = st.getGeneratedKeys()) {
 				if (rs.next()) {
 					e.setId(rs.getInt(1));
 				}
@@ -37,22 +38,57 @@ public class ClienteDAOImp implements ClienteDAO{
 			e1.printStackTrace();
 			throw new Exception("Insertar Cliente -> Error");
 		}
-
 	}
 
-	public TCliente mostrar(int id) {
-		return null;
+	public TCliente mostrar(int id) throws Exception {
+		TCliente c = null;
+		try (PreparedStatement st = conn.prepareStatement(READ)) {
+			st.setInt(1, id);
+			try (ResultSet rs = st.executeQuery()) {
+				if (rs.next()) {
+					c = new TCliente(id, rs.getBoolean("activo"), rs.getDate("fecha_registro").toLocalDate(),
+							rs.getString("nombre"));
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new Exception("Mostrar Cliente -> Error");
+		}
+		return c;
 	}
 
-	public List<TCliente> mostrarTodos() {
-		return null;
+	public List<TCliente> mostrarTodos() throws Exception {
+		ArrayList<TCliente> lista = new ArrayList<>();
+		try (PreparedStatement st = conn.prepareStatement(READALL); ResultSet rs = st.executeQuery()) {
+			while (rs.next()) {
+				lista.add(new TCliente(rs.getInt("id_cliente"), rs.getBoolean("activo"), rs.getDate("fecha_registro").toLocalDate(),
+						rs.getString("nombre")));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new Exception("Mostrar Clientes -> Error");
+		}
+		return lista;
 	}
 
-	public void modificar(TCliente e) {
-
+	public void modificar(TCliente e) throws Exception {
+		try (PreparedStatement st = conn.prepareStatement(UPDATE)) {
+			st.setString(1, e.getNombre());
+			st.setInt(2, e.getId());
+			st.executeUpdate();
+		} catch (Exception e1) {
+			e1.printStackTrace();
+			throw new Exception("Modificar Cliente -> Error");
+		}
 	}
 
-	public void eliminar(int id) {
-
+	public void eliminar(int id) throws Exception {
+		try (PreparedStatement st = conn.prepareStatement(DELETE)) {
+			st.setInt(1, id);
+			st.executeUpdate();
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new Exception("Eliminar Cliente -> Error");
+		}
 	}
 }

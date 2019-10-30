@@ -1,17 +1,18 @@
 package integracion;
 
+import java.sql.SQLException;
 import java.util.List;
 
 public interface DAO<T> {
 
 	void insertar(T e) throws Exception;
 
-	T mostrar(int id);
+	T mostrar(int id) throws Exception;
 
-	List<T> mostrarTodos();
+	List<T> mostrarTodos() throws Exception;
 
-	void modificar(T e);
+	void modificar(T e) throws Exception;
 
-	void eliminar(int id);
+	void eliminar(int id) throws Exception;
 }
 
