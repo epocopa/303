@@ -1,7 +1,7 @@
 package presentacion.factoria;
 
 import presentacion.cliente.ClienteGUIImpl;
-import presentacion.factura.FacturaGUIImpl;
+import presentacion.factura.FacturaGUIImp;
 import presentacion.main.MainGUIImpl;
 import presentacion.producto.ProductoGUIImpl;
 
@@ -20,7 +20,7 @@ public abstract class FactoriaPresentacion {
 	
 	public abstract MainGUIImpl generarMainGUI();
 	public abstract ClienteGUIImpl generarClienteGUI();
-	public abstract FacturaGUIImpl generarFacturaGUI();
+	public abstract FacturaGUIImp generarFacturaGUI();
 	public abstract ProductoGUIImpl generarProductoGUI();
 	public abstract JPanel generarPath();
 }

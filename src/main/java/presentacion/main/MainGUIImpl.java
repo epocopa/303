@@ -1,7 +1,7 @@
 package presentacion.main;
 
 import presentacion.cliente.ClienteGUIImpl;
-import presentacion.controladorAplicacion.ControladorAplicacion;
+import presentacion.controladorAplicacion.*;
 import presentacion.factoria.FactoriaPresentacion;
 import presentacion.factura.FacturaGUIImpl;
 import presentacion.producto.ProductoGUIImpl;

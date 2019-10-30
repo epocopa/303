@@ -1,6 +1,7 @@
 package presentacion.dispatcherView;
 
-import presentacion.controlador.EventosMenu;
+import presentacion.controladorAplicacion.Context;
+import presentacion.controladorAplicacion.EventosMenu;
 import presentacion.factoria.FactoriaPresentacion;
 import presentacion.main.MainGUIImpl;
 

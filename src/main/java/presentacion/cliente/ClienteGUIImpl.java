@@ -1,7 +1,8 @@
 package presentacion.cliente;
 
 import negocio.cliente.TCliente;
-import presentacion.controlador.SingletonControlador;
+import presentacion.controladorAplicacion.ControladorAplicacion;
+import presentacion.controladorAplicacion.EventosCliente;
 import presentacion.factoria.FactoriaPresentacion;
 
 import javax.swing.*;
@@ -22,7 +23,7 @@ public class ClienteGUIImpl extends JFrame implements ClienteGUI {
 	private JPanel _currentPanel = _homePanel;
 	
 	private static FactoriaPresentacion presentacion = FactoriaPresentacion.getInstancia();
-	//private static SingletonControlador controlador = SingletonControlador.getInstancia();
+	//private static SingletonControlador controlador = ControladorAplicacion.getInstance();
 
 	private JPanel pathPanel = presentacion.generarPath();
 	List<Component> _lastPathComponents = new LinkedList<Component>();
@@ -94,7 +95,7 @@ public class ClienteGUIImpl extends JFrame implements ClienteGUI {
 		JButton listarBtn = createMenuButton("resources/icons/clientes/mostrar-clientes.png", new Color(56, 176, 225));
 		listarBtn.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
-				SingletonControlador.getInstancia().accion(EventosCliente.LISTAR_CLIENTES, null);
+				ControladorAplicacion.getInstance().accion(EventosCliente.LISTAR_CLIENTES, null);
 			}
 		});
 		_homePanel.add(listarBtn, c);
@@ -221,7 +222,7 @@ public class ClienteGUIImpl extends JFrame implements ClienteGUI {
 				String nombre = nombreField.getText();	
 				TCliente cliente = new TCliente(nombre);
 				if (nombre.length() > 0 && !nombre.equals(" ")) {
-					SingletonControlador.getInstancia().accion(EventosCliente.ANADIR_CLIENTE, cliente);
+					ControladorAplicacion.getInstance().accion(EventosCliente.ANADIR_CLIENTE, cliente);
 				} else {
 					showOutputMsg(anadirOutputArea, anadirOutputLabel, "ERROR: El nombre introducido no es valido.", false);
 				}
@@ -360,7 +361,7 @@ public class ClienteGUIImpl extends JFrame implements ClienteGUI {
 			public void actionPerformed(ActionEvent e){
 				String ID = IDField.getText();	
 				if (ID.length() > 0 && !ID.equals(" ")) {;
-					SingletonControlador.getInstancia().accion(EventosCliente.MODIFICAR_BUSCAR_CLIENTE, Integer.valueOf(ID));
+					ControladorAplicacion.getInstance().accion(EventosCliente.MODIFICAR_BUSCAR_CLIENTE, Integer.valueOf(ID));
 				} else {
 					showOutputMsg(editarBuscarErrorArea, editarBuscarErrorLabel, "ERROR: El ID introducido no es valido.", false);
 				}
@@ -381,7 +382,7 @@ public class ClienteGUIImpl extends JFrame implements ClienteGUI {
 				String nombre = editarNombreField.getText();	
 				if (nombre.length() > 0 && !nombre.equals(" ")) {;
 					TCliente cliente = new TCliente(ID, nombre);
-					SingletonControlador.getInstancia().accion(EventosCliente.MODIFICAR_CLIENTE, cliente);
+					ControladorAplicacion.getInstance().accion(EventosCliente.MODIFICAR_CLIENTE, cliente);
 				} else {
 					showOutputMsg(editarOutputArea, editarOutputLabel, "ERROR: El nombre introducido no es valido.", false);
 				}
@@ -565,7 +566,7 @@ public class ClienteGUIImpl extends JFrame implements ClienteGUI {
 			public void actionPerformed(ActionEvent e){
 				String ID = IDField.getText();	
 				if (ID.length() > 0 && !ID.equals(" ")) {
-					SingletonControlador.getInstancia().accion(EventosCliente.MOSTRAR_CLIENTE, Integer.valueOf(ID));
+					ControladorAplicacion.getInstance().accion(EventosCliente.MOSTRAR_CLIENTE, Integer.valueOf(ID));
 				} else {
 					showOutputMsg(mostrarErrorArea, mostrarErrorLabel, "ERROR: El ID introducido no es valido.", false);
 				}
@@ -642,7 +643,7 @@ public class ClienteGUIImpl extends JFrame implements ClienteGUI {
 				mostrarPanel();
 				
 				for (TCliente c : listaClientes) {
-					mostrarModel.addRow(new Object[]{c.getId().toString(), c.getNombre()});
+					mostrarModel.addRow(new Object[]{String.valueOf(cliente.getId()), c.getNombre()});
 				}
 				System.out.println("Listar Clientes OK");
 				break;
@@ -655,7 +656,7 @@ public class ClienteGUIImpl extends JFrame implements ClienteGUI {
 			case EventosCliente.MOSTRAR_CLIENTE_OK:
 				cliente = (TCliente) datos;
 				
-				mostrarIDText.setText(cliente.getId().toString());
+				mostrarIDText.setText(String.valueOf(cliente.getId()));
 				mostrarNombreText.setText(cliente.getNombre());
 				
 				mostrarClientePanelCL.show(mostrarClientePanel, "CLIENTE");

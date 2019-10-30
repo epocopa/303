@@ -1,7 +1,7 @@
 package presentacion.factoria;
 
 import presentacion.cliente.ClienteGUIImpl;
-import presentacion.factura.FacturaGUIImpl;
+import presentacion.factura.FacturaGUIImp;
 import presentacion.main.MainGUIImpl;
 import presentacion.producto.ProductoGUIImpl;
 
@@ -20,8 +20,8 @@ public class FactoriaPresentacionImpl extends FactoriaPresentacion {
 		return new ClienteGUIImpl();
 	}
 
-	public FacturaGUIImpl generarFacturaGUI() {
-		return new FacturaGUIImpl();
+	public FacturaGUIImp generarFacturaGUI() {
+		return new FacturaGUIImp();
 	}
 
 	public ProductoGUIImpl generarProductoGUI() {
