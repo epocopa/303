@@ -9,7 +9,7 @@ import presentacion.controladorAplicacion.EventosMenu;
 import presentacion.controladorAplicacion.EventosProducto;
 import presentacion.factoria.FactoriaPresentacion;
 import presentacion.factoria.GUI;
-import presentacion.factura.FacturaGUIImpl;
+import presentacion.factura.FacturaGUIImp;
 import presentacion.producto.ProductoGUIImpl;
 
 import javax.swing.*;
@@ -28,7 +28,7 @@ public class MainGUIImpl extends JFrame implements MainGUI, GUI{
 
 	private ClienteGUIImpl clientesPanel;
 	private ProductoGUIImpl productosPanel;
-	private FacturaGUIImpl facturasPanel;
+	private FacturaGUIImp facturasPanel;
 
 	private static FactoriaPresentacion presentacion;
 	private static ControladorAplicacion controlador;
@@ -112,7 +112,7 @@ public class MainGUIImpl extends JFrame implements MainGUI, GUI{
 		
 		clientesPanel = (ClienteGUIImpl)presentacion.generarVista(EventosMenu.MOSTRAR_CLIENTE_GUI);
 		productosPanel = (ProductoGUIImpl)presentacion.generarVista(EventosMenu.MOSTRAR_PRODUCTO_GUI);
-		facturasPanel = (FacturaGUIImpl)presentacion.generarVista(EventosMenu.MOSTRAR_FACTURA_GUI);
+		facturasPanel = (FacturaGUIImp)presentacion.generarVista(EventosMenu.MOSTRAR_FACTURA_GUI);
 
 		homePanel = new JPanel(new GridBagLayout());
 		homePanel.setBackground(new Color(235, 237, 241));

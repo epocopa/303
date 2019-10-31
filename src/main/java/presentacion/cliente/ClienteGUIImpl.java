@@ -251,10 +251,11 @@ public class ClienteGUIImpl extends JPanel implements ClienteGUI, GUI {
 		enviarBtn.setAlignmentX(JComponent.CENTER_ALIGNMENT);
 		enviarBtn.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
-				String nombre = nombreField.getText();
-				LocalDate fecha_registro = LocalDate.now();
-				TCliente cliente = new TCliente(nombre, fecha_registro);
-				if (nombre.length() > 0 && !nombre.equals(" ")) {
+				TCliente cliente = new TCliente();
+				cliente.setNombre(nombreField.getText());
+				cliente.setFecha_registro(LocalDate.now());
+				cliente.setActivo(true);
+				if (cliente.getNombre().length() > 0 && !cliente.getNombre().equals(" ")) {
 					Context contexto = new Context(EventosCliente.ANADIR_CLIENTE, cliente);
 					ControladorAplicacion.getInstance().accion(contexto);
 				} else {
@@ -327,11 +328,29 @@ public class ClienteGUIImpl extends JPanel implements ClienteGUI, GUI {
 		IDLabel.setFont(new Font("Arial", Font.PLAIN, 18));
 		formPanel.add(IDLabel, c);
 		
+		c.gridy++;
+		JLabel NombreLabel = new JLabel("Nombre: ");
+		NombreLabel.setFont(new Font("Arial", Font.PLAIN, 18));
+		formPanel.add(NombreLabel, c);
+		
+		//c.gridy++;
+		/*JLabel FechaLabel = new JLabel("Fecha registro: ");
+		FechaLabel.setFont(new Font("Arial", Font.PLAIN, 18));
+		formPanel.add(FechaLabel, c);*/
+		
 		c.gridx++;
 		c.gridy = 0;
 		c.anchor = GridBagConstraints.LINE_START;
 		JTextField IDField = new JTextField(15);
 		formPanel.add(IDField, c);
+		
+		c.gridy++;
+		JTextField NombreField = new JTextField(15);
+		formPanel.add(NombreField, c);
+		
+		/*c.gridy++;
+		JTextField FechaField = new JTextField(15);
+		formPanel.add(FechaField, c);*/
 		
 		//--
 		
@@ -416,7 +435,9 @@ public class ClienteGUIImpl extends JPanel implements ClienteGUI, GUI {
 				Integer ID = Integer.valueOf(IDField.getText());
 				String nombre = editarNombreField.getText();	
 				if (nombre.length() > 0 && !nombre.equals(" ")) {;
-					TCliente cliente = new TCliente(ID, nombre);
+					TCliente cliente = new TCliente();
+					
+					
 					Context contexto = new Context(EventosCliente.MODIFICAR_CLIENTE, cliente);
 					ControladorAplicacion.getInstance().accion(contexto);
 				} else {

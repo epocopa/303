@@ -1,4 +1,4 @@
-package main.java.presentacion.factura;
+package presentacion.factura;
 
 import java.awt.CardLayout;
 import java.awt.Color;
@@ -34,7 +34,7 @@ import presentacion.controladorAplicacion.EventosFactura;
 import presentacion.factoria.GUI;
 import presentacion.factoria.FactoriaPresentacion;
 
-public class FacturaGUIImpl extends JPanel implements FacturaGUI, GUI{
+public class FacturaGUIImp extends JPanel implements FacturaGUI, GUI{
 	private static final long serialVersionUID = 1L;
 
 	private String name = "FACTURAS";
@@ -81,7 +81,7 @@ public class FacturaGUIImpl extends JPanel implements FacturaGUI, GUI{
 	private JTextField borrarIDProducto;
 	private JTextField borrarProductoCantidad;
 	
-	public FacturaGUIImpl() {
+	public FacturaGUIImp() {
 		initialize();
 	}
 	
