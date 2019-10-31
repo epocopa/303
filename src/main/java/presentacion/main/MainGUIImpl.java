@@ -86,7 +86,7 @@ public class MainGUIImpl extends JFrame implements MainGUI, GUI{
 		exitBtn.setForeground(new Color(110,120,140));
 		exitBtn.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
-				int confirmacion = JOptionPane.showConfirmDialog(null, "¿Desea cerrar el programa?", "Salir", JOptionPane.YES_NO_OPTION);
+				int confirmacion = JOptionPane.showConfirmDialog(null, "ï¿½Desea cerrar el programa?", "Salir", JOptionPane.YES_NO_OPTION);
 
 				if(confirmacion == JOptionPane.YES_OPTION)
 					System.exit(0);
