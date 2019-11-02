@@ -28,7 +28,13 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableModel;
 
+import negocio.producto.TProducto;
+import negocio.producto.TProductoCalzado;
+import negocio.producto.TProductoTextil;
 import presentacion.factoria.GUI;
+import presentacion.controladorAplicacion.Context;
+import presentacion.controladorAplicacion.ControladorAplicacion;
+import presentacion.controladorAplicacion.EventosProducto;
 import presentacion.factoria.FactoriaPresentacion;
 
 public class ProductoGUIImpl extends JPanel implements ProductoGUI, GUI{
@@ -41,7 +47,6 @@ public class ProductoGUIImpl extends JPanel implements ProductoGUI, GUI{
 	private JPanel _currentPanel = _homePanel;
 	
 	private static FactoriaPresentacion presentacion = FactoriaPresentacion.getInstance();
-	//private static SingletonControlador controlador = SingletonControlador.getInstancia();
 
 	private JPanel pathPanel = presentacion.generarPath();
 	List<Component> _lastPathComponents = new LinkedList<Component>();
@@ -134,7 +139,8 @@ public class ProductoGUIImpl extends JPanel implements ProductoGUI, GUI{
 		JButton listarBtn = createMenuButton("resources/icons/productos/mostrar-productos.png", new Color(56, 176, 225));
 		listarBtn.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
-				SingletonControlador.getInstancia().accion(EventosProducto.LISTAR_PRODUCTOS, null);
+				Context contexto = new Context(EventosProducto.LISTAR_PRODUCTOS, null);
+				ControladorAplicacion.getInstance().accion(contexto);
 			}
 		});
 		_homePanel.add(listarBtn, c);
@@ -253,9 +259,9 @@ public class ProductoGUIImpl extends JPanel implements ProductoGUI, GUI{
 		formPanel.add(cantidadLabel, c);
 				
 		c.gridy++;
-		JLabel caloriasLabel = new JLabel("Calorias: ");
-		caloriasLabel.setFont(new Font("Arial", Font.PLAIN, 18));
-		formPanel.add(caloriasLabel, c);
+		JLabel esCalzadoLabel = new JLabel("¿Es calzado? ");
+		esCalzadoLabel.setFont(new Font("Arial", Font.PLAIN, 18));
+		formPanel.add(esCalzadoLabel, c);
 				
 		c.gridx++;
 		c.gridy = 0;
@@ -272,8 +278,8 @@ public class ProductoGUIImpl extends JPanel implements ProductoGUI, GUI{
 		formPanel.add(cantidadField, c);
 			
 		c.gridy++;
-		JTextField caloriasField = new JTextField(15);
-		formPanel.add(caloriasField, c);
+		JTextField esCalzadoField = new JTextField(15);
+		formPanel.add(esCalzadoField, c);
 				
 		//--
 				
@@ -289,11 +295,21 @@ public class ProductoGUIImpl extends JPanel implements ProductoGUI, GUI{
 					String nombre = nombreField.getText();
 					Double precio = Double.parseDouble(precioField.getText());
 					Integer cantidad = Integer.parseInt(cantidadField.getText());
-					Integer calorias = Integer.parseInt(caloriasField.getText());
-		
-					if (nombre.length() > 0 && !nombre.equals(" ")) {
-						TProducto producto = new TProducto(0, nombre, precio, calorias, cantidad, true);
-						SingletonControlador.getInstancia().accion(EventosProducto.ANADIR_PRODUCTO, producto);
+					boolean calzado = Boolean.parseBoolean(esCalzadoField.getText());
+					if (nombre.length() > 0 && !nombre.equals("") && precio > 0 && !precioField.equals("") && cantidad > 0 && !cantidadField.equals("") && !esCalzadoField.equals("")) {
+						if(calzado == true) {
+							String respuesta = JOptionPane.showInputDialog("Introduzca el numero de pie");
+							int numPie = Integer.parseInt(respuesta);
+							TProductoCalzado pCalzado = new TProductoCalzado(0, nombre, cantidad, precio, numPie);
+							Context contexto1 = new Context(EventosProducto.ANADIR_PRODUCTO, pCalzado);
+							ControladorAplicacion.getInstance().accion(contexto1);
+						}
+						else {
+							String tejido = JOptionPane.showInputDialog("Introduzca el tipo de tejido");
+							TProductoTextil pTextil = new TProductoTextil(0, nombre, cantidad, precio, tejido);
+							Context contexto1 = new Context(EventosProducto.ANADIR_PRODUCTO, pTextil);
+							ControladorAplicacion.getInstance().accion(contexto1);
+						}
 					} else {
 						showOutputMsg(anadirOutputArea, anadirOutputLabel, "ERROR: El nombre introducido no es valido.", false);
 					}
@@ -583,7 +599,8 @@ public class ProductoGUIImpl extends JPanel implements ProductoGUI, GUI{
 			public void actionPerformed(ActionEvent e){
 				String ID = IDField.getText();	
 				if (ID.length() > 0 && !ID.equals(" ")) {
-					SingletonControlador.getInstancia().accion(EventosProducto.BORRAR_PRODUCTO, Integer.valueOf(ID));
+					Context contexto = new Context(EventosProducto.BAJA_PRODUCTO, Integer.valueOf(ID));
+					ControladorAplicacion.getInstance().accion(contexto);
 				} else {
 					showOutputMsg(borrarOutputArea, borrarOutputLabel, "ERROR: El ID introducido no es valido.", false);
 				}
@@ -793,7 +810,8 @@ public class ProductoGUIImpl extends JPanel implements ProductoGUI, GUI{
 			public void actionPerformed(ActionEvent e){
 				String ID = IDField.getText();	
 				if (ID.length() > 0 && !ID.equals(" ")) {
-					SingletonControlador.getInstancia().accion(EventosProducto.MOSTRAR_PRODUCTO, Integer.valueOf(ID));
+					Context contexto = new Context(EventosProducto.MOSTRAR_PRODUCTO, Integer.valueOf(ID));
+					ControladorAplicacion.getInstance().accion(contexto);
 				} else {
 					showOutputMsg(mostrarErrorArea, mostrarErrorLabel, "ERROR: El nombre introducido no es valido.", false);
 				}
@@ -860,12 +878,12 @@ public class ProductoGUIImpl extends JPanel implements ProductoGUI, GUI{
 				System.out.println("Anadir Producto KO");
 				}
 				break;
-			case EventosProducto.BORRAR_PRODUCTO_OK:
+			case EventosProducto.BAJA_PRODUCTO_OK:
 				mensaje = (String) datos;
 				showOutputMsg(borrarOutputArea, borrarOutputLabel, mensaje, true);
 				System.out.println("Eliminar Producto OK");
 				break;
-			case EventosProducto.BORRAR_PRODUCTO_KO:
+			case EventosProducto.BAJA_PRODUCTO_KO:
 				mensaje = (String) datos;
 				showOutputMsg(borrarOutputArea, borrarOutputLabel, mensaje, false);
 				System.out.println("Eliminar Producto KO");
@@ -907,7 +925,7 @@ public class ProductoGUIImpl extends JPanel implements ProductoGUI, GUI{
 				JOptionPane.showMessageDialog(null, mensaje, "Error", JOptionPane.ERROR_MESSAGE);
 				System.out.println("Listar Productos KO");
 				break;
-			case EventosProducto.EDITAR_BUSCAR_PRODUCTO_OK:
+			case EventosProducto.MODIFICAR_BUSCAR_PRODUCTO_OK:
 				producto = (TProducto) datos;
 				
 				editarNombreField.setText(producto.getNombre());
@@ -918,19 +936,19 @@ public class ProductoGUIImpl extends JPanel implements ProductoGUI, GUI{
 				
 				System.out.println("Editar Buscar Producto OK");
 				break;
-			case EventosProducto.EDITAR_BUSCAR_PRODUCTO_KO:
+			case EventosProducto.MODIFICAR_BUSCAR_PRODUCTO_KO:
 				mensaje = (String) datos;
 
 				showOutputMsg(editarBuscarErrorArea, editarBuscarErrorLabel, mensaje, false);
 				System.out.println("Editar Buscar Producto KO");
 				break;
-			case EventosProducto.EDITAR_PRODUCTO_OK:
+			case EventosProducto.MODIFICAR_PRODUCTO_OK:
 				mensaje = (String) datos;
 				
 				showOutputMsg(editarOutputArea, editarOutputLabel, mensaje, true);
 				System.out.println("Editar Producto OK");
 				break;
-			case EventosProducto.EDITAR_PRODUCTO_KO:
+			case EventosProducto.MODIFICAR_PRODUCTO_KO:
 				mensaje = (String) datos;
 				
 				showOutputMsg(editarOutputArea, editarOutputLabel, mensaje, false);

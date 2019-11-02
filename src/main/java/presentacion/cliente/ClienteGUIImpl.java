@@ -1,6 +1,7 @@
 package presentacion.cliente;
 
 import negocio.cliente.TCliente;
+import negocio.cliente.TFecha;
 import presentacion.controladorAplicacion.Context;
 import presentacion.controladorAplicacion.ControladorAplicacion;
 import presentacion.controladorAplicacion.EventosCliente;
@@ -13,7 +14,6 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -814,9 +814,7 @@ public class ClienteGUIImpl extends JPanel implements ClienteGUI, GUI {
 				if (Fecha1.length() > 0 && !Fecha1.equals(" ") && Fecha2.length() > 0 && !Fecha2.equals(" ")) {
 					LocalDate date1 = LocalDate.parse(Fecha1);
 					LocalDate date2 = LocalDate.parse(Fecha2);
-					List<LocalDate> listaFechas = new ArrayList<LocalDate>();
-					listaFechas.add(date1);
-					listaFechas.add(date2);
+					TFecha listaFechas =  new TFecha(date1, date2);
 					Context contexto = new Context(EventosCliente.LISTAR_CLIENTES_POR_FECHA_ALTA, listaFechas);
 					ControladorAplicacion.getInstance().accion(contexto);
 				} else {
