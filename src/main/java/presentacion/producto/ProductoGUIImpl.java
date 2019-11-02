@@ -67,7 +67,8 @@ public class ProductoGUIImpl extends JPanel implements ProductoGUI, GUI{
 	private JLabel mostrarNombreText;
 	private JLabel mostrarPrecioText;
 	private JLabel mostrarCantidadText;
-	private JLabel mostrarCaloriasText;
+	private JLabel mostrarNumPieText;
+	private JLabel mostrarTejidoText;
 	private JLabel mostrarActivoText;
 	
 	private DefaultTableModel mostrarModel;
@@ -300,13 +301,13 @@ public class ProductoGUIImpl extends JPanel implements ProductoGUI, GUI{
 						if(calzado == true) {
 							String respuesta = JOptionPane.showInputDialog("Introduzca el numero de pie");
 							int numPie = Integer.parseInt(respuesta);
-							TProductoCalzado pCalzado = new TProductoCalzado(0, nombre, cantidad, precio, numPie);
+							TProductoCalzado pCalzado = new TProductoCalzado(0, nombre, cantidad, precio, numPie, true);
 							Context contexto1 = new Context(EventosProducto.ANADIR_PRODUCTO, pCalzado);
 							ControladorAplicacion.getInstance().accion(contexto1);
 						}
 						else {
 							String tejido = JOptionPane.showInputDialog("Introduzca el tipo de tejido");
-							TProductoTextil pTextil = new TProductoTextil(0, nombre, cantidad, precio, tejido);
+							TProductoTextil pTextil = new TProductoTextil(0, nombre, cantidad, precio, tejido, true);
 							Context contexto1 = new Context(EventosProducto.ANADIR_PRODUCTO, pTextil);
 							ControladorAplicacion.getInstance().accion(contexto1);
 						}
@@ -789,14 +790,19 @@ public class ProductoGUIImpl extends JPanel implements ProductoGUI, GUI{
 		dataPanel.add(mostrarCantidadText, c2);
 		
 		c2.gridy++;
-		mostrarCaloriasText = new JLabel("0");
-		mostrarCaloriasText.setFont(new Font("Arial", Font.PLAIN, 18));
-		dataPanel.add(mostrarCaloriasText, c2);
+		mostrarNumPieText = new JLabel("0");
+		mostrarNumPieText.setFont(new Font("Arial", Font.PLAIN, 18));
+		dataPanel.add(mostrarNumPieText, c2);
 		
 		c2.gridy++;
+		mostrarTejidoText = new JLabel("0");
+		mostrarTejidoText.setFont(new Font("Arial", Font.PLAIN, 18));
+		dataPanel.add(mostrarTejidoText, c2);
+		
+		/*c2.gridy++;
 		mostrarActivoText = new JLabel("true");
 		mostrarActivoText.setFont(new Font("Arial", Font.PLAIN, 18));
-		dataPanel.add(mostrarActivoText, c2);
+		dataPanel.add(mostrarActivoText, c2);*/
 						
 		//--
 		
@@ -890,13 +896,23 @@ public class ProductoGUIImpl extends JPanel implements ProductoGUI, GUI{
 				break;
 			case EventosProducto.MOSTRAR_PRODUCTO_OK:
 				producto = (TProducto) datos;
+				Integer id = producto.getId();
+				Integer cantidad = producto.getCantidad();
 				
-				mostrarIDText.setText(producto.getId().toString());
+				mostrarIDText.setText(id.toString());
 				mostrarNombreText.setText(producto.getNombre());
 				mostrarPrecioText.setText(Double.valueOf(producto.getPrecio()).toString());
-				mostrarCantidadText.setText(producto.getCantidad().toString());
-				mostrarCaloriasText.setText(producto.getCalorias().toString());
-				mostrarActivoText.setText(Boolean.valueOf(producto.getActivo()).toString());
+				mostrarCantidadText.setText(cantidad.toString());
+				
+				if(producto.isCalzado() == true) {
+					TProductoCalzado pCalzado = (TProductoCalzado) datos;
+					Integer nPie = pCalzado.getNumero();
+					mostrarNumPieText.setText(nPie.toString());
+				}
+				else {
+					TProductoTextil pTextil = (TProductoTextil) datos;
+					mostrarTejidoText.setText(pTextil.getTejido());
+				}
 				
 				mostrarProductoPanelCL.show(mostrarProductoPanel, "PRODUCTO");
 				System.out.println("Mostrar Producto OK");
@@ -915,7 +931,14 @@ public class ProductoGUIImpl extends JPanel implements ProductoGUI, GUI{
 				mostrarPanel();
 				
 				for (TProducto p : listaProductos) {
-					mostrarModel.addRow(new Object[]{p.getId().toString(), p.getNombre(), Double.valueOf(p.getPrecio()), p.getCantidad().toString(), p.getCalorias().toString(), Boolean.valueOf(p.getActivo())});
+					if(p.isCalzado() == true) {
+						TProductoCalzado pCalzado = (TProductoCalzado)p;
+						mostrarModel.addRow(new Object[]{p.getId(), p.getNombre(), Double.valueOf(p.getPrecio()), p.getCantidad(), pCalzado.getNumero(), ""});
+					}
+					else {
+						TProductoTextil pTextil = (TProductoTextil)p;
+						mostrarModel.addRow(new Object[]{p.getId(), p.getNombre(), Double.valueOf(p.getPrecio()), p.getCantidad(), "", pTextil.getTejido()});
+					}
 				}
 				System.out.println("Listar Productos OK");
 				break;

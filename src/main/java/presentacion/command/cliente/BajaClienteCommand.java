@@ -15,16 +15,10 @@ public class BajaClienteCommand implements Command{
 		ClienteSA clienteSA = FactoriaSA.getInstancia().generaClienteSA();
 		try{
 			int resultado = clienteSA.bajaCliente(id);
-			if(resultado != -1) {
-				mensaje = "El turno se ha eliminado con exito.";
-				return new Context(EventosCliente.BAJA_CLIENTE_OK, mensaje);
-			}
-			else{
-				mensaje = "No se ha encontrado ningún turno con el ID proporcionado.";
-				return new Context(EventosCliente.BAJA_CLIENTE_KO, mensaje);
-			}
+			mensaje = "El turno se ha eliminado con exito.";
+			return new Context(EventosCliente.BAJA_CLIENTE_OK, mensaje);
 		}catch(Exception e){
-			mensaje = "No se ha podido conectar con la base de datos.";
+			mensaje = e.getMessage();
 			return new Context(EventosCliente.BAJA_CLIENTE_KO, mensaje);
 		}
 	}

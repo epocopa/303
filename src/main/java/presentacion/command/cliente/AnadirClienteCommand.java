@@ -15,17 +15,11 @@ public class AnadirClienteCommand implements Command {
 		TCliente cliente = (TCliente) datos;
 		ClienteSA clienteSA = FactoriaSA.getInstancia().generaClienteSA();
 		try{
-			int resultado = clienteSA.altaCliente(cliente);
-			if(resultado != -1){
-				mensaje = "El cliente ha sido anadido correctamente. Su id es: " + resultado;
-				return new Context(EventosCliente.ANADIR_CLIENTE_OK, mensaje);
-			}
-			else{
-				mensaje = "No pueden existir dos clientes con el mismo Nombre.";
-				return new Context(EventosCliente.ANADIR_CLIENTE_KO, mensaje);
-			}
+			clienteSA.altaCliente(cliente);
+			mensaje = "El cliente ha sido anadido correctamente. Su id es: " + cliente.getId();
+			return new Context(EventosCliente.ANADIR_CLIENTE_OK, mensaje);
 		} catch(Exception e){
-			mensaje = "No se ha podido conectar con la base de datos.";
+			mensaje = e.getMessage();
 			return new Context(EventosCliente.ANADIR_CLIENTE_KO, mensaje);
 		}
 	}

@@ -6,16 +6,15 @@ public class TProducto {
 	private int cantidad;
 	private double precio;
 	private boolean calzado;
+	private boolean activo;
 
-	public TProducto(){
-	}
-	
-	public TProducto(int id, String nombre, int cantidad, double precio, boolean calzado) {
+	public TProducto(int id, String nombre, int cantidad, double precio, boolean calzado, boolean activo) {
 		this.id = id;
 		this.nombre = nombre;
 		this.cantidad = cantidad;
 		this.precio = precio;
 		this.calzado = calzado;
+		this.activo = activo;
 	}
 
 	public int getId() {
@@ -57,6 +56,14 @@ public class TProducto {
 	public void setCalzado(boolean calzado) {
 		this.calzado = calzado;
 	}
+	
+	public boolean getActivo() {
+		return activo;
+	}
+	
+	public void setActivo(boolean activo) {
+		this.activo = activo;
+	}
 
 	@Override
 	public String toString() {
@@ -69,3 +76,4 @@ public class TProducto {
 				'}';
 	}
 }
+

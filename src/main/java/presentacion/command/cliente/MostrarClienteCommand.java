@@ -16,15 +16,9 @@ public class MostrarClienteCommand implements Command{
 		ClienteSA clienteSA = FactoriaSA.getInstancia().generaClienteSA();
 		try{
 			TCliente cliente = clienteSA.mostrarCliente(id);
-			if(cliente != null) {
-				return new Context(EventosCliente.MOSTRAR_CLIENTE_OK, mensaje);
-			}
-			else{
-				mensaje = "No se ha encontrado ningún cliente con el ID introducido.";
-				return new Context(EventosCliente.MOSTRAR_CLIENTE_KO, mensaje);
-			}
+			return new Context(EventosCliente.MOSTRAR_CLIENTE_OK, mensaje);
 		} catch(Exception e){
-			mensaje = "No se ha podido conectar con la base de datos.";
+			mensaje = e.getMessage();
 			return new Context(EventosCliente.MOSTRAR_CLIENTE_KO, mensaje);
 		}
 	}

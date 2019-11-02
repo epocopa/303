@@ -16,15 +16,9 @@ public class ModificarBuscarClienteCommand implements Command{
 		ClienteSA clienteSA = FactoriaSA.getInstancia().generaClienteSA();
 		try{
 			TCliente cliente = clienteSA.mostrarCliente(id);
-			if(cliente != null) {
-				return new Context(EventosCliente.MODIFICAR_BUSCAR_CLIENTE_OK, cliente);
-			}
-			else{
-				mensaje = "No se ha encontrado ningún empleado con el ID introducido.";
-				return new Context(EventosCliente.MODIFICAR_BUSCAR_CLIENTE_KO, mensaje);
-			}
+			return new Context(EventosCliente.MODIFICAR_BUSCAR_CLIENTE_OK, cliente);
 		} catch(Exception e){
-			mensaje = "No se ha podido conectar con la base de datos.";
+			mensaje = e.getMessage();
 			return new Context(EventosCliente.MODIFICAR_BUSCAR_CLIENTE_KO, mensaje);
 		}
 	}

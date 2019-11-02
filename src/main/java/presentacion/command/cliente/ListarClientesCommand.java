@@ -17,15 +17,9 @@ public class ListarClientesCommand implements Command{
 		ClienteSA clienteSA = FactoriaSA.getInstancia().generaClienteSA();
 		try{
 			List<TCliente> listaClientes = clienteSA.listarClientes();
-			if(listaClientes != null){
-				return new Context(EventosCliente.LISTAR_CLIENTES_OK, listaClientes);
-			}
-			else{
-				mensaje = "No hay clientes disponibles.";
-				return new Context(EventosCliente.LISTAR_CLIENTES_KO, mensaje);
-			}
+			return new Context(EventosCliente.LISTAR_CLIENTES_OK, listaClientes);
 		}catch(Exception e){
-			mensaje = "No se ha podido conectar con la base de datos.";
+			mensaje = e.getMessage();
 			return new Context(EventosCliente.LISTAR_CLIENTES_KO, mensaje);
 		}
 	}

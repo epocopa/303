@@ -953,7 +953,7 @@ public class ClienteGUIImpl extends JPanel implements ClienteGUI, GUI {
 				mostrarPanel();
 				
 				for (TCliente c : listaClientesFecha) {
-					mostrarModel.addRow(new Object[]{c.getId(), c.getNombre()});
+					mostrarModel.addRow(new Object[]{c.getId(), c.getNombre(), c.getFecha_registro()});
 				}
 				System.out.println("Listar Clientes OK");
 			}; break;
