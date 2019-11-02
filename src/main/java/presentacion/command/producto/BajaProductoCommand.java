@@ -15,9 +15,9 @@ public class BajaProductoCommand implements Command{
 		ProductoSA productoSA = FactoriaSA.getInstancia().generaProductoSA();
 		
 		try{
-			 productoSA.bajaProducto(id);
+			 productoSA.eliminar(id);
 			mensaje = "El producto se ha eliminado con exito.";
-			return new Context(EventosProducto.BAJA_PRODUCTO_KO, mensaje);
+			return new Context(EventosProducto.BAJA_PRODUCTO_OK, mensaje);
 		}catch(Exception e){
 			mensaje = e.getMessage();
 			return new Context(EventosProducto.BAJA_PRODUCTO_KO, mensaje);

@@ -14,9 +14,10 @@ public class AnadirProductoCommand implements Command {
 	public Context execute(Object datos) {
 		String mensaje;
 		TProducto producto = (TProducto) datos;
-		ProductoSA productoSA = FactoriaSA.getInstancia().generaProductoSA();	
+		ProductoSA productoSA = FactoriaSA.getInstancia().generaProductoSA();
+		
 		try{
-			productoSA.altaProducto(producto);
+			productoSA.insertar(producto);
 			mensaje = "El producto se ha registrado con exito. Su id es:" + producto.getId();
 			return new Context(EventosProducto.ANADIR_PRODUCTO_OK, mensaje);
 		} catch(Exception e){
