@@ -15,7 +15,7 @@ public class AnadirClienteCommand implements Command {
 		TCliente cliente = (TCliente) datos;
 		ClienteSA clienteSA = FactoriaSA.getInstancia().generaClienteSA();
 		try{
-			clienteSA.altaCliente(cliente);
+			clienteSA.insertar(cliente);
 			mensaje = "El cliente ha sido anadido correctamente. Su id es: " + cliente.getId();
 			return new Context(EventosCliente.ANADIR_CLIENTE_OK, mensaje);
 		} catch(Exception e){

@@ -122,7 +122,7 @@ public class ClienteGUIImpl extends JPanel implements ClienteGUI, GUI {
 		_homePanel.add(buscarBtn, c);
 		
 		c.gridx++;
-		JButton bajaBtn = createMenuButton("resources/icons/clientes/eliminar_cliente.png", new Color(47, 101, 175));
+		JButton bajaBtn = createMenuButton("resources/icons/clientes/baja_cliente.png", new Color(10, 220, 72));
 		bajaBtn.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				addPathSeparator();
@@ -133,7 +133,7 @@ public class ClienteGUIImpl extends JPanel implements ClienteGUI, GUI {
 		_homePanel.add(bajaBtn, c);
 		
 		c.gridx++;
-		JButton clientesPorFechaBtn = createMenuButton("resources/icons/clientes/eliminar_cliente.png", new Color(47, 101, 175));
+		JButton clientesPorFechaBtn = createMenuButton("resources/icons/clientes/clientes_por_fecha.png", new Color(163, 73, 164));
 		clientesPorFechaBtn.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				addPathSeparator();

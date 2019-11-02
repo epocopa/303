@@ -16,7 +16,7 @@ public class ListarClientesCommand implements Command{
 		String mensaje;
 		ClienteSA clienteSA = FactoriaSA.getInstancia().generaClienteSA();
 		try{
-			List<TCliente> listaClientes = clienteSA.listarClientes();
+			List<TCliente> listaClientes = clienteSA.mostrarTodos();
 			return new Context(EventosCliente.LISTAR_CLIENTES_OK, listaClientes);
 		}catch(Exception e){
 			mensaje = e.getMessage();

@@ -15,7 +15,7 @@ public class ModificarBuscarClienteCommand implements Command{
 		String mensaje;
 		ClienteSA clienteSA = FactoriaSA.getInstancia().generaClienteSA();
 		try{
-			TCliente cliente = clienteSA.mostrarCliente(id);
+			TCliente cliente = clienteSA.mostrar(id);
 			return new Context(EventosCliente.MODIFICAR_BUSCAR_CLIENTE_OK, cliente);
 		} catch(Exception e){
 			mensaje = e.getMessage();
