@@ -11,3 +11,40 @@ CREATE TABLE cliente(
 	activo BOOLEAN NOT NULL DEFAULT 0
 );
 
+CREATE TABLE producto(
+	id_producto INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	nombre VARCHAR(100) NOT NULL,
+	cantidad INT NOT NULL DEFAULT 0,
+	precio FLOAT NOT NULL,
+	activo BOOLEAN NOT NULL DEFAULT 0
+);
+
+CREATE TABLE producto_calzado (
+	id_producto INT NOT NULL PRIMARY KEY,
+	numero INT NOT NULL,
+	FOREIGN KEY (id_producto) REFERENCES producto (id_producto)
+);
+
+CREATE TABLE producto_textil (
+	id_producto INT NOT NULL PRIMARY KEY,
+	tejido VARCHAR(20) NOT NULL,
+	FOREIGN KEY (id_producto) REFERENCES producto (id_producto)
+);
+
+CREATE TABLE factura(
+	id_factura INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	cliente INT NOT NULL,
+	fecha DATE NOT NULL,
+	activo BOOLEAN NOT NULL DEFAULT 0,
+	FOREIGN KEY (cliente) REFERENCES cliente (id_cliente)
+);
+
+CREATE TABLE linea(
+	factura INT NOT NULL,
+	producto INT NOT NULL,
+	cantidad INT NOT NULL,
+	PRIMARY KEY (factura, producto),
+	FOREIGN KEY (factura) REFERENCES factura (id_factura),
+	FOREIGN KEY (producto) REFERENCES producto (id_producto)
+);
+

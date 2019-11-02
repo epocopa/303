@@ -75,11 +75,11 @@ public class FacturaDAOImp implements FacturaDAO {
 
 	@Override
 	public List<TFactura> mostrarTodos() {
-		ArrayList<TFactura> lista = new ArrayList<TFactura>();
+		ArrayList<TFactura> lista = new ArrayList<>();
 		try (PreparedStatement st = conn.prepareStatement(READALL); ResultSet rs = st.executeQuery()) {
 			while (rs.next()) {
 				lista.add(new TFactura(rs.getInt("id_factura"), rs.getDouble("precio"), rs.getBoolean("activo"),
-						rs.getDate("fecha_").toLocalDate(), new ArrayList<>(), rs.getInt("cliente"));
+						rs.getDate("fecha_").toLocalDate(), new ArrayList<>(), rs.getInt("cliente")));
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
