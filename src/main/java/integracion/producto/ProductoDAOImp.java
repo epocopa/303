@@ -1,11 +1,13 @@
 package integracion.producto;
 
-import negocio.cliente.TCliente;
 import negocio.producto.TProducto;
 import negocio.producto.TProductoCalzado;
 import negocio.producto.TProductoTextil;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -94,23 +96,23 @@ public class ProductoDAOImp implements ProductoDAO {
 
 	@Override
 	public List<TProducto> mostrarTodos() throws Exception {
-			ArrayList<TProducto> lista = new ArrayList<>();
-			try (PreparedStatement st = conn.prepareStatement(READALL); ResultSet rs = st.executeQuery()) {
-				while (rs.next()) {
-					int numero = rs.getInt("numero");
-					if (rs.wasNull()) {
-						lista.add( new TProductoTextil(rs.getInt("id_producto"), rs.getString("nombre"),
-								rs.getInt("cantidad"), rs.getDouble("precio"), rs.getString("tejido")));
-					} else {
-						lista.add(new TProductoCalzado(rs.getInt("id_producto"), rs.getString("nombre"),
-								rs.getInt("cantidad"), rs.getDouble("precio"), rs.getInt("numero")));
-					}
+		ArrayList<TProducto> lista = new ArrayList<>();
+		try (PreparedStatement st = conn.prepareStatement(READALL); ResultSet rs = st.executeQuery()) {
+			while (rs.next()) {
+				int numero = rs.getInt("numero");
+				if (rs.wasNull()) {
+					lista.add(new TProductoTextil(rs.getInt("id_producto"), rs.getString("nombre"),
+							rs.getInt("cantidad"), rs.getDouble("precio"), rs.getString("tejido")));
+				} else {
+					lista.add(new TProductoCalzado(rs.getInt("id_producto"), rs.getString("nombre"),
+							rs.getInt("cantidad"), rs.getDouble("precio"), rs.getInt("numero")));
 				}
-			} catch (Exception e) {
-				e.printStackTrace();
-				throw new Exception("Mostrar Productos -> Error");
 			}
-			return lista;
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new Exception("Mostrar Productos -> Error");
+		}
+		return lista;
 	}
 
 	@Override
