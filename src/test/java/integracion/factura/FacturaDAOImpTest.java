@@ -2,10 +2,23 @@ package integracion.factura;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Statement;
+
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-class ClienteDAOImpTest {
 
+import negocio.factura.TFactura;
+
+class ClienteDAOImpTest {
+	private static Connection conn;
+	private TFactura factura1;
+	private FacturaDAOImp facturaDAOImp;
+	
 	@BeforeAll
 	static void beforeAll() {
 
@@ -14,6 +27,22 @@ class ClienteDAOImpTest {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	@BeforeEach
+	void BeforeEach() {
+		try(Statement st=conn.createStatement()){
+			st.execute("DELETE FROM cliente");
+		}catch(SQLException e) {
+			e.printStackTrace();
+		}
+		
+		facturaDAOImp =new FacturaDAOImp();
+		 factura1 = new TFactura();
+		 
+		 // factura 1
+		 
+		 
 	}
 	
 	@Test

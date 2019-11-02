@@ -2,10 +2,25 @@ package integracion.cliente;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import org.junit.jupiter.api.Test;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.time.LocalDate;
+import java.time.LocalTime;
+
+import org.junit.jupiter.api.*;
+
+import negocio.cliente.TCliente;
+import integracion.cliente.ClienteDAOImp;
 
 class ClienteDAOImpTest {
 
+	private static Connection conn;
+	private TCliente cliente1;
+	private TCliente cliente2;
+	private ClienteDAOImp clienteDAOImp;
+	
 	@BeforeAll
 	static void beforeAll() {
 
@@ -14,6 +29,28 @@ class ClienteDAOImpTest {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	@BeforeEach
+	void BeforeEach() {
+		try(Statement st=conn.createStatement()){
+			st.execute("DELETE FROM cliente");
+		}catch(SQLException e) {
+			e.printStackTrace();
+		}
+		
+		clienteDAOImp =new ClienteDAOImp();
+		 cliente1 = new TCliente();
+		 cliente2 = new TCliente();
+		 
+		 // Cliente 1
+		 cliente1.setActivo(true);
+		 cliente1.setFecha_registro(LocalDate.now());
+		 cliente1.setNombre("Jose");
+		 //Cliente 2
+		 cliente2.setActivo(true);
+		 cliente2.setFecha_registro(LocalDate.now());
+		 cliente2.setNombre("Dani");
 	}
 	
 	@Test

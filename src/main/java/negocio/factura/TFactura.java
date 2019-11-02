@@ -11,6 +11,9 @@ public class TFactura {
 	private List<TLineaFactura> lineaFacturas;
 	private int cliente;
 
+	public TFactura() {
+	}
+	
 	public TFactura(int id, double precio, boolean activo, LocalDate fecha, List<TLineaFactura> lineaFacturas, int cliente) {
 		this.id = id;
 		this.precio = precio;

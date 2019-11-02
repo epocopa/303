@@ -7,6 +7,9 @@ public class TProducto {
 	private double precio;
 	private boolean calzado;
 
+	public TProducto(){
+	}
+	
 	public TProducto(int id, String nombre, int cantidad, double precio, boolean calzado) {
 		this.id = id;
 		this.nombre = nombre;
