@@ -36,7 +36,7 @@ import presentacion.controladorAplicacion.ControladorAplicacion;
 import presentacion.controladorAplicacion.EventosProducto;
 import presentacion.factoria.FactoriaPresentacion;
 
-public class ProductoGUIImpl extends JPanel implements ProductoGUI, GUI{
+public class ProductoGUIImpl extends JPanel implements ProductoGUI, GUI{//
 	private static final long serialVersionUID = 1L;
 
 	private String name = "PRODUCTOS";
