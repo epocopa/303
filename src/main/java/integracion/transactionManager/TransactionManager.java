@@ -12,5 +12,7 @@ public abstract class TransactionManager {
 		return instancia;
 	}
 
+	public abstract Transaction createTransaction();
+	public abstract void removeTransaction();
 	public abstract Transaction getTransaction();
 }

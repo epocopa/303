@@ -16,12 +16,20 @@ public class TransactionImp implements Transaction {
 	}
 
 	@Override
-	public void commit() throws SQLException {
-		conn.commit();
+	public void commit(){
+		try {
+			conn.commit();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
 
 	@Override
-	public void rollback() throws SQLException {
-		conn.rollback();
+	public void rollback(){
+		try {
+			conn.rollback();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
 }

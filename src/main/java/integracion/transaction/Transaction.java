@@ -1,8 +1,6 @@
 package integracion.transaction;
 
-import java.sql.SQLException;
-
 public interface Transaction {
-	void commit() throws SQLException;
-	void rollback() throws SQLException;
+	void commit();
+	void rollback();
 }
