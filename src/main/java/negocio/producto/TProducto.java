@@ -56,11 +56,11 @@ public class TProducto {
 	public void setCalzado(boolean calzado) {
 		this.calzado = calzado;
 	}
-	
-	public boolean getActivo() {
+
+	public boolean isActivo() {
 		return activo;
 	}
-	
+
 	public void setActivo(boolean activo) {
 		this.activo = activo;
 	}
@@ -73,6 +73,7 @@ public class TProducto {
 				", cantidad=" + cantidad +
 				", precio=" + precio +
 				", calzado=" + calzado +
+				", activo=" + activo +
 				'}';
 	}
 }

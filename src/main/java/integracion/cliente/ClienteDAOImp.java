@@ -1,6 +1,7 @@
 package integracion.cliente;
 
 import integracion.ConnectionFactory;
+import integracion.transactionManager.TransactionManager;
 import negocio.cliente.TCliente;
 
 import java.sql.*;
@@ -19,7 +20,7 @@ public class ClienteDAOImp implements ClienteDAO {
 
 
 	public ClienteDAOImp() {
-		this.conn = ConnectionFactory.getInstancia().getConnection();
+		this.conn =  TransactionManager.getInstancia().getTransaction().getConnection();
 	}
 
 	public void insertar(TCliente e) throws Exception {

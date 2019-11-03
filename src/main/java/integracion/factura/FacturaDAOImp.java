@@ -1,5 +1,6 @@
 package integracion.factura;
 
+import integracion.transactionManager.TransactionManager;
 import negocio.factura.TFactura;
 import negocio.factura.TLineaFactura;
 import negocio.producto.TProducto;
@@ -23,6 +24,9 @@ public class FacturaDAOImp implements FacturaDAO {
 	private final String UPDATECANTIDADLISTA = "UPDATE lista SET cantidad = ? WHERE factura = ? AND producto = ?";
 	private final String UPDATECANTIDADPRODUCTO = "UPDATE producto SET cantidad = ? WHERE id_producto = ?";
 
+	public FacturaDAOImp() {
+		this.conn =  TransactionManager.getInstancia().getTransaction().getConnection();
+	}
 
 	@Override
 	public void insertar(TFactura e) throws Exception {

@@ -1,5 +1,6 @@
 package integracion.producto;
 
+import integracion.transactionManager.TransactionManager;
 import negocio.producto.TProducto;
 import negocio.producto.TProductoCalzado;
 import negocio.producto.TProductoTextil;
@@ -14,7 +15,7 @@ import java.util.List;
 public class ProductoDAOImp implements ProductoDAO {
 	private Connection conn;
 
-	private final String INSERT = "INSERT INTO producto(nombre, cantidad, precio) VALUES(?, ?, ?)";
+	private final String INSERT = "INSERT INTO producto(nombre, cantidad, precio, activo) VALUES(?, ?, ?, ?)";
 	private final String INSERTCALZADO = "INSERT INTO producto_calzado(id_producto, numero) VALUES(?, ?)";
 	private final String INSERTTEXTIL = "INSERT INTO producto_textil(id_producto, tejido) VALUES(?, ?)";
 
@@ -28,6 +29,9 @@ public class ProductoDAOImp implements ProductoDAO {
 
 	private final String DELETE = "UPDATE producto SET activo = 0 WHERE id_producto = ?";
 
+	public ProductoDAOImp() {
+		this.conn =  TransactionManager.getInstancia().getTransaction().getConnection();
+	}
 
 	@Override
 	public void insertar(TProducto e) throws Exception {
@@ -35,6 +39,7 @@ public class ProductoDAOImp implements ProductoDAO {
 			st.setString(1, e.getNombre());
 			st.setInt(2, e.getCantidad());
 			st.setDouble(3, e.getPrecio());
+			st.setBoolean(4, e.isActivo());
 
 			st.executeUpdate();
 			try (ResultSet rs = st.getGeneratedKeys()) {
@@ -80,10 +85,12 @@ public class ProductoDAOImp implements ProductoDAO {
 					int numero = rs.getInt("numero");
 					if (rs.wasNull()) {
 						p = new TProductoTextil(rs.getInt("id_producto"), rs.getString("nombre"),
-								rs.getInt("cantidad"), rs.getDouble("precio"), rs.getString("tejido"));
+								rs.getInt("cantidad"), rs.getDouble("precio"), rs.getString("tejido"),
+								rs.getBoolean("activo"));
 					} else {
 						p = new TProductoCalzado(rs.getInt("id_producto"), rs.getString("nombre"),
-								rs.getInt("cantidad"), rs.getDouble("precio"), rs.getInt("numero"));
+								rs.getInt("cantidad"), rs.getDouble("precio"), rs.getInt("numero"),
+								rs.getBoolean("activo"));
 					}
 				}
 			}
@@ -102,10 +109,12 @@ public class ProductoDAOImp implements ProductoDAO {
 				int numero = rs.getInt("numero");
 				if (rs.wasNull()) {
 					lista.add(new TProductoTextil(rs.getInt("id_producto"), rs.getString("nombre"),
-							rs.getInt("cantidad"), rs.getDouble("precio"), rs.getString("tejido")));
+							rs.getInt("cantidad"), rs.getDouble("precio"), rs.getString("tejido"),
+							rs.getBoolean("activo")));
 				} else {
 					lista.add(new TProductoCalzado(rs.getInt("id_producto"), rs.getString("nombre"),
-							rs.getInt("cantidad"), rs.getDouble("precio"), rs.getInt("numero")));
+							rs.getInt("cantidad"), rs.getDouble("precio"), rs.getInt("numero"),
+							rs.getBoolean("activo")));
 				}
 			}
 		} catch (Exception e) {

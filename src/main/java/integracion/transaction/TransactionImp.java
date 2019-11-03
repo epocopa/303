@@ -32,4 +32,8 @@ public class TransactionImp implements Transaction {
 			e.printStackTrace();
 		}
 	}
+
+	public Connection getConnection() {
+		return conn;
+	}
 }
