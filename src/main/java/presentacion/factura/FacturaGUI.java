@@ -17,7 +17,7 @@ public interface FacturaGUI {
 	public abstract void showOutputMsg(JPanel area, JLabel text, String msg, Boolean ok);
 	
 	public abstract void abrirPanel();
-	public abstract void facturasPanel();
+	public abstract void productosCompradosPanel();
 	public abstract void buscarPanel();
 	
 	public abstract void clear();

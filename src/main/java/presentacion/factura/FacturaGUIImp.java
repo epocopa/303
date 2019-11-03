@@ -130,15 +130,15 @@ public class FacturaGUIImp extends JPanel implements FacturaGUI, GUI{
 		_homePanel.add(abrirBtn, c);
 		
 		c.gridx++;
-		JButton facturasBtn = createMenuButton("resources/icons/clientes/facturas-cliente.png", new Color(47, 133, 28));
-		facturasBtn.addActionListener(new ActionListener(){
+		JButton facturasFechasBtn = createMenuButton("resources/icons/facturas/productos_comprados_entre_fechas.png", new Color(236, 4, 255));
+		facturasFechasBtn.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				addPathSeparator();
-				createPathButton("FACTURAS CLIENTE");
-				facturasPanel();
+				createPathButton("PRODUCTOS COMPRADOS");
+				productosCompradosPanel();
 			}
 		});
-		_homePanel.add(facturasBtn, c);
+		_homePanel.add(facturasFechasBtn, c);
 		
 		c.gridx++;
 		JButton buscarBtn = createMenuButton("resources/icons/facturas/buscar-factura.png", new Color(47, 101, 175));
@@ -413,7 +413,7 @@ public class FacturaGUIImp extends JPanel implements FacturaGUI, GUI{
 		_currentPanel = panel;
 	}
 	
-	public void facturasPanel() {
+	public void productosCompradosPanel() {
 		facturasMainPanel = new JPanel();
 		facturasMainPanelCL = new CardLayout();
 		facturasMainPanel.setLayout(facturasMainPanelCL);
