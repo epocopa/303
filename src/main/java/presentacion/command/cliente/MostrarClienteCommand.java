@@ -16,7 +16,7 @@ public class MostrarClienteCommand implements Command{
 		ClienteSA clienteSA = FactoriaSA.getInstancia().generaClienteSA();
 		try{
 			TCliente cliente = clienteSA.mostrar(id);
-			return new Context(EventosCliente.MOSTRAR_CLIENTE_OK, mensaje);
+			return new Context(EventosCliente.MOSTRAR_CLIENTE_OK, cliente);
 		} catch(Exception e){
 			mensaje = e.getMessage();
 			return new Context(EventosCliente.MOSTRAR_CLIENTE_KO, mensaje);

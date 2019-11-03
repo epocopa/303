@@ -13,6 +13,7 @@ import presentacion.factura.FacturaGUIImp;
 import presentacion.producto.ProductoGUIImpl;
 
 import javax.swing.*;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -283,6 +284,16 @@ public class MainGUIImpl extends JFrame implements MainGUI, GUI{
 				clientesPanel.actualizar(evento, datos);
 				System.out.println("Delegando a panel clientes");
 				break;
+			case EventosCliente.BAJA_CLIENTE_OK:{
+				clientesPanel.actualizar(evento, datos);
+				System.out.println("Delegando a panel clientes");
+				};
+				break;
+			case EventosCliente.BAJA_CLIENTE_KO:{
+				clientesPanel.actualizar(evento, datos);
+				System.out.println("Delegando a panel clientes");
+				};
+				break;
 			case EventosCliente.MOSTRAR_CLIENTE_OK:
 				clientesPanel.actualizar(evento, datos);
 				System.out.println("Delegando a panel clientes");
@@ -315,6 +326,14 @@ public class MainGUIImpl extends JFrame implements MainGUI, GUI{
 				clientesPanel.actualizar(evento, datos);
 				System.out.println("Delegando a panel clientes");
 				break;
+			case EventosCliente.LISTAR_CLIENTES_POR_FECHA_ALTA_OK:{
+				clientesPanel.actualizar(evento, datos);
+				System.out.println("Delegando a panel clientes");
+			}; break;
+			case EventosCliente.LISTAR_CLIENTES_POR_FECHA_ALTA_KO:{
+				clientesPanel.actualizar(evento, datos);
+				System.out.println("Delegando a panel clientes");
+			}; break;
 
 			//--- ACTUALIZAR PRODUCTO ---//
 

@@ -15,7 +15,7 @@ public class ModificarClienteCommand implements Command{
 		String mensaje;
 		ClienteSA clienteSA = FactoriaSA.getInstancia().generaClienteSA();
 		try{
-			int resultado = clienteSA.modificar(cliente);
+			clienteSA.modificar(cliente);
 			mensaje = "El cliente seleccionado ha sido modificado correctamente.";
 			return new Context(EventosCliente.MODIFICAR_CLIENTE_OK, mensaje);
 		} catch(Exception e){

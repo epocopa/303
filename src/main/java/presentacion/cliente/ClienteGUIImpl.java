@@ -48,6 +48,8 @@ public class ClienteGUIImpl extends JPanel implements ClienteGUI, GUI {
 	private JLabel mostrarErrorLabel;
 	private JLabel mostrarIDText;
 	private JLabel mostrarNombreText;
+	private JLabel mostrarActivoText;
+	private JLabel mostrarFechaText;
 	
 	private DefaultTableModel mostrarModel;
 	
@@ -58,6 +60,8 @@ public class ClienteGUIImpl extends JPanel implements ClienteGUI, GUI {
 	private JPanel editarOutputArea;
 	private JLabel editarOutputLabel;
 	private JTextField editarNombreField;
+	private JTextField editarActivoField;
+	private JTextField editarFechaField;
 	
 	public ClienteGUIImpl() {
 		initialize();
@@ -328,30 +332,12 @@ public class ClienteGUIImpl extends JPanel implements ClienteGUI, GUI {
 		IDLabel.setFont(new Font("Arial", Font.PLAIN, 18));
 		formPanel.add(IDLabel, c);
 		
-		c.gridy++;
-		JLabel NombreLabel = new JLabel("Nombre: ");
-		NombreLabel.setFont(new Font("Arial", Font.PLAIN, 18));
-		formPanel.add(NombreLabel, c);
-		
-		//c.gridy++;
-		/*JLabel FechaLabel = new JLabel("Fecha registro: ");
-		FechaLabel.setFont(new Font("Arial", Font.PLAIN, 18));
-		formPanel.add(FechaLabel, c);*/
-		
 		c.gridx++;
 		c.gridy = 0;
 		c.anchor = GridBagConstraints.LINE_START;
 		JTextField IDField = new JTextField(15);
 		formPanel.add(IDField, c);
-		
-		c.gridy++;
-		JTextField NombreField = new JTextField(15);
-		formPanel.add(NombreField, c);
-		
-		/*c.gridy++;
-		JTextField FechaField = new JTextField(15);
-		formPanel.add(FechaField, c);*/
-		
+
 		//--
 		
 		JPanel editarPanel = new JPanel();
@@ -385,7 +371,7 @@ public class ClienteGUIImpl extends JPanel implements ClienteGUI, GUI {
 		JPanel formPanel2 = new JPanel(new GridBagLayout());
 		formPanel2.setBackground(new Color(235, 237, 241));
 		formPanel2.setAlignmentX(JComponent.CENTER_ALIGNMENT);
-		formPanel2.setMaximumSize(new Dimension(1024, 70));
+		formPanel2.setMaximumSize(new Dimension(1024, 120));
 		
 		GridBagConstraints c2 = new GridBagConstraints();
 		c2.gridx = 0;
@@ -396,11 +382,29 @@ public class ClienteGUIImpl extends JPanel implements ClienteGUI, GUI {
 		editarNombreLabel.setFont(new Font("Arial", Font.PLAIN, 18));
 		formPanel2.add(editarNombreLabel, c2);
 		
+		c2.gridy++;
+		JLabel editarFechaLabel = new JLabel("Fecha de registro: ");
+		editarFechaLabel.setFont(new Font("Arial", Font.PLAIN, 18));
+		formPanel2.add(editarFechaLabel, c2);
+		
+		c2.gridy++;
+		JLabel editarActivoLabel = new JLabel("Activo: ");
+		editarActivoLabel.setFont(new Font("Arial", Font.PLAIN, 18));
+		formPanel2.add(editarActivoLabel, c2);
+		
 		c2.gridx++;
 		c2.gridy = 0;
 		c2.anchor = GridBagConstraints.LINE_START;
 		editarNombreField = new JTextField(15);
 		formPanel2.add(editarNombreField, c2);
+		
+		c2.gridy++;
+		editarFechaField = new JTextField(15);
+		formPanel2.add(editarFechaField, c2);
+		
+		c2.gridy++;
+		editarActivoField = new JTextField(15);
+		formPanel2.add(editarActivoField, c2);
 		
 		//--
 		
@@ -433,11 +437,11 @@ public class ClienteGUIImpl extends JPanel implements ClienteGUI, GUI {
 		confirmBtn.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				Integer ID = Integer.valueOf(IDField.getText());
-				String nombre = editarNombreField.getText();	
+				String nombre = editarNombreField.getText();
+				Boolean activo = Boolean.valueOf(editarActivoField.getText());
+				LocalDate fecha = LocalDate.parse(editarFechaField.getText());
 				if (nombre.length() > 0 && !nombre.equals(" ")) {;
-					TCliente cliente = new TCliente();
-					
-					
+					TCliente cliente = new TCliente(ID, activo, fecha, nombre);
 					Context contexto = new Context(EventosCliente.MODIFICAR_CLIENTE, cliente);
 					ControladorAplicacion.getInstance().accion(contexto);
 				} else {
@@ -512,7 +516,7 @@ public class ClienteGUIImpl extends JPanel implements ClienteGUI, GUI {
 		c.gridy = 0;
 		c.anchor = GridBagConstraints.LINE_END;
 		c.insets = new Insets(5,5,0,0);
-		JLabel IDLabel = new JLabel("ID Producto: ");
+		JLabel IDLabel = new JLabel("ID Cliente: ");
 		IDLabel.setFont(new Font("Arial", Font.PLAIN, 18));
 		formPanel.add(IDLabel, c);
 		
@@ -575,7 +579,7 @@ public class ClienteGUIImpl extends JPanel implements ClienteGUI, GUI {
 		tablePanel.setBackground(new Color(235, 237, 241));
 		tablePanel.setMaximumSize(new Dimension(800, 320));
 		
-		String[] columns = {"ID Cliente", "Nombre"};
+		String[] columns = {"ID Cliente", "Nombre", "Fecha de registro"};
 
 		mostrarModel = new DefaultTableModel(); 
         for (String column : columns) {
@@ -667,7 +671,7 @@ public class ClienteGUIImpl extends JPanel implements ClienteGUI, GUI {
 		JPanel dataPanel = new JPanel(new GridBagLayout());
 		dataPanel.setBackground(new Color(235, 237, 241));
 		dataPanel.setAlignmentX(JComponent.CENTER_ALIGNMENT);
-		dataPanel.setMaximumSize(new Dimension(1024, 70));
+		dataPanel.setMaximumSize(new Dimension(1024, 150));
 		
 		GridBagConstraints c2 = new GridBagConstraints();
 		c2.gridx = 0;
@@ -683,6 +687,16 @@ public class ClienteGUIImpl extends JPanel implements ClienteGUI, GUI {
 		nombreLabel.setFont(new Font("Arial", Font.PLAIN, 22));
 		dataPanel.add(nombreLabel, c2);
 		
+		c2.gridy++;
+		JLabel activoLabel = new JLabel("Activo: ");
+		activoLabel.setFont(new Font("Arial", Font.PLAIN, 22));
+		dataPanel.add(activoLabel, c2);
+		
+		c2.gridy++;
+		JLabel fechaLabel = new JLabel("Fecha de registro: ");
+		fechaLabel.setFont(new Font("Arial", Font.PLAIN, 22));
+		dataPanel.add(fechaLabel, c2);
+		
 		c2.gridx++;
 		c2.gridy = 0;
 		c2.anchor = GridBagConstraints.LINE_START;
@@ -694,6 +708,16 @@ public class ClienteGUIImpl extends JPanel implements ClienteGUI, GUI {
 		mostrarNombreText = new JLabel("Benzema");
 		mostrarNombreText.setFont(new Font("Arial", Font.PLAIN, 18));
 		dataPanel.add(mostrarNombreText, c2);
+		
+		c2.gridy++;
+		mostrarActivoText = new JLabel("true");
+		mostrarActivoText.setFont(new Font("Arial", Font.PLAIN, 18));
+		dataPanel.add(mostrarActivoText, c2);
+		
+		c2.gridy++;
+		mostrarFechaText = new JLabel("1990-11-18");
+		mostrarFechaText.setFont(new Font("Arial", Font.PLAIN, 18));
+		dataPanel.add(mostrarFechaText, c2);
 		
 		//--
 		
@@ -833,9 +857,9 @@ public class ClienteGUIImpl extends JPanel implements ClienteGUI, GUI {
 		
 		//--
 		
-		add(panel, "LISTAR POR FECHA");
+		add(panel, "MOSTRAR POR FECHAS");
 		
-		_localCL.show(this, "LISTAR POR FECHA");
+		_localCL.show(this, "MOSTRAR POR FECHAS");
 		_currentPanel = panel;
 	}
 	
@@ -886,16 +910,16 @@ public class ClienteGUIImpl extends JPanel implements ClienteGUI, GUI {
 				showOutputMsg(borrarOutputArea, borrarOutputLabel, mensaje, false);
 				System.out.println("Eliminar Cliente KO");
 				};
-				break;	
+				break;
 			case EventosCliente.LISTAR_CLIENTES_OK:
 				@SuppressWarnings("unchecked") List<TCliente> listaClientes = (List<TCliente>) datos;
 				
 				addPathSeparator();
-				createPathButton("MOSTRAR CLIENTES");
+				createPathButton("LISTAR CLIENTES");
 				mostrarPanel();
 				
 				for (TCliente c : listaClientes) {
-					mostrarModel.addRow(new Object[]{c.getId(), c.getNombre()});
+					mostrarModel.addRow(new Object[]{c.getId(), c.getNombre(), c.getFecha_registro()});
 				}
 				System.out.println("Listar Clientes OK");
 				break;
@@ -910,6 +934,8 @@ public class ClienteGUIImpl extends JPanel implements ClienteGUI, GUI {
 				Integer id = cliente.getId();
 				mostrarIDText.setText(id.toString());
 				mostrarNombreText.setText(cliente.getNombre());
+				mostrarActivoText.setText(Boolean.toString(cliente.isActivo()));
+				mostrarFechaText.setText(cliente.getFecha_registro().toString());
 				
 				mostrarClientePanelCL.show(mostrarClientePanel, "CLIENTE");
 				System.out.println("Mostrar Cliente OK");
@@ -924,6 +950,8 @@ public class ClienteGUIImpl extends JPanel implements ClienteGUI, GUI {
 				cliente = (TCliente) datos;
 				
 				editarNombreField.setText(cliente.getNombre());
+				editarFechaField.setText(cliente.getFecha_registro().toString());
+				editarActivoField.setText(Boolean.toString(cliente.isActivo()));
 				editarClientePanelCL.show(editarClientePanel, "SECOND");
 				System.out.println("Editar Buscar Cliente OK");
 				break;
