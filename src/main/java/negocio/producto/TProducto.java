@@ -17,6 +17,9 @@ public class TProducto {
 		this.activo = activo;
 	}
 
+	public TProducto() {
+	}
+
 	public int getId() {
 		return id;
 	}
