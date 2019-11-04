@@ -428,6 +428,16 @@ public class MainGUIImpl extends JFrame implements MainGUI, GUI{
 				facturasPanel.actualizar(evento, datos);
 				System.out.println("Delegando a panel facturas");
 				break;
+			case EventosFactura.LISTAR_PRODUCTOS_COMPRADOS_POR_FECHA_OK:{
+				facturasPanel.actualizar(evento, datos);
+				System.out.println("Delegando a panel facturas");
+			};
+			break;
+			case EventosFactura.LISTAR_PRODUCTOS_COMPRADOS_POR_FECHA_KO:{
+				facturasPanel.actualizar(evento, datos);
+				System.out.println("Delegando a panel facturas");
+			};
+			break;
 		}
 	}
 }

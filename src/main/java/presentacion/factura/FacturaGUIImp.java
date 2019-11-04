@@ -10,6 +10,7 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.time.LocalDate;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -18,7 +19,6 @@ import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComponent;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -28,8 +28,14 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableModel;
 
+import negocio.cliente.TFecha;
 import negocio.factura.TFactura;
+import negocio.factura.TLineaFactura;
 import negocio.producto.TProducto;
+import negocio.producto.TProductoCalzado;
+import negocio.producto.TProductoTextil;
+import presentacion.controladorAplicacion.Context;
+import presentacion.controladorAplicacion.ControladorAplicacion;
 import presentacion.controladorAplicacion.EventosFactura;
 import presentacion.factoria.GUI;
 import presentacion.factoria.FactoriaPresentacion;
@@ -56,23 +62,16 @@ public class FacturaGUIImp extends JPanel implements FacturaGUI, GUI{
 	private JPanel mostrarErrorArea;
 	private JLabel mostrarErrorLabel;
 	private JLabel mostrarIDText;
-	private JLabel mostrarDescuentoText;
+	private JLabel mostrarActivoText;
 	private JLabel mostrarPrecioText;
 	private JLabel mostrarFechaText;
-	private JLabel mostrarIDClienteText;
-	private JLabel mostrarIDEmpleadoText;
 	
+	private DefaultTableModel mostrarModel;
 	DefaultTableModel model;
 	JTable dataTable;
 	
-	private JPanel facturasMainPanel;
-	private CardLayout facturasMainPanelCL;
-	private DefaultTableModel facturasModel;
-	private JPanel facturaErrorArea;
-	private JLabel facturaErrorLabel;
-	
-	private String descuentoAplicado;
-	private JLabel descuentoLabel;
+	private JPanel pedirFechasOutputArea;
+	private JLabel pedirFechasOutputLabel;
 	private JLabel totalPrecio;
 	
 	private JTextField anadirIDProducto;
@@ -104,25 +103,25 @@ public class FacturaGUIImp extends JPanel implements FacturaGUI, GUI{
 		abrirBtn.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){				
 				JTextField IDCliente = new JTextField();
-				JTextField IDEmpleado = new JTextField();
 				final JComponent[] input = new JComponent[] {
 				        new JLabel("ID Cliente"),
 				        IDCliente,
-				        new JLabel("ID Empleado"),
-				        IDEmpleado,
 				};
 				Object[] options = {"Confirmar", "Cancelar"};
 				int result = JOptionPane.showOptionDialog(null, input, " Abrir Factura", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
 				
 				if (result == JOptionPane.OK_OPTION) {
 					String IDClienteText = IDCliente.getText(); 
-					String IDEmpleadoText = IDEmpleado.getText(); 
 					
-					if ((IDClienteText.length() > 0 && !IDClienteText.equals(" ")) && (IDEmpleadoText.length() > 0 && !IDEmpleadoText.equals(" "))) {
-						TFactura factura = new TFactura(0, 0.0, 0.0,  null, Integer.valueOf(IDEmpleadoText), Integer.valueOf(IDClienteText));
-						SingletonControlador.getInstancia().accion(EventosFactura.ABRIR_FACTURA, factura);
+					if (IDClienteText.length() > 0 && !IDClienteText.equals(" ")) {
+						TFactura factura = new TFactura();
+						factura.setCliente(Integer.parseInt(IDCliente.getText()));
+						factura.setActivo(true);
+						factura.setFecha(LocalDate.now());
+						Context contexto = new Context(EventosFactura.ABRIR_FACTURA, factura);
+						ControladorAplicacion.getInstance().accion(contexto);
 					} else {
-						JOptionPane.showMessageDialog(null, "ERROR: Los datos introducidos no son validos.", "Error", JOptionPane.ERROR_MESSAGE);
+						JOptionPane.showMessageDialog(null, "ERROR: El dato introducido no es valido.", "Error", JOptionPane.ERROR_MESSAGE);
 					}
 				}
 			}
@@ -251,7 +250,7 @@ public class FacturaGUIImp extends JPanel implements FacturaGUI, GUI{
 		tablePanel.setBackground(new Color(235, 237, 241));
 		tablePanel.setMaximumSize(new Dimension(600, 320));
 		
-		String[] columns = {"ID Producto", "Nombre", "Cantidad", "Calorias", "Precio por Unidad"};
+		String[] columns = {"ID Producto", "Nombre", "Cantidad", "Precio por Unidad"};
 
 		model = new DefaultTableModel(); 
         for (String column : columns) {
@@ -277,15 +276,6 @@ public class FacturaGUIImp extends JPanel implements FacturaGUI, GUI{
 		totalPrecio.setForeground(new Color(230,230,230));
 		totalPrecio.setAlignmentX(JComponent.CENTER_ALIGNMENT);
 		
-		JLabel descuentoTitle = new JLabel("DESCUENTO: ");
-		descuentoTitle.setForeground(new Color(230,230,230));
-		descuentoTitle.setFont(new Font("Arial", Font.BOLD, 10));
-		descuentoTitle.setAlignmentX(JComponent.CENTER_ALIGNMENT);
-
-		descuentoLabel = new JLabel("0%");
-		descuentoLabel.setForeground(new Color(230,230,230));
-		descuentoLabel.setAlignmentX(JComponent.CENTER_ALIGNMENT);
-		
 		toolPanel.add(Box.createRigidArea(new Dimension(0, 20)));
 		
 		JButton anadirProducto = createToolButton("resources/icons/tools/add.png", new Color(63, 164, 31), "Anade un producto a la factura");
@@ -306,8 +296,9 @@ public class FacturaGUIImp extends JPanel implements FacturaGUI, GUI{
 					String IDProductoText = anadirIDProducto.getText();
 					String productoCantidadText = anadirProductoCantidad.getText();
 					if ((IDProductoText.length() > 0 && !IDProductoText.equals(" ")) && (productoCantidadText.length() > 0 && !productoCantidadText.equals(" "))) {
-						TProducto producto = new TProducto(Integer.valueOf(IDProductoText), null, 0.0,  0, Integer.valueOf(productoCantidadText), true);
-						SingletonControlador.getInstancia().accion(EventosFactura.ANADIR_PRODUCTO_A_F, producto);
+						TLineaFactura cesta = new TLineaFactura(Id, Integer.parseInt(IDProductoText), Integer.parseInt(productoCantidadText));
+						Context contexto = new Context(EventosFactura.ANADIR_PRODUCTO_A_F, cesta);
+						ControladorAplicacion.getInstance().accion(contexto);
 					} else {
 						JOptionPane.showMessageDialog(null, "ERROR: Los datos introducidos no son validos.", "Error", JOptionPane.ERROR_MESSAGE);
 					}
@@ -335,8 +326,9 @@ public class FacturaGUIImp extends JPanel implements FacturaGUI, GUI{
 					String IDProductoText = borrarIDProducto.getText();
 					String productoCantidadText = borrarProductoCantidad.getText();
 					if ((IDProductoText.length() > 0 && !IDProductoText.equals(" ")) && (productoCantidadText.length() > 0 && !productoCantidadText.equals(" "))) {
-						TProducto producto = new TProducto(Integer.valueOf(IDProductoText), null, 0.0,  0, Integer.valueOf(productoCantidadText), true);
-						SingletonControlador.getInstancia().accion(EventosFactura.BORRAR_PRODUCTO, producto);
+						TLineaFactura eliminar = new TLineaFactura(Id, Integer.parseInt(IDProductoText), Integer.parseInt(productoCantidadText));
+						Context contexto = new Context(EventosFactura.BORRAR_PRODUCTO, eliminar);
+						ControladorAplicacion.getInstance().accion(contexto);
 					} else {
 						JOptionPane.showMessageDialog(null, "ERROR: Los datos introducidos no son validos.", "Error", JOptionPane.ERROR_MESSAGE);
 					}
@@ -344,32 +336,6 @@ public class FacturaGUIImp extends JPanel implements FacturaGUI, GUI{
 			}
 		});
 		toolPanel.add(borrarProducto);
-		toolPanel.add(Box.createRigidArea(new Dimension(0, 10)));
-		
-		JButton aplicarDescuento = createToolButton("resources/icons/tools/discount.png", new Color(237, 162, 38), "Aplica un descuento a la factura");
-		aplicarDescuento.addActionListener(new ActionListener(){
-			public void actionPerformed(ActionEvent e){
-				JTextField nuevoDescuento = new JTextField();
-				final JComponent[] input = new JComponent[] {
-				        new JLabel("Descuento"),
-				        nuevoDescuento,
-				};
-				Object[] options = {"Aplicar", "Cancelar"};
-				int result = JOptionPane.showOptionDialog(null, input, " Aplicar Descuento", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
-				
-				if (result == JOptionPane.OK_OPTION) {
-					descuentoAplicado = nuevoDescuento.getText();
-					
-					if ((descuentoAplicado.length() > 0 && !descuentoAplicado.equals(" "))) {
-						TFactura factura = new TFactura(Id, Double.valueOf(descuentoAplicado), 0.0,  null, 0, 0);
-						SingletonControlador.getInstancia().accion(EventosFactura.APLICAR_DESCUENTO, factura);
-					} else {
-						JOptionPane.showMessageDialog(null, "ERROR: El valor introducido no es valido.", "Error", JOptionPane.ERROR_MESSAGE);
-					}
-				}
-			}
-		});
-		toolPanel.add(aplicarDescuento);
 		toolPanel.add(Box.createRigidArea(new Dimension(0, 10)));
 		
 		JButton confirmar = createToolButton("resources/icons/tools/complete.png", new Color(38, 180, 237), "Confirma y cierra la factura");
@@ -382,17 +348,16 @@ public class FacturaGUIImp extends JPanel implements FacturaGUI, GUI{
 				int result = JOptionPane.showOptionDialog(null, input, " Confirmar Factura", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
 				
 				if (result == JOptionPane.OK_OPTION) {
-					TFactura factura = new TFactura(Id, 0.0, Double.valueOf(totalPrecio.getText()), null, 0, 0);
-					SingletonControlador.getInstancia().accion(EventosFactura.CERRAR_FACTURA, factura);
+					TFactura factura = new TFactura();
+					factura.setId(Id);
+					factura.setPrecio(Double.valueOf(totalPrecio.getText()));
+					Context contexto = new Context(EventosFactura.CERRAR_FACTURA, factura);
+					ControladorAplicacion.getInstance().accion(contexto);
 				}
 			}
 		});
 		toolPanel.add(confirmar);
 		toolPanel.add(Box.createRigidArea(new Dimension(0, 25)));
-		toolPanel.add(descuentoTitle);
-		toolPanel.add(Box.createRigidArea(new Dimension(0, 5)));
-		toolPanel.add(descuentoLabel);
-		toolPanel.add(Box.createRigidArea(new Dimension(0, 15)));
 		toolPanel.add(totalTitle);
 		toolPanel.add(Box.createRigidArea(new Dimension(0, 5)));
 		toolPanel.add(totalPrecio);
@@ -414,37 +379,31 @@ public class FacturaGUIImp extends JPanel implements FacturaGUI, GUI{
 	}
 	
 	public void productosCompradosPanel() {
-		facturasMainPanel = new JPanel();
-		facturasMainPanelCL = new CardLayout();
-		facturasMainPanel.setLayout(facturasMainPanelCL);
-		facturasMainPanel.setBackground(new Color(235, 237, 241));
-		facturasMainPanel.setMaximumSize(new Dimension(1024, 460));
-		
-		JPanel buscarPanel = new JPanel();
-		buscarPanel.setLayout(new BoxLayout(buscarPanel, BoxLayout.Y_AXIS));
-		buscarPanel.setBackground(new Color(235, 237, 241));
-		buscarPanel.setMaximumSize(new Dimension(1024, 460));
+		JPanel panel = new JPanel();
+		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+		panel.setBackground(new Color(235, 237, 241));
+		panel.setMaximumSize(new Dimension(1024, 460));
 	
 		//--
 		
-		JPanel errorPanel = new JPanel();
-		errorPanel.setLayout(new BoxLayout(errorPanel, BoxLayout.Y_AXIS));
-		errorPanel.setBackground(new Color(235, 237, 241));
-		errorPanel.setMaximumSize(new Dimension(1024, 50));
+		JPanel outputPanel = new JPanel();
+		outputPanel.setLayout(new BoxLayout(outputPanel, BoxLayout.Y_AXIS));
+		outputPanel.setBackground(new Color(235, 237, 241));
+		outputPanel.setMaximumSize(new Dimension(1024, 50));
 		
-		facturaErrorArea = new JPanel();
-		facturaErrorArea.setLayout(new BoxLayout(facturaErrorArea, BoxLayout.X_AXIS));
-		facturaErrorArea.setBackground(new Color(172, 40, 40));
-		facturaErrorArea.setMaximumSize(new Dimension(800, 50));
+		pedirFechasOutputArea = new JPanel();
+		pedirFechasOutputArea.setLayout(new BoxLayout(pedirFechasOutputArea, BoxLayout.X_AXIS));
+		pedirFechasOutputArea.setBackground(new Color(172, 40, 40));
+		pedirFechasOutputArea.setMaximumSize(new Dimension(800, 50));
 		
-		facturaErrorLabel = new JLabel("ERROR: El ID introducido no es valido.");
-		facturaErrorLabel.setFont(new Font("Arial", Font.PLAIN, 16));
-		facturaErrorLabel.setForeground(new Color(230,230,230));
+		pedirFechasOutputLabel = new JLabel("ERROR: Las fechas introducidas no son validas.");
+		pedirFechasOutputLabel.setFont(new Font("Arial", Font.PLAIN, 16));
+		pedirFechasOutputLabel.setForeground(new Color(230,230,230));
 		
-		facturaErrorArea.add(Box.createRigidArea(new Dimension(40, 0)));
-		facturaErrorArea.add(facturaErrorLabel);
-		facturaErrorArea.setVisible(false);
-		errorPanel.add(facturaErrorArea);
+		pedirFechasOutputArea.add(Box.createRigidArea(new Dimension(40, 0)));
+		pedirFechasOutputArea.add(pedirFechasOutputLabel);
+		pedirFechasOutputArea.setVisible(false);
+		outputPanel.add(pedirFechasOutputArea);
 		
 		//--
 		
@@ -458,91 +417,63 @@ public class FacturaGUIImp extends JPanel implements FacturaGUI, GUI{
 		c.gridy = 0;
 		c.anchor = GridBagConstraints.LINE_END;
 		c.insets = new Insets(5,5,0,0);
-		JLabel IDLabel = new JLabel("ID Cliente: ");
-		IDLabel.setFont(new Font("Arial", Font.PLAIN, 18));
-		formPanel.add(IDLabel, c);
+		JLabel Fecha1Label = new JLabel("FECHA INICIO: ");
+		Fecha1Label.setFont(new Font("Arial", Font.PLAIN, 18));
+		formPanel.add(Fecha1Label, c);
+		
+		c.gridy++;
+		JLabel Fecha2Label = new JLabel("FECHA FIN: ");
+		Fecha2Label.setFont(new Font("Arial", Font.PLAIN, 18));
+		formPanel.add(Fecha2Label, c);
 		
 		c.gridx++;
 		c.gridy = 0;
 		c.anchor = GridBagConstraints.LINE_START;
-		JTextField IDField = new JTextField(15);
-		formPanel.add(IDField, c);
+		JTextField Fecha1Field = new JTextField(15);
+		formPanel.add(Fecha1Field, c);
+		
+		c.gridy++;
+		JTextField Fecha2Field = new JTextField(15);
+		formPanel.add(Fecha2Field, c);
 		
 		//--
 		
-		JPanel facturasPanel = new JPanel();
-		facturasPanel.setLayout(new BoxLayout(facturasPanel, BoxLayout.Y_AXIS));
-		facturasPanel.setBackground(new Color(235, 237, 241));
-		facturasPanel.setMaximumSize(new Dimension(1024, 460));
-		
-		JLabel tableTitle = new JLabel("FACTURAS");
-		tableTitle.setAlignmentX(JComponent.CENTER_ALIGNMENT);
-		tableTitle.setFont(new Font("Arial", Font.BOLD, 18));
-		
-		JPanel tablePanel = new JPanel();
-		tablePanel.setLayout(new BoxLayout(tablePanel, BoxLayout.Y_AXIS));
-		tablePanel.setAlignmentX(JComponent.CENTER_ALIGNMENT);
-		tablePanel.setBackground(new Color(235, 237, 241));
-		tablePanel.setMaximumSize(new Dimension(800, 320));
-		
-		String[] columns = {"ID Factura", "ID Cliente", "ID Empleado", "Descuento", "Precio", "Fecha"};
-
-		facturasModel = new DefaultTableModel(); 
-        for (String column : columns) {
-        	facturasModel.addColumn(column);
-        }
-		JTable dataTable = new JTable(facturasModel);
-		dataTable.setEnabled(false);
-		dataTable.getTableHeader().setReorderingAllowed(false);
-		dataTable.setPreferredScrollableViewportSize(new Dimension(450, 63));
-		dataTable.setFillsViewportHeight(true);
-		
-		JScrollPane scrollPane = new JScrollPane(dataTable);
-		tablePanel.add(scrollPane);
-		
-		//--
-		
-		JButton buscarBtn = new JButton("BUSCAR");
-		buscarBtn.setFocusPainted(false);
-		buscarBtn.setFont(new Font("Arial", Font.PLAIN, 18));
-		buscarBtn.setBackground(new Color(230,230,230));
-		buscarBtn.setMaximumSize(new Dimension(125, 30));
-		buscarBtn.setAlignmentX(JComponent.CENTER_ALIGNMENT);
-		buscarBtn.addActionListener(new ActionListener(){
+		JButton listarBtn = new JButton("ENVIAR");
+		listarBtn.setFocusPainted(false);
+		listarBtn.setFont(new Font("Arial", Font.PLAIN, 18));
+		listarBtn.setBackground(new Color(230,230,230));
+		listarBtn.setMaximumSize(new Dimension(125, 30));
+		listarBtn.setAlignmentX(JComponent.CENTER_ALIGNMENT);
+		listarBtn.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
-				String ID = IDField.getText();	
-				if (ID.length() > 0 && !ID.equals(" ")) {
-					SingletonControlador.getInstancia().accion(EventosFactura.FACTURAS_PAGADAS_POR_CLIENTE, Integer.valueOf(ID));
+				String Fecha1 = Fecha1Field.getText();
+				String Fecha2 = Fecha2Field.getText();
+				if (Fecha1.length() > 0 && !Fecha1.equals(" ") && Fecha2.length() > 0 && !Fecha2.equals(" ")) {
+					LocalDate date1 = LocalDate.parse(Fecha1);
+					LocalDate date2 = LocalDate.parse(Fecha2);
+					TFecha listaFechas =  new TFecha(date1, date2);
+					Context contexto = new Context(EventosFactura.LISTAR_PRODUCTOS_COMPRADOS_POR_FECHA, listaFechas);
+					ControladorAplicacion.getInstance().accion(contexto);
 				} else {
-					showOutputMsg(facturaErrorArea, facturaErrorLabel, "ERROR: El ID introducido no es valido.", false);
+					showOutputMsg(pedirFechasOutputArea, pedirFechasOutputLabel, "ERROR: Las fechas introducidas no son validas.", false);
 				}
 			}
 		});
 		
 		//--
 		
-		buscarPanel.add(Box.createRigidArea(new Dimension(0, 40)));
-		buscarPanel.add(errorPanel);
-		buscarPanel.add(Box.createRigidArea(new Dimension(0, 60)));
-		buscarPanel.add(formPanel);
-		buscarPanel.add(buscarBtn);
+		panel.add(Box.createRigidArea(new Dimension(0, 40)));
+		panel.add(outputPanel);
+		panel.add(Box.createRigidArea(new Dimension(0,60)));
+		panel.add(formPanel);
+		panel.add(listarBtn);
 		
 		//--
 		
-		facturasPanel.add(Box.createRigidArea(new Dimension(0, 40)));
-		facturasPanel.add(tableTitle);
-		facturasPanel.add(Box.createRigidArea(new Dimension(0, 20)));
-		facturasPanel.add(tablePanel);
+		add(panel, "PRODUCTOS COMPRADOS");
 		
-		//--
-		
-		facturasMainPanel.add(buscarPanel, "BUSCAR");
-		facturasMainPanel.add(facturasPanel, "FACTURAS PAGADAS");
-		add(facturasMainPanel, "FACTURAS PAGADAS");
-		
-		facturasMainPanelCL.show(facturasMainPanel, "BUSCAR");
-		_localCL.show(this, "FACTURAS PAGADAS");
-		_currentPanel = facturasMainPanel;
+		_localCL.show(this, "PRODUCTOS COMPRADOS");
+		_currentPanel = panel;
 	}
 	
 	public void buscarPanel() {
@@ -612,7 +543,7 @@ public class FacturaGUIImp extends JPanel implements FacturaGUI, GUI{
 		JPanel dataPanel = new JPanel(new GridBagLayout());
 		dataPanel.setBackground(new Color(235, 237, 241));
 		dataPanel.setAlignmentX(JComponent.CENTER_ALIGNMENT);
-		dataPanel.setMaximumSize(new Dimension(1024, 190));
+		dataPanel.setMaximumSize(new Dimension(1024, 150));
 						
 		GridBagConstraints c2 = new GridBagConstraints();
 		c2.gridx = 0;
@@ -622,31 +553,21 @@ public class FacturaGUIImp extends JPanel implements FacturaGUI, GUI{
 		JLabel IDLabel2 = new JLabel("ID Factura: ");
 		IDLabel2.setFont(new Font("Arial", Font.PLAIN, 22));
 		dataPanel.add(IDLabel2, c2);
-					
-		c2.gridy++;
-		JLabel descuentoLabel = new JLabel("Descuento: ");	
-		descuentoLabel.setFont(new Font("Arial", Font.PLAIN, 22));
-		dataPanel.add(descuentoLabel, c2);
-				
-		c2.gridy++;
-		JLabel PrecioLabel = new JLabel("Precio: ");
-		PrecioLabel.setFont(new Font("Arial", Font.PLAIN, 22));
-		dataPanel.add(PrecioLabel, c2);
-					
+		
 		c2.gridy++;
 		JLabel FechaLabel = new JLabel("Fecha: ");
 		FechaLabel.setFont(new Font("Arial", Font.PLAIN, 22));
 		dataPanel.add(FechaLabel, c2);
 		
 		c2.gridy++;
-		JLabel IDClienteLabel = new JLabel("ID Cliente: ");
-		IDClienteLabel.setFont(new Font("Arial", Font.PLAIN, 22));
-		dataPanel.add(IDClienteLabel, c2);
-		
+		JLabel PrecioLabel = new JLabel("Precio: ");
+		PrecioLabel.setFont(new Font("Arial", Font.PLAIN, 22));
+		dataPanel.add(PrecioLabel, c2);	
+					
 		c2.gridy++;
-		JLabel IDEmpleadoLabel = new JLabel("ID Empleado: ");
-		IDEmpleadoLabel.setFont(new Font("Arial", Font.PLAIN, 22));
-		dataPanel.add(IDEmpleadoLabel, c2);
+		JLabel ActivoLabel = new JLabel("Activo: ");	
+		ActivoLabel.setFont(new Font("Arial", Font.PLAIN, 22));
+		dataPanel.add(ActivoLabel, c2);
 						
 		c2.gridx++;
 		c2.gridy = 0;
@@ -654,32 +575,22 @@ public class FacturaGUIImp extends JPanel implements FacturaGUI, GUI{
 		mostrarIDText = new JLabel("0");
 		mostrarIDText.setFont(new Font("Arial", Font.PLAIN, 18));
 		dataPanel.add(mostrarIDText, c2);
-						
-		c2.gridy++;
-		mostrarDescuentoText = new JLabel("0.0");
-		mostrarDescuentoText.setFont(new Font("Arial", Font.PLAIN, 18));
-		dataPanel.add(mostrarDescuentoText, c2);
-				
-		c2.gridy++;
-		mostrarPrecioText = new JLabel("0");
-		mostrarPrecioText.setFont(new Font("Arial", Font.PLAIN, 18));
-		dataPanel.add(mostrarPrecioText, c2);
-				
+		
 		c2.gridy++;
 		mostrarFechaText = new JLabel("0");
 		mostrarFechaText.setFont(new Font("Arial", Font.PLAIN, 18));
-		dataPanel.add(mostrarFechaText, c2);
+		dataPanel.add(mostrarFechaText, c2);		
 		
 		c2.gridy++;
-		mostrarIDClienteText = new JLabel("0");
-		mostrarIDClienteText.setFont(new Font("Arial", Font.PLAIN, 18));
-		dataPanel.add(mostrarIDClienteText, c2);
-		
-		c2.gridy++;
-		mostrarIDEmpleadoText = new JLabel("0");
-		mostrarIDEmpleadoText.setFont(new Font("Arial", Font.PLAIN, 18));
-		dataPanel.add(mostrarIDEmpleadoText, c2);
+		mostrarPrecioText = new JLabel("0");
+		mostrarPrecioText.setFont(new Font("Arial", Font.PLAIN, 18));
+		dataPanel.add(mostrarPrecioText, c2);		
 						
+		c2.gridy++;
+		mostrarActivoText = new JLabel("0");
+		mostrarActivoText.setFont(new Font("Arial", Font.PLAIN, 18));
+		dataPanel.add(mostrarActivoText, c2);
+		
 		//--
 		
 		JButton buscarBtn = new JButton("BUSCAR");
@@ -692,7 +603,8 @@ public class FacturaGUIImp extends JPanel implements FacturaGUI, GUI{
 			public void actionPerformed(ActionEvent e){
 				String ID = IDField.getText();	
 				if (ID.length() > 0 && !ID.equals(" ")) {
-					SingletonControlador.getInstancia().accion(EventosFactura.MOSTRAR_FACTURA, Integer.valueOf(ID));
+					Context contexto = new Context(EventosFactura.MOSTRAR_FACTURA, Integer.valueOf(ID));
+					ControladorAplicacion.getInstance().accion(contexto);
 				} else {
 					showOutputMsg(mostrarErrorArea, mostrarErrorLabel, "ERROR: El nombre introducido no es valido.", false);
 				}
@@ -723,6 +635,46 @@ public class FacturaGUIImp extends JPanel implements FacturaGUI, GUI{
 		_currentPanel = mostrarFacturaPanel;
 	}
 	
+	public void mostrarProductosPanel() {
+		JPanel panel = new JPanel();
+		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+		panel.setBackground(new Color(235, 237, 241));
+		panel.setMaximumSize(new Dimension(1024, 460));
+		
+		JLabel tableTitle = new JLabel("PRODUCTOS");
+		tableTitle.setAlignmentX(JComponent.CENTER_ALIGNMENT);
+		tableTitle.setFont(new Font("Arial", Font.BOLD, 18));
+		
+		JPanel tablePanel = new JPanel();
+		tablePanel.setLayout(new BoxLayout(tablePanel, BoxLayout.Y_AXIS));
+		tablePanel.setAlignmentX(JComponent.CENTER_ALIGNMENT);
+		tablePanel.setBackground(new Color(235, 237, 241));
+		tablePanel.setMaximumSize(new Dimension(800, 320));
+		
+		String[] columns = {"ID Producto", "Nombre", "Precio", "Cantidad", "Numero de pie", "Tejido"};
+		mostrarModel = new DefaultTableModel(); 
+        for (String column : columns) {
+        	mostrarModel.addColumn(column);
+        }
+		JTable dataTable = new JTable(mostrarModel);
+		dataTable.setEnabled(false);
+		dataTable.getTableHeader().setReorderingAllowed(false);
+		dataTable.setPreferredScrollableViewportSize(new Dimension(450, 63));
+		dataTable.setFillsViewportHeight(true);
+		
+		JScrollPane scrollPane = new JScrollPane(dataTable);
+		tablePanel.add(scrollPane);
+		
+		panel.add(Box.createRigidArea(new Dimension(0, 40)));
+		panel.add(tableTitle);
+		panel.add(Box.createRigidArea(new Dimension(0, 20)));
+		panel.add(tablePanel);
+		
+		add(panel, "MOSTRAR");
+		_localCL.show(this, "MOSTRAR");
+		_currentPanel = panel;
+	}
+	
 	public void clear() {
 		for (Component c : _lastPathComponents) {
 			pathPanel.remove(c);
@@ -751,13 +703,13 @@ public class FacturaGUIImp extends JPanel implements FacturaGUI, GUI{
 		switch (evento){
 			case EventosFactura.MOSTRAR_FACTURA_OK:
 				factura = (TFactura) datos;
-				
+				/*
 				mostrarIDText.setText(factura.getId().toString());
 				mostrarDescuentoText.setText(Double.valueOf(factura.getDescuento()).toString());
 				mostrarPrecioText.setText(Double.valueOf(factura.getPrecio()).toString());
 				mostrarFechaText.setText(factura.getFecha().toString());
 				mostrarIDClienteText.setText(factura.getIdCliente().toString());
-				mostrarIDEmpleadoText.setText(factura.getIdEmpleado().toString());
+				mostrarIDEmpleadoText.setText(factura.getIdEmpleado().toString());*/
 				
 				mostrarFacturaPanelCL.show(mostrarFacturaPanel, "FACTURA");
 				System.out.println("Mostrar Factura OK");
@@ -791,10 +743,8 @@ public class FacturaGUIImp extends JPanel implements FacturaGUI, GUI{
 				producto = (TProducto) datos;
 				
 				Integer cantidad = producto.getCantidad();
-				Double descuento = Double.valueOf(descuentoLabel.getText().replaceAll("\\D+",""));
 				Double precioUnidad = producto.getPrecio();
-				Double precioTeorico = (Double.valueOf(cantidad)*precioUnidad);
-				Double precioReal = precioTeorico*(1-descuento/100);
+				Double precioTeorico = (Double.valueOf(cantidad) * precioUnidad);
 				
 				int row = findRow(dataTable, anadirIDProducto.getText());
 				if (row >= 0) {
@@ -802,9 +752,9 @@ public class FacturaGUIImp extends JPanel implements FacturaGUI, GUI{
 					String cantidadTotal = Integer.valueOf(cantidadPresente + Integer.valueOf(cantidad)).toString(); 
 					model.setValueAt("x"+cantidadTotal, row, 2);
 				} else {
-					model.addRow(new Object[]{producto.getId().toString(), producto.getNombre(), "x"+cantidad, producto.getCalorias().toString(), Double.valueOf(precioUnidad).toString()});
+					model.addRow(new Object[]{producto.getId(), producto.getNombre(), "x"+cantidad, Double.valueOf(precioUnidad).toString()});
 				}
-				totalPrecio.setText(Double.valueOf(Double.valueOf(totalPrecio.getText()) + precioReal).toString());
+				totalPrecio.setText(Double.valueOf(Double.valueOf(totalPrecio.getText()) + precioTeorico).toString());
 				break;
 			case EventosFactura.ANADIR_PRODUCTO_A_F_KO:
 				mensaje = (String) datos;
@@ -817,7 +767,6 @@ public class FacturaGUIImp extends JPanel implements FacturaGUI, GUI{
 				int row2 = findRow(dataTable, borrarIDProducto.getText());
 				if (row2 >= 0) {
 					Integer cantidad2 = producto.getCantidad();
-					Double descuento2 = Double.valueOf(descuentoLabel.getText().replaceAll("\\D+",""));
 					Integer cantidadPresente = Integer.valueOf(model.getValueAt(row2, 2).toString().replaceAll("\\D+",""));
 					Double precioUnidad2 = producto.getPrecio();
 					Double precioTeorico2;
@@ -832,8 +781,7 @@ public class FacturaGUIImp extends JPanel implements FacturaGUI, GUI{
 						precioTeorico2 = (cantidad2*precioUnidad2);
 						model.setValueAt("x"+cantidadRestante, row2, 2);
 					}
-					Double precioReal2 = precioTeorico2*(1-descuento2/100);
-					totalPrecio.setText(Double.valueOf(Double.valueOf(totalPrecio.getText())-precioReal2).toString());
+					totalPrecio.setText(Double.valueOf(Double.valueOf(totalPrecio.getText()) - precioTeorico2).toString());
 				}
 				break;
 			case EventosFactura.BORRAR_PRODUCTO_KO:
@@ -841,35 +789,31 @@ public class FacturaGUIImp extends JPanel implements FacturaGUI, GUI{
 				
 				JOptionPane.showMessageDialog(null, mensaje, "Error", JOptionPane.ERROR_MESSAGE);
 				break;
-			case EventosFactura.APLICAR_DESCUENTO_OK:
-				double descuento3 = Double.parseDouble(descuentoLabel.getText().replaceAll("\\D+",""));
-				descuentoLabel.setText(descuentoAplicado+"%");
+			case EventosFactura.LISTAR_PRODUCTOS_COMPRADOS_POR_FECHA_OK:{
+				@SuppressWarnings("unchecked") List<TProducto> listaProductos = (List<TProducto>) datos;
 				
-				Double precioOriginal = Double.valueOf(Double.valueOf(totalPrecio.getText()) / (1 - descuento3 / 100));
-				totalPrecio.setText(Double.valueOf(precioOriginal * (1 - Double.parseDouble(descuentoAplicado) / 100)).toString());
+				addPathSeparator();
+				createPathButton("LISTAR PRODUCTOS");
+				mostrarProductosPanel();
+				
+				for (TProducto p : listaProductos) {
+					if(p.isCalzado() == true) {
+						TProductoCalzado pCalzado = (TProductoCalzado)p;
+						mostrarModel.addRow(new Object[]{p.getId(), p.getNombre(), Double.valueOf(p.getPrecio()), p.getCantidad(), pCalzado.getNumero(), "N/A"});
+					}
+					else {
+						TProductoTextil pTextil = (TProductoTextil)p;
+						mostrarModel.addRow(new Object[]{p.getId(), p.getNombre(), Double.valueOf(p.getPrecio()), p.getCantidad(), "N/A", pTextil.getTejido()});
+					}
+				}
+				};
 				break;
-			case EventosFactura.APLICAR_DESCUENTO_KO:
+			case EventosFactura.LISTAR_PRODUCTOS_COMPRADOS_POR_FECHA_KO:{
 				mensaje = (String) datos;
 				
 				JOptionPane.showMessageDialog(null, mensaje, "Error", JOptionPane.ERROR_MESSAGE);
+				};
 				break;
-			case EventosFactura.FACTURAS_CLIENTE_OK:
-				@SuppressWarnings("unchecked") List<TFactura> listaFacturas = (List<TFactura>) datos;
-
-				for (TFactura f : listaFacturas) {
-					facturasModel.addRow(new Object[]{f.getId().toString(), f.getIdCliente().toString(), f.getIdEmpleado().toString(), Double.valueOf(f.getDescuento()).toString(), Double.valueOf(f.getPrecio()).toString(), f.getFecha().toString()});
-				}
-				
-				facturasMainPanelCL.show(facturasMainPanel, "FACTURAS PAGADAS");
-				System.out.println("Listar Clientes OK");
-				break;
-			case EventosFactura.FACTURAS_CLIENTE_KO:
-				mensaje = (String) datos;
-				
-				showOutputMsg(facturaErrorArea, facturaErrorLabel, mensaje, false);
-				System.out.println("Listar Clientes KO");
-				break;
-			
 		}
 	}
 }
