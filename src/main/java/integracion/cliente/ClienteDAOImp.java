@@ -1,6 +1,5 @@
 package integracion.cliente;
 
-import integracion.ConnectionFactory;
 import integracion.transactionManager.TransactionManager;
 import negocio.cliente.TCliente;
 
@@ -15,7 +14,7 @@ public class ClienteDAOImp implements ClienteDAO {
 	private final String INSERT = "INSERT INTO cliente(nombre, fecha_registro, activo) VALUES(?, ?, ?)";
 	private final String READALL = "SELECT * FROM cliente";
 	private final String READ = READALL + " WHERE id_cliente = ?";
-	private final String UPDATE = "UPDATE cliente SET nombre = ? WHERE id_cliente = ?";
+	private final String UPDATE = "UPDATE cliente SET nombre = ?, SET activo = ? WHERE id_cliente = ?";
 	private final String DELETE = "UPDATE cliente SET activo = 0 WHERE id_cliente = ?";
 
 
@@ -75,7 +74,8 @@ public class ClienteDAOImp implements ClienteDAO {
 	public void modificar(TCliente e) throws Exception {
 		try (PreparedStatement st = conn.prepareStatement(UPDATE)) {
 			st.setString(1, e.getNombre());
-			st.setInt(2, e.getId());
+			st.setBoolean(2, e.isActivo());
+			st.setInt(3, e.getId());
 			st.executeUpdate();
 		} catch (Exception e1) {
 			e1.printStackTrace();

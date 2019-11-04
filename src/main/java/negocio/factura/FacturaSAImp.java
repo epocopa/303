@@ -5,8 +5,7 @@ import java.util.List;
 public class FacturaSAImp implements FacturaSA {
 
 	@Override
-	public boolean insertar(TFactura factura) throws Exception {
-		return false;
+	public void insertar(TFactura factura) throws Exception {
 	}
 
 	@Override
@@ -20,12 +19,10 @@ public class FacturaSAImp implements FacturaSA {
 	}
 
 	@Override
-	public boolean modificar(TFactura factura) {
-		return false;
+	public void modificar(TFactura factura) {
 	}
 
 	@Override
-	public boolean eliminar(int id) {
-		return false;
+	public void eliminar(int id) {
 	}
 }

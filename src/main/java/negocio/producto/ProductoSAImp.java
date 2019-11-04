@@ -4,8 +4,7 @@ import java.util.List;
 
 public class ProductoSAImp implements ProductoSA {
 	@Override
-	public boolean insertar(TProducto producto) throws Exception {
-		return false;
+	public void insertar(TProducto producto) throws Exception {
 	}
 
 	@Override
@@ -19,12 +18,10 @@ public class ProductoSAImp implements ProductoSA {
 	}
 
 	@Override
-	public boolean modificar(TProducto producto) {
-		return false;
+	public void modificar(TProducto producto) {
 	}
 
 	@Override
-	public boolean eliminar(int id) {
-		return false;
+	public void eliminar(int id) {
 	}
 }
