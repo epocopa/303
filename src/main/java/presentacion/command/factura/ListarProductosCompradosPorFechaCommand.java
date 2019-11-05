@@ -2,10 +2,10 @@ package presentacion.command.factura;
 
 import java.util.List;
 
-import negocio.cliente.TFecha;
+import negocio.TFecha;
 import negocio.factoriaSA.FactoriaSA;
 import negocio.factura.FacturaSA;
-import negocio.producto.TProducto;
+import negocio.factura.TFactura;
 import presentacion.command.Command;
 import presentacion.controladorAplicacion.Context;
 import presentacion.controladorAplicacion.EventosFactura;
@@ -19,7 +19,7 @@ public class ListarProductosCompradosPorFechaCommand implements Command{
 		TFecha productosFecha = (TFecha) datos;
 		
 		try{
-			List<TProducto> listaProductos = facturaSA.listarProductoPorFecha(productosFecha);
+			List<TFactura> listaProductos = facturaSA.listarProductosPorFecha(productosFecha);
 			return new Context(EventosFactura.LISTAR_PRODUCTOS_COMPRADOS_POR_FECHA_OK, listaProductos);
 		}catch(Exception e){
 			mensaje = e.getMessage();

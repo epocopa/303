@@ -28,12 +28,10 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableModel;
 
-import negocio.cliente.TFecha;
+import negocio.TFecha;
 import negocio.factura.TFactura;
 import negocio.factura.TLineaFactura;
 import negocio.producto.TProducto;
-import negocio.producto.TProductoCalzado;
-import negocio.producto.TProductoTextil;
 import presentacion.controladorAplicacion.Context;
 import presentacion.controladorAplicacion.ControladorAplicacion;
 import presentacion.controladorAplicacion.EventosFactura;
@@ -116,7 +114,7 @@ public class FacturaGUIImp extends JPanel implements FacturaGUI, GUI{
 					if (IDClienteText.length() > 0 && !IDClienteText.equals(" ")) {
 						TFactura factura = new TFactura();
 						factura.setCliente(Integer.parseInt(IDCliente.getText()));
-						factura.setActivo(true);
+						factura.setAbierta(true);
 						factura.setFecha(LocalDate.now());
 						Context contexto = new Context(EventosFactura.ABRIR_FACTURA, factura);
 						ControladorAplicacion.getInstance().accion(contexto);
@@ -250,7 +248,7 @@ public class FacturaGUIImp extends JPanel implements FacturaGUI, GUI{
 		tablePanel.setBackground(new Color(235, 237, 241));
 		tablePanel.setMaximumSize(new Dimension(600, 320));
 		
-		String[] columns = {"ID Producto", "Nombre", "Cantidad", "Precio por Unidad"};
+		String[] columns = {"ID Producto", "Cantidad"};
 
 		model = new DefaultTableModel(); 
         for (String column : columns) {
@@ -348,10 +346,7 @@ public class FacturaGUIImp extends JPanel implements FacturaGUI, GUI{
 				int result = JOptionPane.showOptionDialog(null, input, " Confirmar Factura", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
 				
 				if (result == JOptionPane.OK_OPTION) {
-					TFactura factura = new TFactura();
-					factura.setId(Id);
-					factura.setPrecio(Double.valueOf(totalPrecio.getText()));
-					Context contexto = new Context(EventosFactura.CERRAR_FACTURA, factura);
+					Context contexto = new Context(EventosFactura.CERRAR_FACTURA, Id);
 					ControladorAplicacion.getInstance().accion(contexto);
 				}
 			}
@@ -651,7 +646,7 @@ public class FacturaGUIImp extends JPanel implements FacturaGUI, GUI{
 		tablePanel.setBackground(new Color(235, 237, 241));
 		tablePanel.setMaximumSize(new Dimension(800, 320));
 		
-		String[] columns = {"ID Producto", "Nombre", "Precio", "Cantidad", "Numero de pie", "Tejido"};
+		String[] columns = {"ID Factura", "ID Producto", "Cantidad vendida"};
 		mostrarModel = new DefaultTableModel(); 
         for (String column : columns) {
         	mostrarModel.addColumn(column);
@@ -740,21 +735,19 @@ public class FacturaGUIImp extends JPanel implements FacturaGUI, GUI{
 				JOptionPane.showMessageDialog(null, mensaje, "Error", JOptionPane.ERROR_MESSAGE);
 				break;
 			case EventosFactura.ANADIR_PRODUCTO_A_F_OK:
-				producto = (TProducto) datos;
+				TLineaFactura linea = (TLineaFactura) datos;
 				
-				Integer cantidad = producto.getCantidad();
-				Double precioUnidad = producto.getPrecio();
-				Double precioTeorico = (Double.valueOf(cantidad) * precioUnidad);
+				Integer id = linea.getProducto();
+				Integer cantidad = linea.getCantidad();
 				
 				int row = findRow(dataTable, anadirIDProducto.getText());
 				if (row >= 0) {
-					Integer cantidadPresente = Integer.valueOf(model.getValueAt(row, 2).toString().replaceAll("\\D+",""));
+					Integer cantidadPresente = Integer.valueOf(model.getValueAt(row, 1).toString().replaceAll("\\D+",""));
 					String cantidadTotal = Integer.valueOf(cantidadPresente + Integer.valueOf(cantidad)).toString(); 
-					model.setValueAt("x"+cantidadTotal, row, 2);
+					model.setValueAt("x" + cantidadTotal, row, 1);
 				} else {
-					model.addRow(new Object[]{producto.getId(), producto.getNombre(), "x"+cantidad, Double.valueOf(precioUnidad).toString()});
+					model.addRow(new Object[]{id, "x" + cantidad});
 				}
-				totalPrecio.setText(Double.valueOf(Double.valueOf(totalPrecio.getText()) + precioTeorico).toString());
 				break;
 			case EventosFactura.ANADIR_PRODUCTO_A_F_KO:
 				mensaje = (String) datos;
@@ -762,26 +755,19 @@ public class FacturaGUIImp extends JPanel implements FacturaGUI, GUI{
 				JOptionPane.showMessageDialog(null, mensaje, "Error", JOptionPane.ERROR_MESSAGE);
 				break;
 			case EventosFactura.BORRAR_PRODUCTO_OK:
-				producto = (TProducto) datos;
-				
+				TLineaFactura lineaBorrar = (TLineaFactura) datos;
+
 				int row2 = findRow(dataTable, borrarIDProducto.getText());
 				if (row2 >= 0) {
-					Integer cantidad2 = producto.getCantidad();
-					Integer cantidadPresente = Integer.valueOf(model.getValueAt(row2, 2).toString().replaceAll("\\D+",""));
-					Double precioUnidad2 = producto.getPrecio();
-					Double precioTeorico2;
+					Integer cantidad2 = lineaBorrar.getCantidad();
+					Integer cantidadPresente = Integer.valueOf(model.getValueAt(row2, 1).toString().replaceAll("\\D+",""));
 					
 					if (cantidad2 >= cantidadPresente) {
-						precioTeorico2 = (cantidadPresente*precioUnidad2);
-						
 						model.removeRow(row2);
 					} else {
 						String cantidadRestante = Integer.valueOf(cantidadPresente - cantidad2).toString();
-						
-						precioTeorico2 = (cantidad2*precioUnidad2);
-						model.setValueAt("x"+cantidadRestante, row2, 2);
+						model.setValueAt("x"+cantidadRestante, row2, 1);
 					}
-					totalPrecio.setText(Double.valueOf(Double.valueOf(totalPrecio.getText()) - precioTeorico2).toString());
 				}
 				break;
 			case EventosFactura.BORRAR_PRODUCTO_KO:
@@ -790,20 +776,15 @@ public class FacturaGUIImp extends JPanel implements FacturaGUI, GUI{
 				JOptionPane.showMessageDialog(null, mensaje, "Error", JOptionPane.ERROR_MESSAGE);
 				break;
 			case EventosFactura.LISTAR_PRODUCTOS_COMPRADOS_POR_FECHA_OK:{
-				@SuppressWarnings("unchecked") List<TProducto> listaProductos = (List<TProducto>) datos;
+				@SuppressWarnings("unchecked") List<TFactura> listaFacturas = (List<TFactura>) datos;
 				
 				addPathSeparator();
 				createPathButton("LISTAR PRODUCTOS");
 				mostrarProductosPanel();
 				
-				for (TProducto p : listaProductos) {
-					if(p.isCalzado() == true) {
-						TProductoCalzado pCalzado = (TProductoCalzado)p;
-						mostrarModel.addRow(new Object[]{p.getId(), p.getNombre(), Double.valueOf(p.getPrecio()), p.getCantidad(), pCalzado.getNumero(), "N/A"});
-					}
-					else {
-						TProductoTextil pTextil = (TProductoTextil)p;
-						mostrarModel.addRow(new Object[]{p.getId(), p.getNombre(), Double.valueOf(p.getPrecio()), p.getCantidad(), "N/A", pTextil.getTejido()});
+				for (TFactura p : listaFacturas) {
+					for(TLineaFactura l : p.getLineaFacturas()) {
+						mostrarModel.addRow(new Object[]{l.getFactura(), l.getProducto(), l.getCantidad()});
 					}
 				}
 				};

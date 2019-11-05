@@ -3,7 +3,6 @@ package presentacion.command.factura;
 import negocio.factoriaSA.FactoriaSA;
 import negocio.factura.FacturaSA;
 import negocio.factura.TLineaFactura;
-import negocio.producto.TProducto;
 import presentacion.command.Command;
 import presentacion.controladorAplicacion.Context;
 import presentacion.controladorAplicacion.EventosFactura;
@@ -17,8 +16,8 @@ public class BorrarProductoCommand implements Command{
 		FacturaSA facturaSA = FactoriaSA.getInstancia().generaFacturaSA();
 		
 		try{
-			TProducto producto = facturaSA.borrarProducto(factura);
-			return new Context(EventosFactura.BORRAR_PRODUCTO_OK, producto);
+			facturaSA.borrarProducto(factura);
+			return new Context(EventosFactura.BORRAR_PRODUCTO_OK, factura);
 		} catch(Exception e){
 			mensaje = e.getMessage();
 			return new Context(EventosFactura.BORRAR_PRODUCTO_KO, mensaje);
