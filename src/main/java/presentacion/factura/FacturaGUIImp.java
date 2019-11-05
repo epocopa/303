@@ -31,7 +31,6 @@ import javax.swing.table.DefaultTableModel;
 import negocio.TFecha;
 import negocio.factura.TFactura;
 import negocio.factura.TLineaFactura;
-import negocio.producto.TProducto;
 import presentacion.controladorAplicacion.Context;
 import presentacion.controladorAplicacion.ControladorAplicacion;
 import presentacion.controladorAplicacion.EventosFactura;
@@ -63,7 +62,9 @@ public class FacturaGUIImp extends JPanel implements FacturaGUI, GUI{
 	private JLabel mostrarActivoText;
 	private JLabel mostrarPrecioText;
 	private JLabel mostrarFechaText;
+	private JLabel mostrarIDClienteText;
 	
+	private DefaultTableModel mostrarFacturaModel;
 	private DefaultTableModel mostrarModel;
 	DefaultTableModel model;
 	JTable dataTable;
@@ -142,7 +143,7 @@ public class FacturaGUIImp extends JPanel implements FacturaGUI, GUI{
 		buscarBtn.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				addPathSeparator();
-				createPathButton("BUSCAR FACTURA");
+				createPathButton("MOSTRAR FACTURA");
 				buscarPanel();
 			}
 		});
@@ -531,57 +532,59 @@ public class FacturaGUIImp extends JPanel implements FacturaGUI, GUI{
 		facturaPanel.setMaximumSize(new Dimension(1024, 460));
 			
 		//--
-					
-		JPanel dataPanel = new JPanel(new GridBagLayout());
-		dataPanel.setBackground(new Color(235, 237, 241));
+		
+		JPanel dataPanel = new JPanel();
+		dataPanel.setLayout(new BoxLayout(dataPanel, BoxLayout.Y_AXIS));
 		dataPanel.setAlignmentX(JComponent.CENTER_ALIGNMENT);
-		dataPanel.setMaximumSize(new Dimension(1024, 150));
+		dataPanel.setBackground(new Color(235, 237, 241));
+		dataPanel.setMaximumSize(new Dimension(600, 320));
+		
+		String[] columns = {"ID Producto", "Cantidad"};
+
+		mostrarFacturaModel = new DefaultTableModel(); 
+        for (String column : columns) {
+        	mostrarFacturaModel.addColumn(column);
+        }
+		JTable table = new JTable(mostrarFacturaModel);
+		table.setEnabled(false);
+		table.getTableHeader().setReorderingAllowed(false);
+		table.setPreferredScrollableViewportSize(new Dimension(450, 63));
+		table.setFillsViewportHeight(true);
+		
+		JScrollPane scrollPane = new JScrollPane(table);
+		dataPanel.add(scrollPane);
 						
 		GridBagConstraints c2 = new GridBagConstraints();
 		c2.gridx = 0;
 		c2.gridy = 0;	
 		c2.anchor = GridBagConstraints.LINE_END;
 		c2.insets = new Insets(5,5,0,0);
-		JLabel IDLabel2 = new JLabel("ID Factura: ");
-		IDLabel2.setFont(new Font("Arial", Font.PLAIN, 22));
-		dataPanel.add(IDLabel2, c2);
+		JLabel separacion = new JLabel(" ");
+		dataPanel.add(separacion, c2);
 		
-		c2.gridy++;
-		JLabel FechaLabel = new JLabel("Fecha: ");
-		FechaLabel.setFont(new Font("Arial", Font.PLAIN, 22));
-		dataPanel.add(FechaLabel, c2);
-		
-		c2.gridy++;
-		JLabel PrecioLabel = new JLabel("Precio: ");
-		PrecioLabel.setFont(new Font("Arial", Font.PLAIN, 22));
-		dataPanel.add(PrecioLabel, c2);	
-					
-		c2.gridy++;
-		JLabel ActivoLabel = new JLabel("Activo: ");	
-		ActivoLabel.setFont(new Font("Arial", Font.PLAIN, 22));
-		dataPanel.add(ActivoLabel, c2);
-						
-		c2.gridx++;
-		c2.gridy = 0;
-		c2.anchor = GridBagConstraints.LINE_START;
-		mostrarIDText = new JLabel("0");
+		mostrarIDText = new JLabel(" ");
 		mostrarIDText.setFont(new Font("Arial", Font.PLAIN, 18));
 		dataPanel.add(mostrarIDText, c2);
 		
 		c2.gridy++;
-		mostrarFechaText = new JLabel("0");
+		mostrarFechaText = new JLabel(" ");
 		mostrarFechaText.setFont(new Font("Arial", Font.PLAIN, 18));
-		dataPanel.add(mostrarFechaText, c2);		
+		dataPanel.add(mostrarFechaText, c2);
 		
 		c2.gridy++;
-		mostrarPrecioText = new JLabel("0");
+		mostrarPrecioText = new JLabel(" ");
 		mostrarPrecioText.setFont(new Font("Arial", Font.PLAIN, 18));
-		dataPanel.add(mostrarPrecioText, c2);		
-						
+		dataPanel.add(mostrarPrecioText, c2);	
+					
 		c2.gridy++;
-		mostrarActivoText = new JLabel("0");
+		mostrarActivoText = new JLabel(" ");	
 		mostrarActivoText.setFont(new Font("Arial", Font.PLAIN, 18));
 		dataPanel.add(mostrarActivoText, c2);
+		
+		c2.gridy++;
+		mostrarIDClienteText = new JLabel(" ");	
+		mostrarIDClienteText.setFont(new Font("Arial", Font.PLAIN, 18));
+		dataPanel.add(mostrarIDClienteText, c2);
 		
 		//--
 		
@@ -691,17 +694,18 @@ public class FacturaGUIImp extends JPanel implements FacturaGUI, GUI{
 	public void actualizar(int evento, Object datos) {
 		String mensaje;
 		TFactura factura;
-		TProducto producto;
 		switch (evento){
 			case EventosFactura.MOSTRAR_FACTURA_OK:
 				factura = (TFactura) datos;
-				/*
-				mostrarIDText.setText(factura.getId().toString());
-				mostrarDescuentoText.setText(Double.valueOf(factura.getDescuento()).toString());
-				mostrarPrecioText.setText(Double.valueOf(factura.getPrecio()).toString());
-				mostrarFechaText.setText(factura.getFecha().toString());
-				mostrarIDClienteText.setText(factura.getIdCliente().toString());
-				mostrarIDEmpleadoText.setText(factura.getIdEmpleado().toString());*/
+				mostrarIDText.setText("ID Factura: " + String.valueOf(factura.getId()));
+				mostrarPrecioText.setText("Precio: " + Double.valueOf(factura.getPrecio()).toString());
+				mostrarFechaText.setText("Fecha: " + factura.getFecha().toString());
+				mostrarIDClienteText.setText("ID Cliente: " + String.valueOf(factura.getCliente()));
+				mostrarActivoText.setText("Abierta: " + String.valueOf(factura.isAbierta()));
+				
+				for (TLineaFactura l : factura.getLineaFacturas()) {
+					mostrarFacturaModel.addRow(new Object[]{l.getProducto(), l.getCantidad()});
+				}
 				
 				mostrarFacturaPanelCL.show(mostrarFacturaPanel, "FACTURA");
 				System.out.println("Mostrar Factura OK");
