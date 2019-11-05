@@ -102,7 +102,7 @@ public class FacturaSAImp implements FacturaSA {
 		} else if(lineaFactura.getCantidad() <= 0) {
 			throw new Exception("La cantidad es <= 0 -> Error");
 		} else {
-			FactoriaDAO.getInstancia().getFacturaDAO().borrarProducto(new TOAProductoFactura(lineaFactura, p)));
+			FactoriaDAO.getInstancia().getFacturaDAO().borrarProducto(new TOAProductoFactura(lineaFactura, p));
 			t.commit();
 			TransactionManager.getInstancia().removeTransaction();
 		}
