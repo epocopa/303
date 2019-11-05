@@ -85,7 +85,7 @@ class ClienteDAOImpTest {
 		List<TLineaFactura> lineaFacturas =new ArrayList<TLineaFactura>();
 		 
 		// factura 1
-		factura1.setActivo(true);
+		factura1.setAbierta(true);
 		factura1.setCliente(cliente1.getId());
 		factura1.setFecha(LocalDate.now());
 		lineaFacturas.add(new TLineaFactura(factura1.getId(),producto1.getId(),1));
@@ -94,7 +94,7 @@ class ClienteDAOImpTest {
 		factura1.setPrecio(producto1.getPrecio()+producto2.getPrecio());
 		 
 		// factura 2
-		factura2.setActivo(true);
+		factura2.setAbierta(true);
 		factura2.setCliente(cliente1.getId());
 		factura2.setFecha(LocalDate.now());
 		factura2.setLineaFacturas( new ArrayList<TLineaFactura>());
@@ -142,7 +142,7 @@ class ClienteDAOImpTest {
 		try {
 			facturaDAOImp.insertar(factura1);
 	
-			factura1.setActivo(true);
+			factura1.setAbierta(true);
 			factura1.setCliente(factura1.getId());
 	
 			facturaDAOImp.modificar(factura1);
@@ -158,7 +158,7 @@ class ClienteDAOImpTest {
 		try {
 			facturaDAOImp.insertar(factura1);
 			facturaDAOImp.eliminar(factura1.getId());
-			assertFalse(facturaDAOImp.mostrar(factura1.getId()).isActivo());	
+			assertFalse(facturaDAOImp.mostrar(factura1.getId()).isAbierta());	
 		} catch (Exception e) {
 			fail("Excepcion al eliminar");
 		}	
