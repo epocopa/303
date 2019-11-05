@@ -942,7 +942,7 @@ public class ProductoGUIImpl extends JPanel implements ProductoGUI, GUI{
 				mostrarNombreText.setText(producto.getNombre());
 				mostrarPrecioText.setText(Double.valueOf(producto.getPrecio()).toString());
 				mostrarCantidadText.setText(cantidad.toString());
-				mostrarActivoText.setText(Boolean.toString(producto.getActivo()));
+				mostrarActivoText.setText(Boolean.toString(producto.isActivo()));
 				
 				if(producto.isCalzado() == true) {
 					TProductoCalzado pCalzado = (TProductoCalzado) datos;
@@ -996,7 +996,7 @@ public class ProductoGUIImpl extends JPanel implements ProductoGUI, GUI{
 				editarNombreField.setText(producto.getNombre());
 				editarPrecioField.setText(Double.valueOf(producto.getPrecio()).toString());
 				editarCantidadField.setText(Integer.valueOf(producto.getCantidad()).toString());
-				editarActivoField.setText(Boolean.toString(producto.getActivo()));
+				editarActivoField.setText(Boolean.toString(producto.isActivo()));
 				
 				if(producto.isCalzado() == true) {
 					TProductoCalzado pCalzado = (TProductoCalzado) datos;
