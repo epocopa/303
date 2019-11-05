@@ -104,7 +104,7 @@ public class ProductoGUIImpl extends JPanel implements ProductoGUI, GUI{
 		c.gridy = 0;
 		c.insets = new Insets(10,10,10,10);
 		
-		JButton anadirBtn = createMenuButton("resources/icons/productos/anadir-producto.png", new Color(77, 198, 51));
+		JButton anadirBtn = createMenuButton("resources/icons/productos/anadir-producto.png", new Color(91, 155, 213));
 		anadirBtn.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				addPathSeparator();
@@ -115,7 +115,7 @@ public class ProductoGUIImpl extends JPanel implements ProductoGUI, GUI{
 		_homePanel.add(anadirBtn, c);
 		
 		c.gridx++;
-		JButton editarBtn = createMenuButton("resources/icons/productos/editar-producto.png", new Color(240, 178, 44));
+		JButton editarBtn = createMenuButton("resources/icons/productos/editar-producto.png", new Color(255, 192, 0));
 		editarBtn.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				addPathSeparator();
@@ -126,7 +126,7 @@ public class ProductoGUIImpl extends JPanel implements ProductoGUI, GUI{
 		_homePanel.add(editarBtn, c);
 		
 		c.gridx++;
-		JButton borrarBtn = createMenuButton("resources/icons/productos/eliminar-producto.png", new Color(218, 41, 41));
+		JButton borrarBtn = createMenuButton("resources/icons/productos/eliminar-producto.png", new Color(112, 173, 71));
 		borrarBtn.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				addPathSeparator();
@@ -138,7 +138,7 @@ public class ProductoGUIImpl extends JPanel implements ProductoGUI, GUI{
 		
 		c.gridx = 0;
 		c.gridy++;
-		JButton listarBtn = createMenuButton("resources/icons/productos/mostrar-productos.png", new Color(56, 176, 225));
+		JButton listarBtn = createMenuButton("resources/icons/productos/mostrar-productos.png", new Color(234, 80, 54));
 		listarBtn.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				Context contexto = new Context(EventosProducto.LISTAR_PRODUCTOS, null);
@@ -148,7 +148,7 @@ public class ProductoGUIImpl extends JPanel implements ProductoGUI, GUI{
 		_homePanel.add(listarBtn, c);
 		
 		c.gridx++;
-		JButton buscarBtn = createMenuButton("resources/icons/productos/buscar-producto.png", new Color(47, 101, 175));
+		JButton buscarBtn = createMenuButton("resources/icons/productos/buscar-producto.png", new Color(47, 85, 151));
 		buscarBtn.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				addPathSeparator();
@@ -261,7 +261,7 @@ public class ProductoGUIImpl extends JPanel implements ProductoGUI, GUI{
 		formPanel.add(cantidadLabel, c);
 				
 		c.gridy++;
-		JLabel esCalzadoLabel = new JLabel("¿Es calzado? ");
+		JLabel esCalzadoLabel = new JLabel("Calzado(?): ");
 		esCalzadoLabel.setFont(new Font("Arial", Font.PLAIN, 18));
 		formPanel.add(esCalzadoLabel, c);
 				
@@ -674,7 +674,7 @@ public class ProductoGUIImpl extends JPanel implements ProductoGUI, GUI{
 		tablePanel.setBackground(new Color(235, 237, 241));
 		tablePanel.setMaximumSize(new Dimension(800, 320));
 		
-		String[] columns = {"ID Producto", "Nombre", "Precio", "Cantidad", "Numero de pie", "Tejido"};
+		String[] columns = {"ID Producto", "Nombre", "Precio", "Cantidad", "Numero de pie", "Tejido", "Activo"};
 		mostrarModel = new DefaultTableModel(); 
         for (String column : columns) {
         	mostrarModel.addColumn(column);
@@ -967,7 +967,6 @@ public class ProductoGUIImpl extends JPanel implements ProductoGUI, GUI{
 				break;
 			case EventosProducto.LISTAR_PRODUCTOS_OK:
 				@SuppressWarnings("unchecked") List<TProducto> listaProductos = (List<TProducto>) datos;
-				
 				addPathSeparator();
 				createPathButton("LISTAR PRODUCTOS");
 				mostrarPanel();
@@ -975,11 +974,11 @@ public class ProductoGUIImpl extends JPanel implements ProductoGUI, GUI{
 				for (TProducto p : listaProductos) {
 					if(p.isCalzado() == true) {
 						TProductoCalzado pCalzado = (TProductoCalzado)p;
-						mostrarModel.addRow(new Object[]{p.getId(), p.getNombre(), Double.valueOf(p.getPrecio()), p.getCantidad(), pCalzado.getNumero(), "N/A"});
+						mostrarModel.addRow(new Object[]{p.getId(), p.getNombre(), Double.valueOf(p.getPrecio()), p.getCantidad(), pCalzado.getNumero(), "N/A", p.isActivo()});
 					}
 					else {
 						TProductoTextil pTextil = (TProductoTextil)p;
-						mostrarModel.addRow(new Object[]{p.getId(), p.getNombre(), Double.valueOf(p.getPrecio()), p.getCantidad(), "N/A", pTextil.getTejido()});
+						mostrarModel.addRow(new Object[]{p.getId(), p.getNombre(), Double.valueOf(p.getPrecio()), p.getCantidad(), "N/A", pTextil.getTejido(), p.isActivo()});
 					}
 				}
 				System.out.println("Listar Productos OK");

@@ -98,7 +98,7 @@ public class FacturaGUIImp extends JPanel implements FacturaGUI, GUI{
 		c.gridy = 0;
 		c.insets = new Insets(10,10,10,10);
 		
-		JButton abrirBtn = createMenuButton("resources/icons/facturas/abrir-factura.png", new Color(77, 198, 51));
+		JButton abrirBtn = createMenuButton("resources/icons/facturas/abrir-factura.png", new Color(91, 155, 213));
 		abrirBtn.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){				
 				JTextField IDCliente = new JTextField();
@@ -128,7 +128,7 @@ public class FacturaGUIImp extends JPanel implements FacturaGUI, GUI{
 		_homePanel.add(abrirBtn, c);
 		
 		c.gridx++;
-		JButton facturasFechasBtn = createMenuButton("resources/icons/facturas/productos_comprados_entre_fechas.png", new Color(236, 4, 255));
+		JButton facturasFechasBtn = createMenuButton("resources/icons/facturas/productos_comprados_entre_fechas.png", new Color(234, 80, 54));
 		facturasFechasBtn.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				addPathSeparator();
@@ -139,7 +139,7 @@ public class FacturaGUIImp extends JPanel implements FacturaGUI, GUI{
 		_homePanel.add(facturasFechasBtn, c);
 		
 		c.gridx++;
-		JButton buscarBtn = createMenuButton("resources/icons/facturas/buscar-factura.png", new Color(47, 101, 175));
+		JButton buscarBtn = createMenuButton("resources/icons/facturas/buscar-factura.png", new Color(0, 112, 192));
 		buscarBtn.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				addPathSeparator();

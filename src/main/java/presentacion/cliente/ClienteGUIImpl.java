@@ -82,7 +82,7 @@ public class ClienteGUIImpl extends JPanel implements ClienteGUI, GUI {
 		c.gridy = 0;
 		c.insets = new Insets(10,10,10,10);
 		
-		JButton anadirBtn = createMenuButton("resources/icons/clientes/anadir-cliente.png", new Color(77, 198, 51));
+		JButton anadirBtn = createMenuButton("resources/icons/clientes/anadir-cliente.png", new Color(91, 155, 213));
 		anadirBtn.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				addPathSeparator();
@@ -93,7 +93,7 @@ public class ClienteGUIImpl extends JPanel implements ClienteGUI, GUI {
 		_homePanel.add(anadirBtn, c);
 		
 		c.gridx++;
-		JButton editarBtn = createMenuButton("resources/icons/clientes/editar-cliente.png", new Color(240, 178, 44));
+		JButton editarBtn = createMenuButton("resources/icons/clientes/editar-cliente.png", new Color(255, 192, 0));
 		editarBtn.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				addPathSeparator();
@@ -104,7 +104,7 @@ public class ClienteGUIImpl extends JPanel implements ClienteGUI, GUI {
 		_homePanel.add(editarBtn, c);
 		
 		c.gridx++;
-		JButton listarBtn = createMenuButton("resources/icons/clientes/mostrar-clientes.png", new Color(56, 176, 225));
+		JButton listarBtn = createMenuButton("resources/icons/clientes/mostrar-clientes.png", new Color(234, 80, 54));
 		listarBtn.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				Context contexto = new Context(EventosCliente.LISTAR_CLIENTES, null);
@@ -115,7 +115,7 @@ public class ClienteGUIImpl extends JPanel implements ClienteGUI, GUI {
 		
 		c.gridx = 0;
 		c.gridy++;
-		JButton buscarBtn = createMenuButton("resources/icons/clientes/buscar-cliente.png", new Color(47, 101, 175));
+		JButton buscarBtn = createMenuButton("resources/icons/clientes/buscar-cliente.png", new Color(0, 112, 192));
 		buscarBtn.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				addPathSeparator();
@@ -126,7 +126,7 @@ public class ClienteGUIImpl extends JPanel implements ClienteGUI, GUI {
 		_homePanel.add(buscarBtn, c);
 		
 		c.gridx++;
-		JButton bajaBtn = createMenuButton("resources/icons/clientes/baja_cliente.png", new Color(10, 220, 72));
+		JButton bajaBtn = createMenuButton("resources/icons/clientes/baja-cliente.png", new Color(112, 173, 71));
 		bajaBtn.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				addPathSeparator();
@@ -137,7 +137,7 @@ public class ClienteGUIImpl extends JPanel implements ClienteGUI, GUI {
 		_homePanel.add(bajaBtn, c);
 		
 		c.gridx++;
-		JButton clientesPorFechaBtn = createMenuButton("resources/icons/clientes/clientes_por_fecha.png", new Color(163, 73, 164));
+		JButton clientesPorFechaBtn = createMenuButton("resources/icons/clientes/clientes-por-fechas.png", new Color(0, 176, 80));
 		clientesPorFechaBtn.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				addPathSeparator();
@@ -579,7 +579,7 @@ public class ClienteGUIImpl extends JPanel implements ClienteGUI, GUI {
 		tablePanel.setBackground(new Color(235, 237, 241));
 		tablePanel.setMaximumSize(new Dimension(800, 320));
 		
-		String[] columns = {"ID Cliente", "Nombre", "Fecha de registro"};
+		String[] columns = {"ID Cliente", "Nombre", "Fecha de registro", "Activo"};
 
 		mostrarModel = new DefaultTableModel(); 
         for (String column : columns) {
@@ -919,7 +919,7 @@ public class ClienteGUIImpl extends JPanel implements ClienteGUI, GUI {
 				mostrarPanel();
 				
 				for (TCliente c : listaClientes) {
-					mostrarModel.addRow(new Object[]{c.getId(), c.getNombre(), c.getFecha_registro()});
+					mostrarModel.addRow(new Object[]{c.getId(), c.getNombre(), c.getFecha_registro(), c.isActivo()});
 				}
 				System.out.println("Listar Clientes OK");
 				break;
@@ -981,7 +981,7 @@ public class ClienteGUIImpl extends JPanel implements ClienteGUI, GUI {
 				mostrarPanel();
 				
 				for (TCliente c : listaClientesFecha) {
-					mostrarModel.addRow(new Object[]{c.getId(), c.getNombre(), c.getFecha_registro()});
+					mostrarModel.addRow(new Object[]{c.getId(), c.getNombre(), c.getFecha_registro(), c.isActivo()});
 				}
 				System.out.println("Listar Clientes OK");
 			}; break;
