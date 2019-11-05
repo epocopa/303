@@ -1,5 +1,7 @@
 package negocio.cliente;
 
+import negocio.TFecha;
+
 import java.util.List;
 
 public interface ClienteSA {
@@ -8,4 +10,5 @@ public interface ClienteSA {
 	List<TCliente> mostrarTodos() throws Exception;
 	void modificar(TCliente cliente) throws Exception;
 	void eliminar(int id) throws Exception;
+	List<TCliente> listarClientesPorFecha(TFecha fecha) throws Exception;
 }

@@ -3,6 +3,7 @@ package negocio.cliente;
 import integracion.factoriaDAO.FactoriaDAO;
 import integracion.transaction.Transaction;
 import integracion.transactionManager.TransactionManager;
+import negocio.TFecha;
 
 import java.util.List;
 
@@ -46,8 +47,8 @@ public class ClienteSAImp implements ClienteSA {
 			FactoriaDAO.getInstancia().getClienteDAO().modificar(c);
 			t.commit();
 			TransactionManager.getInstancia().removeTransaction();
-		} else if (c != null){
-			throw  new Exception("No existe ningun cliente con ID =" + c.getId());
+		} else if (c == null){
+			throw  new Exception("No existe ningun cliente con ID =" + cliente.getId());
 		} else {
 			throw  new Exception("El cliente seleccionado no esta activo");
 		}
@@ -62,10 +63,21 @@ public class ClienteSAImp implements ClienteSA {
 			FactoriaDAO.getInstancia().getClienteDAO().eliminar(id);
 			t.commit();
 			TransactionManager.getInstancia().removeTransaction();
-		} else if (c != null){
-			throw  new Exception("No existe ningun cliente con ID =" + c.getId());
+		} else if (c == null){
+			throw  new Exception("No existe ningun cliente con ID =" + id);
 		} else {
 			throw  new Exception("El cliente seleccionado no esta activo");
 		}
+	}
+
+	public List<TCliente> listarClientesPorFecha(TFecha fecha) throws Exception {
+		Transaction t = TransactionManager.getInstancia().createTransaction();
+		if (fecha.getFechaIni().isAfter(fecha.getFechaFin())) {
+			throw  new Exception("La fecha inicial es posterior a la fecha final");
+		}
+		List<TCliente> lista = FactoriaDAO.getInstancia().getClienteDAO().listarClientesPorFecha(fecha);
+		t.commit();
+		TransactionManager.getInstancia().removeTransaction();
+		return lista;
 	}
 }

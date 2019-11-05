@@ -1,7 +1,7 @@
 package presentacion.cliente;
 
 import negocio.cliente.TCliente;
-import negocio.cliente.TFecha;
+import negocio.TFecha;
 import presentacion.controladorAplicacion.Context;
 import presentacion.controladorAplicacion.ControladorAplicacion;
 import presentacion.controladorAplicacion.EventosCliente;

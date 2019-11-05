@@ -4,7 +4,7 @@ import java.util.List;
 
 import negocio.cliente.ClienteSA;
 import negocio.cliente.TCliente;
-import negocio.cliente.TFecha;
+import negocio.TFecha;
 import negocio.factoriaSA.FactoriaSA;
 import presentacion.command.Command;
 import presentacion.controladorAplicacion.Context;

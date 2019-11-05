@@ -6,7 +6,7 @@ import java.util.List;
 public class TFactura {
 	private int id;
 	private double precio;
-	private boolean activo;
+	private boolean abierta;
 	private LocalDate fecha;
 	private List<TLineaFactura> lineaFacturas;
 	private int cliente;
@@ -14,10 +14,10 @@ public class TFactura {
 	public TFactura() {
 	}
 	
-	public TFactura(int id, double precio, boolean activo, LocalDate fecha, List<TLineaFactura> lineaFacturas, int cliente) {
+	public TFactura(int id, double precio, boolean abierta, LocalDate fecha, List<TLineaFactura> lineaFacturas, int cliente) {
 		this.id = id;
 		this.precio = precio;
-		this.activo = activo;
+		this.abierta = abierta;
 		this.fecha = fecha;
 		this.lineaFacturas = lineaFacturas;
 		this.cliente = cliente;
@@ -39,12 +39,12 @@ public class TFactura {
 		this.precio = precio;
 	}
 
-	public boolean isActivo() {
-		return activo;
+	public boolean isAbierta() {
+		return abierta;
 	}
 
-	public void setActivo(boolean activo) {
-		this.activo = activo;
+	public void setAbierta(boolean abierta) {
+		this.abierta = abierta;
 	}
 
 	public LocalDate getFecha() {
@@ -76,7 +76,7 @@ public class TFactura {
 		return "TFactura{" +
 				"id=" + id +
 				", precio=" + precio +
-				", activo=" + activo +
+				", abierta=" + abierta +
 				", fecha=" + fecha +
 				", lineaFacturas=" + lineaFacturas +
 				", cliente=" + cliente +

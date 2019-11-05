@@ -1,6 +1,7 @@
 package integracion.cliente;
 
 import integracion.transactionManager.TransactionManager;
+import negocio.TFecha;
 import negocio.cliente.TCliente;
 
 import java.sql.*;
@@ -9,13 +10,13 @@ import java.util.List;
 
 public class ClienteDAOImp implements ClienteDAO {
 	private Connection conn;
-	//TODO QUERY
 
 	private final String INSERT = "INSERT INTO cliente(nombre, fecha_registro, activo) VALUES(?, ?, ?)";
 	private final String READALL = "SELECT * FROM cliente";
 	private final String READ = READALL + " WHERE id_cliente = ?";
 	private final String UPDATE = "UPDATE cliente SET nombre = ?, SET activo = ? WHERE id_cliente = ?";
 	private final String DELETE = "UPDATE cliente SET activo = 0 WHERE id_cliente = ?";
+	private final String READFECHA = "SELECT * FROM cliente WHERE fecha_registro BETWEEN ? AND ?";
 
 
 	public ClienteDAOImp() {
@@ -91,5 +92,19 @@ public class ClienteDAOImp implements ClienteDAO {
 			e.printStackTrace();
 			throw new Exception("Eliminar Cliente -> Error");
 		}
+	}
+
+	public List<TCliente> listarClientesPorFecha(TFecha fecha) throws Exception {
+		ArrayList<TCliente> lista = new ArrayList<>();
+		try (PreparedStatement st = conn.prepareStatement(READFECHA); ResultSet rs = st.executeQuery()) {
+			while (rs.next()) {
+				lista.add(new TCliente(rs.getInt("id_cliente"), rs.getBoolean("activo"), rs.getDate("fecha_registro").toLocalDate(),
+						rs.getString("nombre")));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new Exception("Mostrar Clientes por fecha -> Error");
+		}
+		return lista;
 	}
 }
