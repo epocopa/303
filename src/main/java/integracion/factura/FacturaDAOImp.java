@@ -4,6 +4,7 @@ import integracion.transactionManager.TransactionManager;
 import negocio.TFecha;
 import negocio.factura.TFactura;
 import negocio.factura.TLineaFactura;
+import negocio.factura.TOAProductoFactura;
 import negocio.producto.TProducto;
 
 import java.sql.*;
@@ -112,16 +113,16 @@ public class FacturaDAOImp implements FacturaDAO {
 	}
 
 	@Override
-	public void anadirProducto(TLineaFactura linea, TProducto p) throws Exception {
+	public void anadirProducto(TOAProductoFactura toa) throws Exception {
 		try (PreparedStatement st = conn.prepareStatement(READLINEA)) {
-			st.setInt(1, linea.getFactura());
-			st.setInt(2, linea.getProducto());
+			st.setInt(1, toa.getLinea().getFactura());
+			st.setInt(2, toa.getLinea().getProducto());
 			try (ResultSet rs = st.executeQuery()) {
 				if (!rs.next()) {//Insertamos linea o actualizamos cantidad
 					try (PreparedStatement ste = conn.prepareStatement(INSERTLINEA)) {
-						ste.setInt(1, linea.getFactura());
-						ste.setInt(2, linea.getProducto());
-						ste.setInt(3, linea.getCantidad());
+						ste.setInt(1, toa.getLinea().getFactura());
+						ste.setInt(2, toa.getLinea().getProducto());
+						ste.setInt(3, toa.getLinea().getCantidad());
 						ste.executeUpdate();
 					} catch (SQLException e) {
 						e.printStackTrace();
@@ -129,9 +130,9 @@ public class FacturaDAOImp implements FacturaDAO {
 					}
 				} else {
 					try (PreparedStatement ste = conn.prepareStatement(UPDATECANTIDADLINEA)) {
-						ste.setInt(1, linea.getCantidad() + rs.getInt("cantidad"));
-						ste.setInt(2, linea.getFactura());
-						ste.setInt(3, linea.getProducto());
+						ste.setInt(1, toa.getLinea().getCantidad() + rs.getInt("cantidad"));
+						ste.setInt(2, toa.getLinea().getFactura());
+						ste.setInt(3, toa.getLinea().getProducto());
 						ste.executeUpdate();
 					} catch (SQLException e) {
 						e.printStackTrace();
@@ -140,21 +141,20 @@ public class FacturaDAOImp implements FacturaDAO {
 				}
 				//Actualizamos la cantidad en la tabla de productos
 				try (PreparedStatement ste = conn.prepareStatement(UPDATECANTIDADPRODUCTO)) {
-					ste.setInt(1, p.getCantidad() - linea.getCantidad());
-					ste.setInt(2, linea.getProducto());
+					ste.setInt(1, toa.getProducto().getCantidad() - toa.getLinea().getCantidad());
+					ste.setInt(2, toa.getLinea().getProducto());
 					ste.executeUpdate();
 				} catch (SQLException e1) {
 					e1.printStackTrace();
 				}
 				//Actualizamos total factura
 				try (PreparedStatement ste = conn.prepareStatement(READ)) {
-					ste.setInt(1, linea.getFactura());
+					ste.setInt(1, toa.getLinea().getFactura());
 					try (ResultSet rse = ste.executeQuery()) {
 						if (rse.next()) {
 							double precio = rse.getDouble("precio");
 							try (PreparedStatement ste2 = conn.prepareStatement(UPDATE)) {
-								ste2.setDouble(1, precio + (linea.getCantidad() * p.getPrecio()));
-								ste2.setInt(2, linea.getFactura());
+								ste2.setDouble(1, precio +  toa.getLinea().getCantidad() * toa.getProducto().getPrecio());								ste2.setInt(2, toa.getLinea().getFactura());
 								ste2.executeUpdate();
 							} catch (SQLException e) {
 								e.printStackTrace();
@@ -171,27 +171,27 @@ public class FacturaDAOImp implements FacturaDAO {
 	}
 
 	@Override
-	public void borrarProducto(TLineaFactura linea, TProducto p) throws Exception {
+	public void borrarProducto(TOAProductoFactura toa) throws Exception {
 		try (PreparedStatement st = conn.prepareStatement(DELETELINEA)) {
-			st.setInt(1, linea.getFactura());
-			st.setInt(2, linea.getProducto());
+			st.setInt(1, toa.getLinea().getFactura());
+			st.setInt(2, toa.getLinea().getProducto());
 			//Actualizamos la cantidad en la tabla de productos
 			try (PreparedStatement ste = conn.prepareStatement(UPDATECANTIDADPRODUCTO)) {
-				ste.setInt(1, p.getCantidad() + linea.getCantidad());
-				ste.setInt(2, linea.getProducto());
+				ste.setInt(1, toa.getProducto().getCantidad() + toa.getLinea().getCantidad());
+				ste.setInt(2, toa.getLinea().getProducto());
 				ste.executeUpdate();
 			} catch (SQLException e1) {
 				e1.printStackTrace();
 			}
 			//Actualizamos total factura
 			try (PreparedStatement ste = conn.prepareStatement(READ)) {
-				ste.setInt(1, linea.getFactura());
+				ste.setInt(1, toa.getLinea().getFactura());
 				try (ResultSet rse = ste.executeQuery()) {
 					if (rse.next()) {
 						double precio = rse.getDouble("precio");
 						try (PreparedStatement ste2 = conn.prepareStatement(UPDATE)) {
-							ste2.setDouble(1, precio - (linea.getCantidad() * p.getPrecio()));
-							ste2.setInt(2, linea.getFactura());
+							ste2.setDouble(1, precio - (toa.getLinea().getCantidad() * toa.getProducto().getPrecio()));
+							ste2.setInt(2, toa.getLinea().getFactura());
 							ste2.executeUpdate();
 						} catch (SQLException e) {
 							e.printStackTrace();

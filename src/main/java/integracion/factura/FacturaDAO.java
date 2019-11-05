@@ -3,13 +3,12 @@ package integracion.factura;
 import integracion.DAO;
 import negocio.TFecha;
 import negocio.factura.TFactura;
-import negocio.factura.TLineaFactura;
-import negocio.producto.TProducto;
+import negocio.factura.TOAProductoFactura;
 
 import java.util.List;
 
 public interface FacturaDAO extends DAO<TFactura> {
-	void anadirProducto(TLineaFactura lineaFactura, TProducto p) throws Exception;
-	void borrarProducto(TLineaFactura lineaFactura, TProducto p) throws Exception;
+	void anadirProducto(TOAProductoFactura toa) throws Exception;
+	void borrarProducto(TOAProductoFactura toa) throws Exception;
 	List<TFactura> listarProductosPorFecha(TFecha fecha) throws Exception;
 }
