@@ -14,8 +14,8 @@ public class BajaClienteCommand implements Command{
 		int id = (int) datos;
 		ClienteSA clienteSA = FactoriaSA.getInstancia().generaClienteSA();
 		try{
-			int resultado = clienteSA.eliminar(id);
-			mensaje = "El turno se ha eliminado con exito.";
+			clienteSA.eliminar(id);
+			mensaje = "El cliente se ha eliminado con exito.";
 			return new Context(EventosCliente.BAJA_CLIENTE_OK, mensaje);
 		}catch(Exception e){
 			mensaje = e.getMessage();
