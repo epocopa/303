@@ -22,6 +22,7 @@ public class ProductoDAOImp implements ProductoDAO {
 	private final String READALL = "SELECT * FROM producto LEFT JOIN producto_calzado USING(id_producto) " +
 			"LEFT JOIN producto_textil USING(id_producto)";
 	private final String READ = READALL + " WHERE id_producto = ?";
+	private final String READBYNAME = READALL + " WHERE nombre = ?";
 
 	private final String UPDATE = "UPDATE producto SET nombre = ?, cantidad = ?, precio = ? WHERE id_producto = ?";
 	private final String UPDATECALZADO = "UPDATE producto_calzado SET numero = ? WHERE id_producto = ?";
@@ -170,5 +171,31 @@ public class ProductoDAOImp implements ProductoDAO {
 			e.printStackTrace();
 			throw new Exception("Eliminar Producto -> Error");
 		}
+	}
+
+	@Override
+	public TProducto mostrarPorNombre(String nombre) throws Exception {
+		TProducto p = null;
+		try (PreparedStatement st = conn.prepareStatement(READBYNAME)) {
+			st.setString(1, nombre);
+			try (ResultSet rs = st.executeQuery()) {
+				if (rs.next()) {
+					int numero = rs.getInt("numero");
+					if (rs.wasNull()) {
+						p = new TProductoTextil(rs.getInt("id_producto"), rs.getString("nombre"),
+								rs.getInt("cantidad"), rs.getDouble("precio"), rs.getString("tejido"),
+								rs.getBoolean("activo"));
+					} else {
+						p = new TProductoCalzado(rs.getInt("id_producto"), rs.getString("nombre"),
+								rs.getInt("cantidad"), rs.getDouble("precio"), rs.getInt("numero"),
+								rs.getBoolean("activo"));
+					}
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new Exception("Mostrar Producto -> Error");
+		}
+		return p;
 	}
 }
