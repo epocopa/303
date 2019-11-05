@@ -6,7 +6,7 @@ import presentacion.command.Command;
 import presentacion.controladorAplicacion.Context;
 import presentacion.controladorAplicacion.EventosCliente;
 
-public class BajaClienteCommand implements Command{
+public class BajaClienteCommand implements Command{//
 
 	@Override
 	public Context execute(Object datos) {
