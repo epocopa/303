@@ -353,9 +353,6 @@ public class FacturaGUIImp extends JPanel implements FacturaGUI, GUI{
 		});
 		toolPanel.add(confirmar);
 		toolPanel.add(Box.createRigidArea(new Dimension(0, 25)));
-		toolPanel.add(totalTitle);
-		toolPanel.add(Box.createRigidArea(new Dimension(0, 5)));
-		toolPanel.add(totalPrecio);
 		
 		//--
 		
