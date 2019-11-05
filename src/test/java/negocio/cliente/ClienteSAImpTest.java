@@ -7,7 +7,10 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -55,26 +58,82 @@ class ClienteSAImpTest {
 	
 	@Test
 	void testInsertar() {
-		fail("Not yet implemented");
+		try {
+			clienteSAImp.insertar(cliente1);
+			TCliente clienteAux=clienteSAImp.mostrar(cliente1.getId());
+			assertTrue(iguales(cliente1,clienteAux));
+	
+		} catch (Exception e) {
+			fail("Excepcion al insertar");
+		}
+		
 	}
 
-	@Test
-	void testMostrar() {
-		fail("Not yet implemented");
-	}
 
 	@Test
 	void testMostrarTodos() {
-		fail("Not yet implemented");
+		List<TCliente> lista= new ArrayList<TCliente>();
+		lista.add(cliente1);
+		lista.add(cliente2);
+		try {
+			for (TCliente tCliente : lista) {
+				clienteSAImp.insertar(tCliente);
+			}
+	
+			List<TCliente> tc = clienteSAImp.mostrarTodos();
+	
+			for (int i = 0; i < lista.size(); i++) {
+				if (!iguales(lista.get(i), tc.get(i))) {
+					fail("El cliente leido no se corresponde con el insertado");
+				}
+			}
+		} catch (Exception e) {
+			fail("Excepcion al mostrar todos");
+		}
 	}
 
 	@Test
 	void testModificar() {
-		fail("Not yet implemented");
+		try {
+			clienteSAImp.insertar(cliente1);
+	
+			 cliente1.setActivo(true);
+			 cliente1.setFecha_registro(LocalDate.now());
+			 cliente1.setNombre("Jose Modificado");
+	
+			 clienteSAImp.modificar(cliente1);
+			TCliente clienteMod = clienteSAImp.mostrar(cliente1.getId());
+	
+			assertTrue(iguales(cliente1, clienteMod));
+		} catch (Exception e) {
+			fail("Excepcion al modificar");
+		}
 	}
 
 	@Test
 	void testEliminar() {
-		fail("Not yet implemented");
+		try {
+			clienteSAImp.insertar(cliente1);
+	
+			clienteSAImp.eliminar(cliente1.getId());
+			assertFalse(clienteSAImp.mostrar(cliente1.getId()).isActivo());	
+		} catch (Exception e) {
+			fail("Excepcion al eliminar");
+		}
+	}
+	
+	@AfterAll
+	static void afterAll() {
+		try {
+			conn.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	private boolean iguales(TCliente c1, TCliente c2) {
+		return c1.getId()==c2.getId()&&
+				c1.getFecha_registro()==c2.getFecha_registro()&&
+				c1.getNombre()==c2.getNombre();
 	}
 }

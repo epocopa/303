@@ -10,14 +10,10 @@ import java.sql.Statement;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.BooleanSupplier;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import integracion.cliente.ClienteDAOImp;
-import integracion.producto.ProductoDAOImp;
 import negocio.cliente.TCliente;
 import negocio.factura.TFactura;
 import negocio.factura.TLineaFactura;
@@ -28,8 +24,6 @@ class ClienteDAOImpTest {
 	private TFactura factura1;
 	private TFactura factura2;
 	private FacturaDAOImp facturaDAOImp;
-	private ClienteDAOImp clienteDAOImp;
-	private ProductoDAOImp productoDAOImp;
 	private TCliente cliente1;
 	private TCliente cliente2;
 	private TProducto producto1;
@@ -56,7 +50,6 @@ class ClienteDAOImpTest {
 		}
 		
 				// Clientes
-		 clienteDAOImp = new ClienteDAOImp();
 		 cliente1 = new TCliente();
 		 cliente2 = new TCliente();
 		 
@@ -70,7 +63,6 @@ class ClienteDAOImpTest {
 		 cliente2.setNombre("Dani");
 		 
 		 		//Productos
-		productoDAOImp =new ProductoDAOImp();
 		producto1 = new TProducto();
 		producto2 = new TProducto();
 			 
