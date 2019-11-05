@@ -35,7 +35,7 @@ CREATE TABLE factura(
 	id_factura INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
 	cliente INT NOT NULL,
 	fecha DATE NOT NULL,
-	activo BOOLEAN NOT NULL DEFAULT 0,
+	abierta BOOLEAN NOT NULL DEFAULT 0,
 	FOREIGN KEY (cliente) REFERENCES cliente (id_cliente)
 );
 
