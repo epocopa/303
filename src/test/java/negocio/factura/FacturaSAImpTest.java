@@ -172,7 +172,7 @@ class FacturaSAImpTest {
 		try {
 			facturaSAImp.insertar(factura2);
 			TLineaFactura linea1 = new TLineaFactura(factura2.getId(),producto1.getId(),1);
-			facturaSAImp.anadirProducto(linea1,producto1);	
+			facturaSAImp.anadirProducto(linea1);
 			assertNotNull(factura2.getLineaFacturas());
 		} catch (Exception e) {
 			fail("Excepcion al anadir producto");

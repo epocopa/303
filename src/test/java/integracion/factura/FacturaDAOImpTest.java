@@ -11,6 +11,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import negocio.factura.TOAProductoFactura;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -169,7 +170,7 @@ class ClienteDAOImpTest {
 		try {
 			facturaDAOImp.insertar(factura2);
 			TLineaFactura linea1 = new TLineaFactura(factura2.getId(),producto1.getId(),1);
-			facturaDAOImp.anadirProducto(linea1,producto1);	
+			facturaDAOImp.anadirProducto(new TOAProductoFactura(linea1, producto1));
 			assertNotNull(factura2.getLineaFacturas());
 		} catch (Exception e) {
 			fail("Excepcion al anadir producto");

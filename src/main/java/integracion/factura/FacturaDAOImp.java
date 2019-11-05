@@ -5,7 +5,6 @@ import negocio.TFecha;
 import negocio.factura.TFactura;
 import negocio.factura.TLineaFactura;
 import negocio.factura.TOAProductoFactura;
-import negocio.producto.TProducto;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -15,7 +14,7 @@ public class FacturaDAOImp implements FacturaDAO {
 
 	private Connection conn;
 
-	private final String INSERT = "INSERT INTO factura(cliente, fecha, abierta) VALUES(?, ?, ?)";
+	private final String INSERT = "INSERT INTO factura(cliente, fecha, abierta, precio) VALUES(?, ?, ?, ?)";
 	private final String READALL = "SELECT * FROM factura";
 	private final String READ = READALL + " WHERE id_factura = ?";
 	private final String UPDATE = "UPDATE factura SET precio = ? WHERE id_factura = ?";
@@ -39,6 +38,7 @@ public class FacturaDAOImp implements FacturaDAO {
 			st.setInt(1, e.getCliente());
 			st.setDate(2, Date.valueOf(e.getFecha()));
 			st.setBoolean(3, e.isAbierta());
+			st.setDouble(4, e.getPrecio());
 
 			st.executeUpdate();
 			try (ResultSet rs = st.getGeneratedKeys()) {

@@ -14,7 +14,7 @@ public class ClienteDAOImp implements ClienteDAO {
 	private final String INSERT = "INSERT INTO cliente(nombre, fecha_registro, activo) VALUES(?, ?, ?)";
 	private final String READALL = "SELECT * FROM cliente";
 	private final String READ = READALL + " WHERE id_cliente = ?";
-	private final String UPDATE = "UPDATE cliente SET nombre = ?, SET activo = ? WHERE id_cliente = ?";
+	private final String UPDATE = "UPDATE cliente SET nombre = ?, activo = ? WHERE id_cliente = ?";
 	private final String DELETE = "UPDATE cliente SET activo = 0 WHERE id_cliente = ?";
 	private final String READFECHA = "SELECT * FROM cliente WHERE fecha_registro BETWEEN ? AND ?";
 

@@ -9,7 +9,7 @@ public class TransactionImp implements Transaction {
 
 	public TransactionImp() {
 		try {
-			conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/303", "empleado", "password");
+			conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/trescerotres", "empleado", "password");
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
