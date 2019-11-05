@@ -104,28 +104,6 @@ public class ClienteGUIImpl extends JPanel implements ClienteGUI, GUI {
 		_homePanel.add(editarBtn, c);
 		
 		c.gridx++;
-		JButton listarBtn = createMenuButton("resources/icons/clientes/mostrar-clientes.png", new Color(234, 80, 54));
-		listarBtn.addActionListener(new ActionListener(){
-			public void actionPerformed(ActionEvent e){
-				Context contexto = new Context(EventosCliente.LISTAR_CLIENTES, null);
-				ControladorAplicacion.getInstance().accion(contexto);
-			}
-		});
-		_homePanel.add(listarBtn, c);
-		
-		c.gridx = 0;
-		c.gridy++;
-		JButton buscarBtn = createMenuButton("resources/icons/clientes/buscar-cliente.png", new Color(0, 112, 192));
-		buscarBtn.addActionListener(new ActionListener(){
-			public void actionPerformed(ActionEvent e){
-				addPathSeparator();
-				createPathButton("BUSCAR CLIENTE");
-				buscarPanel();
-			}
-		});
-		_homePanel.add(buscarBtn, c);
-		
-		c.gridx++;
 		JButton bajaBtn = createMenuButton("resources/icons/clientes/baja-cliente.png", new Color(112, 173, 71));
 		bajaBtn.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
@@ -135,6 +113,30 @@ public class ClienteGUIImpl extends JPanel implements ClienteGUI, GUI {
 			}
 		});
 		_homePanel.add(bajaBtn, c);
+		
+
+		
+		c.gridx = 0;
+		c.gridy++;
+		JButton listarBtn = createMenuButton("resources/icons/clientes/mostrar-clientes.png", new Color(234, 80, 54));
+		listarBtn.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e){
+				Context contexto = new Context(EventosCliente.LISTAR_CLIENTES, null);
+				ControladorAplicacion.getInstance().accion(contexto);
+			}
+		});
+		_homePanel.add(listarBtn, c);	
+		
+		c.gridx++;
+		JButton buscarBtn = createMenuButton("resources/icons/clientes/buscar-cliente.png", new Color(0, 112, 192));
+		buscarBtn.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e){
+				addPathSeparator();
+				createPathButton("BUSCAR CLIENTE");
+				buscarPanel();
+			}
+		});
+		_homePanel.add(buscarBtn, c);
 		
 		c.gridx++;
 		JButton clientesPorFechaBtn = createMenuButton("resources/icons/clientes/clientes-por-fechas.png", new Color(0, 176, 80));
