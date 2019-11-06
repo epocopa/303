@@ -96,15 +96,19 @@ public class ClienteDAOImp implements ClienteDAO {
 
 	public List<TCliente> listarClientesPorFecha(TFecha fecha) throws Exception {
 		ArrayList<TCliente> lista = new ArrayList<>();
-		try (PreparedStatement st = conn.prepareStatement(READFECHA); ResultSet rs = st.executeQuery()) {
-			while (rs.next()) {
-				lista.add(new TCliente(rs.getInt("id_cliente"), rs.getBoolean("activo"), rs.getDate("fecha_registro").toLocalDate(),
-						rs.getString("nombre")));
+		try (PreparedStatement st = conn.prepareStatement(READFECHA)) {
+			st.setDate(1, Date.valueOf(fecha.getFechaIni()));
+			st.setDate(2, Date.valueOf(fecha.getFechaFin()));
+			try (ResultSet rs = st.executeQuery()) {
+				while (rs.next()) {
+					lista.add(new TCliente(rs.getInt("id_cliente"), rs.getBoolean("activo"), rs.getDate("fecha_registro").toLocalDate(),
+							rs.getString("nombre")));
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+				throw new Exception("Mostrar Clientes por fecha -> Error");
 			}
-		} catch (Exception e) {
-			e.printStackTrace();
-			throw new Exception("Mostrar Clientes por fecha -> Error");
+			return lista;
 		}
-		return lista;
 	}
 }

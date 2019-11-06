@@ -18,8 +18,8 @@ public class FacturaDAOImp implements FacturaDAO {
 	private final String READALL = "SELECT * FROM factura";
 	private final String READ = READALL + " WHERE id_factura = ?";
 	private final String UPDATE = "UPDATE factura SET precio = ? WHERE id_factura = ?";
-	private final String DELETE = "UPDATE factura SET abierta = 0 WHERE id_cliente = ?";
-	private final String READPRODCUTOSDEFACTURA = "SELECT * FROM lista WHERE factura = ?";
+	private final String DELETE = "UPDATE factura SET abierta = 0 WHERE id_factura = ?";
+	private final String READPRODCUTOSDEFACTURA = "SELECT * FROM linea WHERE factura = ?";
 	private final String READLINEA = "SELECT * FROM linea WHERE factura = ? AND producto = ?";
 	private final String INSERTLINEA = "INSERT INTO linea VALUES (?,?,?)";
 	private final String DELETELINEA = "DELETE FROM linea WHERE factura = ? AND producto = ?";
@@ -61,7 +61,7 @@ public class FacturaDAOImp implements FacturaDAO {
 			try (ResultSet rs = st.executeQuery()) {
 				if (rs.next()) {
 					t = new TFactura(id, rs.getDouble("precio"), rs.getBoolean("abierta"),
-							rs.getDate("fecha_").toLocalDate(), lista, rs.getInt("cliente"));
+							rs.getDate("fecha").toLocalDate(), lista, rs.getInt("cliente"));
 				}
 				try (PreparedStatement ste = conn.prepareStatement(READPRODCUTOSDEFACTURA)) {
 					ste.setInt(1, id);
@@ -209,23 +209,26 @@ public class FacturaDAOImp implements FacturaDAO {
 	@Override
 	public List<TFactura> listarProductosPorFecha(TFecha fecha) throws Exception {
 		ArrayList<TFactura> facturas = new ArrayList<>();
-		try (PreparedStatement st = conn.prepareStatement(READFECHA); ResultSet rs = st.executeQuery()) {
-			while (rs.next()) {
+		try (PreparedStatement st = conn.prepareStatement(READFECHA)) {
+			st.setDate(1, Date.valueOf(fecha.getFechaIni()));
+			st.setDate(2, Date.valueOf(fecha.getFechaFin()));
+			try (ResultSet rs = st.executeQuery()) {
 				ArrayList<TLineaFactura> lineas = new ArrayList<>();
-				facturas.add(new TFactura(rs.getInt("id_factura"), rs.getDouble("precio"), rs.getBoolean("abierta"),
-						rs.getDate("fecha_").toLocalDate(), lineas, rs.getInt("cliente")));
-
-				try (PreparedStatement ste = conn.prepareStatement(READPRODCUTOSDEFACTURA)) {
-					ste.setInt(1, rs.getInt("id_factura"));
-					try (ResultSet rse = ste.executeQuery()) {
-						while (rse.next()) {
-							lineas.add(new TLineaFactura(rse.getInt("factura"), rse.getInt("producto"), rse.getInt("cantidad")));
+				while (rs.next()) {
+					facturas.add(new TFactura(rs.getInt("id_factura"), rs.getDouble("precio"), rs.getBoolean("abierta"),
+							rs.getDate("fecha").toLocalDate(), lineas, rs.getInt("cliente")));
+					try (PreparedStatement ste = conn.prepareStatement(READPRODCUTOSDEFACTURA)) {
+						ste.setInt(1, rs.getInt("id_factura"));
+						try (ResultSet rse = ste.executeQuery()) {
+							while (rse.next()) {
+								lineas.add(new TLineaFactura(rse.getInt("factura"), rse.getInt("producto"), rse.getInt("cantidad")));
+							}//2018-01-01
 						}
+					} catch (SQLException e) {
+						e.printStackTrace();
 					}
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
 
+				}
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

@@ -4,6 +4,7 @@ import integracion.factoriaDAO.FactoriaDAO;
 import integracion.transaction.Transaction;
 import integracion.transactionManager.TransactionManager;
 import negocio.TFecha;
+import negocio.cliente.TCliente;
 import negocio.producto.TProducto;
 
 import java.util.List;
@@ -13,9 +14,14 @@ public class FacturaSAImp implements FacturaSA {
 	@Override
 	public void insertar(TFactura factura) throws Exception {
 		Transaction t = TransactionManager.getInstancia().createTransaction();
-		FactoriaDAO.getInstancia().getFacturaDAO().insertar(factura);
-		t.commit();
-		TransactionManager.getInstancia().removeTransaction();
+		TCliente c = FactoriaDAO.getInstancia().getClienteDAO().mostrar(factura.getCliente());
+		if (c != null) {
+			FactoriaDAO.getInstancia().getFacturaDAO().insertar(factura);
+			t.commit();
+			TransactionManager.getInstancia().removeTransaction();
+		} else {
+			throw  new Exception("No existe ningun cliente con ID =" + factura.getCliente());
+		}
 	}
 
 	@Override

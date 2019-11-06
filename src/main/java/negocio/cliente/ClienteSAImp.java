@@ -43,14 +43,12 @@ public class ClienteSAImp implements ClienteSA {
 		Transaction t = TransactionManager.getInstancia().createTransaction();
 		TCliente c = FactoriaDAO.getInstancia().getClienteDAO().mostrar(cliente.getId());
 
-		if (c != null && c.isActivo()) {
-			FactoriaDAO.getInstancia().getClienteDAO().modificar(c);
+		if (c != null) {
+			FactoriaDAO.getInstancia().getClienteDAO().modificar(cliente);
 			t.commit();
 			TransactionManager.getInstancia().removeTransaction();
-		} else if (c == null){
-			throw  new Exception("No existe ningun cliente con ID =" + cliente.getId());
 		} else {
-			throw  new Exception("El cliente seleccionado no esta activo");
+			throw  new Exception("No existe ningun cliente con ID =" + cliente.getId());
 		}
 	}
 

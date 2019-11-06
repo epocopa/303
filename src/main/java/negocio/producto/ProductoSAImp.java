@@ -47,14 +47,12 @@ public class ProductoSAImp implements ProductoSA {
 		Transaction t = TransactionManager.getInstancia().createTransaction();
 		TProducto p = FactoriaDAO.getInstancia().getProductoDAO().mostrar(producto.getId());
 
-		if (p != null && p.isActivo()) {
-			FactoriaDAO.getInstancia().getProductoDAO().modificar(p);
+		if (p != null) {
+			FactoriaDAO.getInstancia().getProductoDAO().modificar(producto);
 			t.commit();
 			TransactionManager.getInstancia().removeTransaction();
-		} else if (p == null) {
-			throw new Exception("No existe ningun producto con ID =" + producto.getId());
 		} else {
-			throw new Exception("El producto seleccionado no esta activo");
+			throw new Exception("No existe ningun producto con ID =" + producto.getId());
 		}
 	}
 
