@@ -10,9 +10,9 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import integracion.transaction.Transaction;
+import integracion.transactionManager.TransactionManager;
+import org.junit.jupiter.api.*;
 
 import integracion.cliente.ClienteDAOImp;
 import integracion.producto.ProductoDAOImp;
@@ -31,10 +31,12 @@ class FacturaSAImpTest {
 	private TCliente cliente2;
 	private TProducto producto1;
 	private TProducto producto2;
-	
+
+	private static Transaction t;
+
 	@BeforeAll
 	static void beforeAll() {
-
+		t = TransactionManager.getInstancia().createTransaction();
 		try {
 			conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/trescerotres", "empleado", "password");
 		} catch (SQLException e) {
@@ -178,7 +180,21 @@ class FacturaSAImpTest {
 			fail("Excepcion al anadir producto");
 		}	
 	}
-	
+
+	@AfterEach
+	 void afterEach(){
+		t.commit();
+	}
+
+	@AfterAll
+	static void afterAll() {
+		try {
+			conn.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
 	private boolean iguales(TFactura f1, TFactura f2) {
 		return f1.getCliente()==f2.getCliente()&&
 				f1.getFecha()==f2.getFecha()&&

@@ -9,10 +9,9 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import integracion.transaction.Transaction;
+import integracion.transactionManager.TransactionManager;
+import org.junit.jupiter.api.*;
 
 import negocio.producto.TProducto;
 
@@ -21,9 +20,12 @@ class ProductoDAOImpTest {
 	private ProductoDAOImp productoDAOImp;
 	private TProducto producto1;
 	private TProducto producto2;
-	
+
+	private static Transaction t;
+
 	@BeforeAll
 	static void beforeAll() {
+		t = TransactionManager.getInstancia().createTransaction();
 
 		try {
 			conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/trescerotres", "empleado", "password");
@@ -61,6 +63,7 @@ class ProductoDAOImpTest {
 	@Test
 	void testInsertar() {
 		try {
+
 			productoDAOImp.insertar(producto1);
 			TProducto productoAux=productoDAOImp.mostrar(producto1.getId());
 			assertTrue(iguales(producto1,productoAux));
@@ -120,7 +123,12 @@ class ProductoDAOImpTest {
 			fail("Excepcion al eliminar");
 		}
 		}
-	
+
+	@AfterEach
+	 void afterEach(){
+		t.commit();
+	}
+
 	@AfterAll
 	static void afterAll() {
 		try {
@@ -129,6 +137,7 @@ class ProductoDAOImpTest {
 			e.printStackTrace();
 		}
 	}
+
 
 	private boolean iguales(TProducto p1, TProducto p2) {
 		return p1.getCantidad()==p2.getCantidad()&&

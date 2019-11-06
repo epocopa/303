@@ -69,7 +69,6 @@ class ClienteDAOImpTest {
 		} catch (Exception e) {
 			fail("Excepcion al insertar");
 		}
-		t.commit();
 	}
 
 
@@ -93,7 +92,6 @@ class ClienteDAOImpTest {
 		} catch (Exception e) {
 			fail("Excepcion al mostrar todos");
 		}
-		t.commit();
 	}
 
 	@Test
@@ -112,7 +110,6 @@ class ClienteDAOImpTest {
 		} catch (Exception e) {
 			fail("Excepcion al modificar");
 		}
-		t.commit();
 	}
 
 	@Test
@@ -125,9 +122,13 @@ class ClienteDAOImpTest {
 		} catch (Exception e) {
 			fail("Excepcion al eliminar");
 		}
+	}
+
+	@AfterEach
+	 void afterEach(){
 		t.commit();
 	}
-	
+
 	@AfterAll
 	static void afterAll() {
 		try {

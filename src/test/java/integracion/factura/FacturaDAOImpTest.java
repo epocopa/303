@@ -11,10 +11,10 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import integracion.transaction.Transaction;
+import integracion.transactionManager.TransactionManager;
 import negocio.factura.TOAProductoFactura;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import negocio.cliente.TCliente;
 import negocio.factura.TFactura;
 import negocio.factura.TLineaFactura;
@@ -29,10 +29,13 @@ class ClienteDAOImpTest {
 	private TCliente cliente2;
 	private TProducto producto1;
 	private TProducto producto2;
+
+
+	private static Transaction t;
 	
 	@BeforeAll
 	static void beforeAll() {
-
+		t = TransactionManager.getInstancia().createTransaction();
 		try {
 			conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/trescerotres", "empleado", "password");
 		} catch (SQLException e) {
@@ -176,12 +179,26 @@ class ClienteDAOImpTest {
 			fail("Excepcion al anadir producto");
 		}	
 	}
+
+	@AfterEach
+	 void afterEach(){
+		t.commit();
+	}
+
+	@AfterAll
+	static void afterAll() {
+		try {
+			conn.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
 	
 	private boolean iguales(TFactura f1, TFactura f2) {
-		return f1.getCliente()==f2.getCliente()&&
-				f1.getFecha()==f2.getFecha()&&
+		return f1.getCliente() == f2.getCliente()&&
+				f1.getFecha().equals(f2.getFecha())&&
 				f1.getId()==f2.getId()&&
 				f1.getPrecio()==f2.getPrecio()&&
-				f1.getLineaFacturas()==f2.getLineaFacturas();
+				f1.getLineaFacturas().equals(f2.getLineaFacturas());
 	}
 }

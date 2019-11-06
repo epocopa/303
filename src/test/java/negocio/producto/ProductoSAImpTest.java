@@ -9,6 +9,8 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import integracion.transaction.Transaction;
+import integracion.transactionManager.TransactionManager;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -21,10 +23,12 @@ class ProductoSAImpTest {
 	private ProductoSAImp productoSAImp;
 	private TProducto producto1;
 	private TProducto producto2;
-	
+
+	private static Transaction t;
+
 	@BeforeAll
 	static void beforeAll() {
-
+		t = TransactionManager.getInstancia().createTransaction();
 		try {
 			conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/trescerotres", "empleado", "password");
 		} catch (SQLException e) {

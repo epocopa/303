@@ -10,10 +10,9 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import integracion.transaction.Transaction;
+import integracion.transactionManager.TransactionManager;
+import org.junit.jupiter.api.*;
 
 import integracion.cliente.ClienteDAOImp;
 
@@ -23,9 +22,11 @@ class ClienteSAImpTest {
 	private TCliente cliente1;
 	private TCliente cliente2;
 	private ClienteSAImp clienteSAImp;
-	
+	private static Transaction t;
+
 	@BeforeAll
 	static void beforeAll() {
+		t = TransactionManager.getInstancia().createTransaction();
 
 		try {
 			conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/trescerotres", "empleado", "password");
@@ -121,7 +122,12 @@ class ClienteSAImpTest {
 			fail("Excepcion al eliminar");
 		}
 	}
-	
+
+	@AfterEach
+	 void afterEach(){
+		t.commit();
+	}
+
 	@AfterAll
 	static void afterAll() {
 		try {
@@ -133,7 +139,7 @@ class ClienteSAImpTest {
 
 	private boolean iguales(TCliente c1, TCliente c2) {
 		return c1.getId()==c2.getId()&&
-				c1.getFecha_registro()==c2.getFecha_registro()&&
-				c1.getNombre()==c2.getNombre();
+				c1.getFecha_registro().equals(c2.getFecha_registro())&&
+				c1.getNombre().equals(c2.getNombre());
 	}
 }
