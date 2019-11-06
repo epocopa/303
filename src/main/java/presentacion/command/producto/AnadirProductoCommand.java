@@ -5,7 +5,6 @@ import negocio.producto.ProductoSA;
 import negocio.producto.TProducto;
 import presentacion.command.Command;
 import presentacion.controladorAplicacion.Context;
-import presentacion.controladorAplicacion.EventosCliente;
 import presentacion.controladorAplicacion.EventosProducto;
 
 public class AnadirProductoCommand implements Command {
