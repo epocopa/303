@@ -385,11 +385,6 @@ public class ClienteGUIImpl extends JPanel implements ClienteGUI, GUI {
 		formPanel2.add(editarNombreLabel, c2);
 		
 		c2.gridy++;
-		JLabel editarFechaLabel = new JLabel("Fecha de registro: ");
-		editarFechaLabel.setFont(new Font("Arial", Font.PLAIN, 18));
-		formPanel2.add(editarFechaLabel, c2);
-		
-		c2.gridy++;
 		JLabel editarActivoLabel = new JLabel("Activo: ");
 		editarActivoLabel.setFont(new Font("Arial", Font.PLAIN, 18));
 		formPanel2.add(editarActivoLabel, c2);
@@ -399,10 +394,6 @@ public class ClienteGUIImpl extends JPanel implements ClienteGUI, GUI {
 		c2.anchor = GridBagConstraints.LINE_START;
 		editarNombreField = new JTextField(15);
 		formPanel2.add(editarNombreField, c2);
-		
-		c2.gridy++;
-		editarFechaField = new JTextField(15);
-		formPanel2.add(editarFechaField, c2);
 		
 		c2.gridy++;
 		editarActivoField = new JTextField(15);
@@ -952,7 +943,6 @@ public class ClienteGUIImpl extends JPanel implements ClienteGUI, GUI {
 				cliente = (TCliente) datos;
 				
 				editarNombreField.setText(cliente.getNombre());
-				editarFechaField.setText(cliente.getFecha_registro().toString());
 				editarActivoField.setText(Boolean.toString(cliente.isActivo()));
 				editarClientePanelCL.show(editarClientePanel, "SECOND");
 				System.out.println("Editar Buscar Cliente OK");
