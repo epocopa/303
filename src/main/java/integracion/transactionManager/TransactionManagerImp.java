@@ -20,6 +20,7 @@ public class TransactionManagerImp extends TransactionManager {
 
 		if (t == null) {
 			t = new TransactionImp();
+			t.start();
 			map.put(curent, t);
 		}
 

@@ -16,10 +16,19 @@ public class TransactionImp implements Transaction {
 	}
 
 	@Override
+	public void start() {
+		try {
+			conn.setAutoCommit(false);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	@Override
 	public void commit(){
 		try {
 			conn.commit();
-		} catch (SQLException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
@@ -28,7 +37,7 @@ public class TransactionImp implements Transaction {
 	public void rollback(){
 		try {
 			conn.rollback();
-		} catch (SQLException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}

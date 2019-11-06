@@ -24,10 +24,11 @@ class ClienteDAOImpTest {
 	private TCliente cliente1;
 	private TCliente cliente2;
 	private ClienteDAOImp clienteDAOImp;
-	
+	private static Transaction t;
+
 	@BeforeAll
 	static void beforeAll() {
-		Transaction t = TransactionManager.getInstancia().createTransaction();
+		t = TransactionManager.getInstancia().createTransaction();
 
 		try {
 			conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/trescerotres", "empleado", "password");
@@ -68,7 +69,7 @@ class ClienteDAOImpTest {
 		} catch (Exception e) {
 			fail("Excepcion al insertar");
 		}
-		
+		t.commit();
 	}
 
 
@@ -92,13 +93,14 @@ class ClienteDAOImpTest {
 		} catch (Exception e) {
 			fail("Excepcion al mostrar todos");
 		}
+		t.commit();
 	}
 
 	@Test
 	void testModificar() {
 		try {
 			clienteDAOImp.insertar(cliente1);
-	
+
 			 cliente1.setActivo(true);
 			 cliente1.setFecha_registro(LocalDate.now());
 			 cliente1.setNombre("Jose Modificado");
@@ -110,6 +112,7 @@ class ClienteDAOImpTest {
 		} catch (Exception e) {
 			fail("Excepcion al modificar");
 		}
+		t.commit();
 	}
 
 	@Test
@@ -122,6 +125,7 @@ class ClienteDAOImpTest {
 		} catch (Exception e) {
 			fail("Excepcion al eliminar");
 		}
+		t.commit();
 	}
 	
 	@AfterAll
