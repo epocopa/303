@@ -22,11 +22,9 @@ class ClienteSAImpTest {
 	private TCliente cliente1;
 	private TCliente cliente2;
 	private ClienteSAImp clienteSAImp;
-	private static Transaction t;
 
 	@BeforeAll
 	static void beforeAll() {
-		t = TransactionManager.getInstancia().createTransaction();
 
 		try {
 			conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/trescerotres", "empleado", "password");
@@ -123,10 +121,6 @@ class ClienteSAImpTest {
 		}
 	}
 
-	@AfterEach
-	 void afterEach(){
-		t.commit();
-	}
 
 	@AfterAll
 	static void afterAll() {

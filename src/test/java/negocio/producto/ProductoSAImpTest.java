@@ -45,21 +45,8 @@ class ProductoSAImpTest {
 		}
 		
 		productoSAImp =new ProductoSAImp();
-		producto1 = new TProducto();
-		producto2 = new TProducto();
-		 
-		 // Producto 1
-		producto1.setCalzado(false);
-		producto1.setCantidad(10);
-		producto1.setPrecio(5f);
-		producto1.setNombre("camiseta");
-		
-		// Producto 2
-		producto2.setCalzado(false);
-		producto2.setCantidad(20);
-		producto2.setPrecio(12f);
-		producto2.setNombre("polo");
-		
+		producto1 = new TProductoCalzado(0, "Zapatillas", 10, 50, 40, true);
+		producto2 = new TProductoTextil(0, "camiseta", 2, 10, "tela", true);
 	}
 	
 	@Test
@@ -99,7 +86,6 @@ class ProductoSAImpTest {
 		try {
 			productoSAImp.insertar(producto1);
 			
-			producto1.setCalzado(false);
 			producto1.setCantidad(70);
 			producto1.setPrecio(12f);
 			producto1.setNombre("producto modificado");
@@ -136,8 +122,8 @@ class ProductoSAImpTest {
 
 	private boolean iguales(TProducto p1, TProducto p2) {
 		return p1.getCantidad()==p2.getCantidad()&&
-				p1.getId()==p2.getCantidad()&&
-				p1.getNombre()==p2.getNombre()&&
+				p1.getId()==p2.getId()&&
+				p1.getNombre().equals(p2.getNombre()) &&
 				p1.getPrecio()==p2.getPrecio();
 	}
 }

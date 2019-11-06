@@ -12,6 +12,8 @@ import java.util.List;
 
 import integracion.transaction.Transaction;
 import integracion.transactionManager.TransactionManager;
+import negocio.producto.TProductoCalzado;
+import negocio.producto.TProductoTextil;
 import org.junit.jupiter.api.*;
 
 import integracion.cliente.ClienteDAOImp;
@@ -36,7 +38,6 @@ class FacturaSAImpTest {
 
 	@BeforeAll
 	static void beforeAll() {
-		t = TransactionManager.getInstancia().createTransaction();
 		try {
 			conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/trescerotres", "empleado", "password");
 		} catch (SQLException e) {
@@ -46,6 +47,7 @@ class FacturaSAImpTest {
 	
 	@BeforeEach
 	void BeforeEach() {
+		t = TransactionManager.getInstancia().createTransaction();
 		try(Statement st=conn.createStatement()){
 			st.execute("DELETE FROM cliente");
 			st.execute("DELETE FROM producto");
@@ -53,40 +55,44 @@ class FacturaSAImpTest {
 		}catch(SQLException e) {
 			e.printStackTrace();
 		}
-		
-				// Clientes
-		 cliente1 = new TCliente();
-		 cliente2 = new TCliente();
-		 
-		 // Cliente 1
-		 cliente1.setActivo(true);
-		 cliente1.setFecha_registro(LocalDate.now());
-		 cliente1.setNombre("Jose");
-		 //Cliente 2
-		 cliente2.setActivo(true);
-		 cliente2.setFecha_registro(LocalDate.now());
-		 cliente2.setNombre("Dani");
-		 
-		 		//Productos
-		producto1 = new TProducto();
-		producto2 = new TProducto();
-			 
-		// Producto 1
-		producto1.setCalzado(false);
-		producto1.setCantidad(10);
-		producto1.setPrecio(5f);
-		producto1.setNombre("camiseta");
-			
-		// Producto 2
-		producto2.setCalzado(false);
-		producto2.setCantidad(20);
-		producto2.setPrecio(12f);
-		producto2.setNombre("polo");
-		
-		
+
+		// Clientes
+		cliente1 = new TCliente();
+		cliente2 = new TCliente();
+
+		// Cliente 1
+		cliente1.setActivo(true);
+		cliente1.setFecha_registro(LocalDate.now());
+		cliente1.setNombre("Jose");
+		//Cliente 2
+		cliente2.setActivo(true);
+		cliente2.setFecha_registro(LocalDate.now());
+		cliente2.setNombre("Dani");
+
+		try {
+			new ClienteDAOImp().insertar(cliente1);
+			new ClienteDAOImp().insertar(cliente2);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		//Productos
+		producto1 = new TProductoCalzado(0, "Zapatillas", 10, 50, 40, true);
+		producto2 = new TProductoTextil(0, "camiseta", 2, 10, "tela", true);
+
+		try {
+			new ProductoDAOImp().insertar(producto1);
+			new ProductoDAOImp().insertar(producto2);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		t.commit();
+		TransactionManager.getInstancia().removeTransaction();
+
 		// Facturas
 		facturaSAImp =new FacturaSAImp();
 		factura1 = new TFactura();
+		factura2 = new TFactura();
 		List<TLineaFactura> lineaFacturas =new ArrayList<TLineaFactura>();
 		 
 		// factura 1
@@ -116,6 +122,7 @@ class FacturaSAImpTest {
 			assertTrue(iguales(factura1,facturaAux));
 	
 		} catch (Exception e) {
+			e.printStackTrace();
 			fail("Excepcion al insertar");
 		}
 	}
@@ -129,9 +136,9 @@ class FacturaSAImpTest {
 			for (TFactura tFactura : lista) {
 				facturaSAImp.insertar(tFactura);
 			}
-	
+
 			List<TFactura> tf = facturaSAImp.mostrarTodos();
-	
+
 			for (int i = 0; i < lista.size(); i++) {
 				if (!iguales(lista.get(i), tf.get(i))) {
 					fail("La factura leida no se corresponde con la insertada");
@@ -141,22 +148,6 @@ class FacturaSAImpTest {
 			fail("Excepcion al mostrar todos");
 		}
 	}
-
-	@Test
-	void testModificar() {
-		try {
-			facturaSAImp.insertar(factura1);
-	
-			factura1.setAbierta(true);
-			factura1.setCliente(factura1.getId());
-	
-			facturaSAImp.modificar(factura1);
-			TFactura facturaMod = facturaSAImp.mostrar(factura1.getId());
-	
-			assertTrue(iguales(factura1, facturaMod));
-		} catch (Exception e) {
-			fail("Excepcion al modificar");
-		}	}
 
 	@Test
 	void testEliminar() {
@@ -181,10 +172,6 @@ class FacturaSAImpTest {
 		}	
 	}
 
-	@AfterEach
-	 void afterEach(){
-		t.commit();
-	}
 
 	@AfterAll
 	static void afterAll() {
@@ -197,9 +184,8 @@ class FacturaSAImpTest {
 
 	private boolean iguales(TFactura f1, TFactura f2) {
 		return f1.getCliente()==f2.getCliente()&&
-				f1.getFecha()==f2.getFecha()&&
+				f1.getFecha().equals(f2.getFecha())&&
 				f1.getId()==f2.getId()&&
-				f1.getPrecio()==f2.getPrecio()&&
-				f1.getLineaFacturas()==f2.getLineaFacturas();
+				f1.getPrecio()==f2.getPrecio();
 	}
 }
