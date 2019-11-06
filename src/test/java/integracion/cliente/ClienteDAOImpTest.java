@@ -11,6 +11,8 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import integracion.transaction.Transaction;
+import integracion.transactionManager.TransactionManager;
 import org.junit.jupiter.api.*;
 
 import negocio.cliente.TCliente;
@@ -25,6 +27,7 @@ class ClienteDAOImpTest {
 	
 	@BeforeAll
 	static void beforeAll() {
+		Transaction t = TransactionManager.getInstancia().createTransaction();
 
 		try {
 			conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/trescerotres", "empleado", "password");
@@ -132,8 +135,8 @@ class ClienteDAOImpTest {
 
 	private boolean iguales(TCliente c1, TCliente c2) {
 		return c1.getId()==c2.getId()&&
-				c1.getFecha_registro()==c2.getFecha_registro()&&
-				c1.getNombre()==c2.getNombre();
+				c1.getFecha_registro().equals(c2.getFecha_registro())&&
+				c1.getNombre().equals(c2.getNombre());
 	}
 
 }
