@@ -18,16 +18,24 @@ import presentacion.command.menu.MostrarClienteGUICommand;
 import presentacion.command.menu.MostrarFacturaGUICommand;
 import presentacion.command.menu.MostrarMenuGUICommand;
 import presentacion.command.menu.MostrarProductoGUICommand;
+import presentacion.command.menu.MostrarTurnoGUICommand;
 import presentacion.command.producto.AnadirProductoCommand;
 import presentacion.command.producto.BajaProductoCommand;
 import presentacion.command.producto.ListarProductosCommand;
 import presentacion.command.producto.ModificarBuscarProductoCommand;
 import presentacion.command.producto.ModificarProductoCommand;
 import presentacion.command.producto.MostrarProductoCommand;
+import presentacion.command.turno.AnadirTurnoCommand;
+import presentacion.command.turno.BajaTurnoCommand;
+import presentacion.command.turno.ListarTurnosCommand;
+import presentacion.command.turno.ModificarBuscarTurnoCommand;
+import presentacion.command.turno.ModificarTurnoCommand;
+import presentacion.command.turno.MostrarTurnoCommand;
 import presentacion.controladorAplicacion.EventosCliente;
 import presentacion.controladorAplicacion.EventosFactura;
 import presentacion.controladorAplicacion.EventosMenu;
 import presentacion.controladorAplicacion.EventosProducto;
+import presentacion.controladorAplicacion.EventosTurno;
 
 public class FactoriaCommandImpl extends FactoriaCommand{
 
@@ -57,10 +65,18 @@ public class FactoriaCommandImpl extends FactoriaCommand{
 			case EventosProducto.LISTAR_PRODUCTOS: comando = new ListarProductosCommand(); break;
 			case EventosProducto.MODIFICAR_BUSCAR_PRODUCTO: comando = new ModificarBuscarProductoCommand(); break;
 			
+			case EventosTurno.ANADIR_TURNO: comando = new AnadirTurnoCommand(); break;
+			case EventosTurno.MODIFICAR_TURNO: comando = new ModificarTurnoCommand(); break;
+			case EventosTurno.BAJA_TURNO: comando = new BajaTurnoCommand(); break;
+			case EventosTurno.MOSTRAR_TURNO: comando = new MostrarTurnoCommand(); break;
+			case EventosTurno.LISTAR_TURNO: comando = new ListarTurnosCommand(); break;
+			case EventosTurno.MODIFICAR_BUSCAR_TURNO: comando = new ModificarBuscarTurnoCommand(); break;
+			
 			case EventosMenu.MOSTRAR_HOME_GUI: comando = new MostrarMenuGUICommand(); break;
 			case EventosMenu.MOSTRAR_CLIENTE_GUI: comando = new MostrarClienteGUICommand(); break;
 			case EventosMenu.MOSTRAR_FACTURA_GUI: comando = new MostrarFacturaGUICommand(); break;
 			case EventosMenu.MOSTRAR_PRODUCTO_GUI: comando = new MostrarProductoGUICommand(); break;
+			case EventosMenu.MOSTRAR_TURNO_GUI: comando = new MostrarTurnoGUICommand(); break;
 		}
 
 		return comando;	

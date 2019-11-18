@@ -5,6 +5,7 @@ import presentacion.controladorAplicacion.EventosMenu;
 import presentacion.factura.FacturaGUIImp;
 import presentacion.main.MainGUIImpl;
 import presentacion.producto.ProductoGUIImpl;
+import presentacion.turno.TurnoGUIImpl;
 
 import javax.swing.*;
 import java.awt.*;
@@ -17,7 +18,8 @@ public class FactoriaPresentacionImpl extends FactoriaPresentacion {
 		case EventosMenu.MOSTRAR_HOME_GUI: return new MainGUIImpl();
 		case EventosMenu.MOSTRAR_CLIENTE_GUI: return new ClienteGUIImpl(); 
 		case EventosMenu.MOSTRAR_FACTURA_GUI: return new FacturaGUIImp(); 
-		case EventosMenu.MOSTRAR_PRODUCTO_GUI: return new ProductoGUIImpl(); 
+		case EventosMenu.MOSTRAR_PRODUCTO_GUI: return new ProductoGUIImpl();
+		case EventosMenu.MOSTRAR_TURNO_GUI: return new TurnoGUIImpl();
 		default: return null;
 		}
 	}

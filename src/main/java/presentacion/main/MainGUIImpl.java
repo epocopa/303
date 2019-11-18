@@ -7,10 +7,12 @@ import presentacion.controladorAplicacion.EventosCliente;
 import presentacion.controladorAplicacion.EventosFactura;
 import presentacion.controladorAplicacion.EventosMenu;
 import presentacion.controladorAplicacion.EventosProducto;
+import presentacion.controladorAplicacion.EventosTurno;
 import presentacion.factoria.FactoriaPresentacion;
 import presentacion.factoria.GUI;
 import presentacion.factura.FacturaGUIImp;
 import presentacion.producto.ProductoGUIImpl;
+import presentacion.turno.TurnoGUIImpl;
 
 import javax.swing.*;
 
@@ -30,6 +32,7 @@ public class MainGUIImpl extends JFrame implements MainGUI, GUI{
 	private ClienteGUIImpl clientesPanel;
 	private ProductoGUIImpl productosPanel;
 	private FacturaGUIImp facturasPanel;
+	private TurnoGUIImpl turnosPanel;
 
 	private static FactoriaPresentacion presentacion;
 	private static ControladorAplicacion controlador;
@@ -114,6 +117,7 @@ public class MainGUIImpl extends JFrame implements MainGUI, GUI{
 		clientesPanel = (ClienteGUIImpl)presentacion.generarVista(EventosMenu.MOSTRAR_CLIENTE_GUI);
 		productosPanel = (ProductoGUIImpl)presentacion.generarVista(EventosMenu.MOSTRAR_PRODUCTO_GUI);
 		facturasPanel = (FacturaGUIImp)presentacion.generarVista(EventosMenu.MOSTRAR_FACTURA_GUI);
+		turnosPanel = (TurnoGUIImpl)presentacion.generarVista(EventosMenu.MOSTRAR_TURNO_GUI);
 
 		homePanel = new JPanel(new GridBagLayout());
 		homePanel.setBackground(new Color(235, 237, 241));
@@ -123,7 +127,7 @@ public class MainGUIImpl extends JFrame implements MainGUI, GUI{
 		c.gridx = 0;
 		c.gridy = 0;
 		c.insets = new Insets(10,10,10,10);
-		JButton clientesBtn = createMenuButton("resources/icons/home/clientes.png", new Color(20,200,250));
+		JButton clientesBtn = createMenuButton("resources/icons/home/clientes.png", new Color(91,155,213));
 		clientesBtn.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				Context contexto = new Context(EventosMenu.MOSTRAR_CLIENTE_GUI, null);
@@ -133,7 +137,7 @@ public class MainGUIImpl extends JFrame implements MainGUI, GUI{
 		homePanel.add(clientesBtn, c);
 
 		c.gridx++;
-		JButton productosBtn = createMenuButton("resources/icons/home/productos.png", new Color(232, 57, 54));
+		JButton productosBtn = createMenuButton("resources/icons/home/productos.png", new Color(112, 173, 71));
 		productosBtn.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				Context contexto = new Context(EventosMenu.MOSTRAR_PRODUCTO_GUI, null);
@@ -143,7 +147,7 @@ public class MainGUIImpl extends JFrame implements MainGUI, GUI{
 		homePanel.add(productosBtn, c);
 
 		c.gridx++;
-		JButton facturasBtn = createMenuButton("resources/icons/home/facturas.png", new Color(248, 155, 20));
+		JButton facturasBtn = createMenuButton("resources/icons/home/facturas.png", new Color(255, 192, 0));
 		facturasBtn.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				Context contexto = new Context(EventosMenu.MOSTRAR_FACTURA_GUI, null);
@@ -151,11 +155,23 @@ public class MainGUIImpl extends JFrame implements MainGUI, GUI{
 			}
 		});
 		homePanel.add(facturasBtn, c);
-
+		
+		c.gridx = 0;
+		c.gridy++;
+		JButton turnosBtn = createMenuButton("resources/icons/home/turnos.png", new Color(243, 89, 63));
+		turnosBtn.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e){
+				Context contexto = new Context(EventosMenu.MOSTRAR_TURNO_GUI, null);
+				controlador.accion(contexto);
+			}
+		});
+		homePanel.add(turnosBtn, c);
+		
 		mainPanel.add(homePanel, name);
 		mainPanel.add(clientesPanel, clientesPanel.getName());
 		mainPanel.add(productosPanel, productosPanel.getName());
 		mainPanel.add(facturasPanel, facturasPanel.getName());
+		mainPanel.add(turnosPanel, turnosPanel.getName());
 		cl.show(mainPanel, name);
 
 		add(topBar);
@@ -272,6 +288,21 @@ public class MainGUIImpl extends JFrame implements MainGUI, GUI{
 				facturasPanel.mostrar();
 				cl.show(mainPanel, facturasPanel.getName());
 				System.out.println("FacturaGUI");
+				break;
+			case EventosMenu.MOSTRAR_TURNO_GUI:
+				addPathSeparator();
+
+				JButton turnosPathBtn = createPathButton(turnosPanel.getName());
+				turnosPathBtn.addActionListener(new ActionListener(){
+					public void actionPerformed(ActionEvent e){
+						turnosPanel.mostrar();
+					}
+				});
+				pathPanel.add(turnosPathBtn);
+
+				turnosPanel.mostrar();
+				cl.show(mainPanel, turnosPanel.getName());
+				System.out.println("TurnoGUI");
 				break;
 
 			//--- ACTUALIZAR CLIENTE ---//
@@ -438,6 +469,57 @@ public class MainGUIImpl extends JFrame implements MainGUI, GUI{
 				System.out.println("Delegando a panel facturas");
 			};
 			break;
+			
+			//--- ACTUALIZAR TURNO ---//
+			
+			case EventosTurno.ANADIR_TURNO_OK:
+				productosPanel.actualizar(evento, datos);
+				System.out.println("Delegando a panel turno");
+				break;
+			case EventosTurno.ANADIR_TURNO_KO:
+				productosPanel.actualizar(evento, datos);
+				System.out.println("Delegando a panel turno");
+				break;
+			case EventosTurno.MODIFICAR_BUSCAR_TURNO_OK:
+				productosPanel.actualizar(evento, datos);
+				System.out.println("Delegando a panel turno");
+				break;
+			case EventosTurno.MODIFICAR_BUSCAR_TURNO_KO:
+				productosPanel.actualizar(evento, datos);
+				System.out.println("Delegando a panel turno");
+				break;
+			case EventosTurno.MODIFICAR_TURNO_OK:
+				productosPanel.actualizar(evento, datos);
+				System.out.println("Delegando a panel turno");
+				break;
+			case EventosTurno.MODIFICAR_TURNO_KO:
+				productosPanel.actualizar(evento, datos);
+				System.out.println("Delegando a panel turno");
+				break;
+			case EventosTurno.BAJA_TURNO_OK:
+				productosPanel.actualizar(evento, datos);
+				System.out.println("Delegando a panel turno");
+				break;
+			case EventosTurno.BAJA_TURNO_KO:
+				productosPanel.actualizar(evento, datos);
+				System.out.println("Delegando a panel turno");
+				break;
+			case EventosTurno.MOSTRAR_TURNO_OK:
+				productosPanel.actualizar(evento, datos);
+				System.out.println("Delegando a panel turno");
+				break;
+			case EventosTurno.MOSTRAR_TURNO_KO:
+				productosPanel.actualizar(evento, datos);
+				System.out.println("Delegando a panel turno");
+				break;
+			case EventosTurno.LISTAR_TURNO_OK:
+				productosPanel.actualizar(evento, datos);
+				System.out.println("Delegando a panel turno");
+				break;
+			case EventosTurno.LISTAR_TURNO_KO:
+				productosPanel.actualizar(evento, datos);
+				System.out.println("Delegando a panel turno");
+				break;
 		}
 	}
 }
