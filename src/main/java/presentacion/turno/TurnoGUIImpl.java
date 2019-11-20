@@ -10,6 +10,7 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.time.LocalTime;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -33,7 +34,9 @@ import negocio.producto.TProductoTextil;
 import presentacion.factoria.GUI;
 import presentacion.controladorAplicacion.Context;
 import presentacion.controladorAplicacion.ControladorAplicacion;
+import presentacion.controladorAplicacion.ControladorAplicacionJPA;
 import presentacion.controladorAplicacion.EventosProducto;
+import presentacion.controladorAplicacion.EventosTurno;
 import presentacion.factoria.FactoriaPresentacion;
 
 public class TurnoGUIImpl extends JPanel implements TurnoGUI, GUI{
@@ -58,32 +61,28 @@ public class TurnoGUIImpl extends JPanel implements TurnoGUI, GUI{
 	private JPanel borrarOutputArea;
 	private JLabel borrarOutputLabel;
 	
-	private JPanel mostrarProductoPanel;
-	private CardLayout mostrarProductoPanelCL;
+	private JPanel mostrarTurnoPanel;
+	private CardLayout mostrarTurnoPanelCL;
 	private JPanel mostrarErrorArea;
 	private JLabel mostrarErrorLabel;
 	private JLabel mostrarIDText;
 	private JLabel mostrarNombreText;
-	private JLabel mostrarPrecioText;
-	private JLabel mostrarCantidadText;
-	private JLabel mostrarNumPieText;
-	private JLabel mostrarTejidoText;
+	private JLabel mostrarHoraInicioText;
+	private JLabel mostrarHoraFinText;
 	private JLabel mostrarActivoText;
 	
 	private DefaultTableModel mostrarModel;
 	
-	private JPanel editarProductoPanel;
-	private CardLayout editarProductoPanelCL;
+	private JPanel editarTurnoPanel;
+	private CardLayout editarTurnoPanelCL;
 	private JPanel editarBuscarErrorArea;
 	private JLabel editarBuscarErrorLabel;
 	private JPanel editarOutputArea;
 	private JLabel editarOutputLabel;
 	private JTextField editarNombreField;
-	private JTextField editarPrecioField;
-	private JTextField editarCantidadField;
+	private JTextField editarHoraInicioField;
+	private JTextField editarHoraFinField;
 	private JTextField editarActivoField;
-	private JTextField editarNumPieField;
-	private JTextField editarTejidoField;
 	
 	public TurnoGUIImpl() {
 		initialize();
@@ -104,33 +103,33 @@ public class TurnoGUIImpl extends JPanel implements TurnoGUI, GUI{
 		c.gridy = 0;
 		c.insets = new Insets(10,10,10,10);
 		
-		JButton anadirBtn = createMenuButton("resources/icons/productos/anadir-producto.png", new Color(91, 155, 213));
+		JButton anadirBtn = createMenuButton("resources/icons/turno/anadir-turno.png", new Color(91, 155, 213));
 		anadirBtn.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				addPathSeparator();
-				createPathButton("ANADIR PRODUCTO");
+				createPathButton("ANADIR TURNO");
 				anadirPanel();
 			}
 		});
 		_homePanel.add(anadirBtn, c);
 		
 		c.gridx++;
-		JButton editarBtn = createMenuButton("resources/icons/productos/editar-producto.png", new Color(255, 192, 0));
+		JButton editarBtn = createMenuButton("resources/icons/turno/editar-turno.png", new Color(255, 192, 0));
 		editarBtn.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				addPathSeparator();
-				createPathButton("EDITAR PRODUCTO");
+				createPathButton("EDITAR TURNO");
 				editarPanel();;
 			}
 		});
 		_homePanel.add(editarBtn, c);
 		
 		c.gridx++;
-		JButton borrarBtn = createMenuButton("resources/icons/productos/eliminar-producto.png", new Color(112, 173, 71));
+		JButton borrarBtn = createMenuButton("resources/icons/turno/eliminar-turno.png", new Color(112, 173, 71));
 		borrarBtn.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				addPathSeparator();
-				createPathButton("ELIMINAR PRODUCTO");
+				createPathButton("ELIMINAR TURNO");
 				borrarPanel();;
 			}
 		});
@@ -138,21 +137,21 @@ public class TurnoGUIImpl extends JPanel implements TurnoGUI, GUI{
 		
 		c.gridx = 0;
 		c.gridy++;
-		JButton listarBtn = createMenuButton("resources/icons/productos/mostrar-productos.png", new Color(234, 80, 54));
+		JButton listarBtn = createMenuButton("resources/icons/turno/mostrar-turnos.png", new Color(234, 80, 54));
 		listarBtn.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
-				Context contexto = new Context(EventosProducto.LISTAR_PRODUCTOS, null);
-				ControladorAplicacion.getInstance().accion(contexto);
+				Context contexto = new Context(EventosTurno.LISTAR_TURNO, null);
+				ControladorAplicacionJPA.getInstance().accion(contexto);
 			}
 		});
 		_homePanel.add(listarBtn, c);
 		
 		c.gridx++;
-		JButton buscarBtn = createMenuButton("resources/icons/productos/buscar-producto.png", new Color(47, 85, 151));
+		JButton buscarBtn = createMenuButton("resources/icons/turno/buscar-turno.png", new Color(47, 85, 151));
 		buscarBtn.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				addPathSeparator();
-				createPathButton("MOSTRAR PRODUCTO");
+				createPathButton("MOSTRAR TURNO");
 				buscarPanel();
 			}
 		});
@@ -251,19 +250,14 @@ public class TurnoGUIImpl extends JPanel implements TurnoGUI, GUI{
 		formPanel.add(nombreLabel, c);
 				
 		c.gridy++;
-		JLabel precioLabel = new JLabel("Precio: ");
-		precioLabel.setFont(new Font("Arial", Font.PLAIN, 18));
-		formPanel.add(precioLabel, c);
+		JLabel horaInicioLabel = new JLabel("Hora inicio: ");
+		horaInicioLabel.setFont(new Font("Arial", Font.PLAIN, 18));
+		formPanel.add(horaInicioLabel, c);
 				
 		c.gridy++;
-		JLabel cantidadLabel = new JLabel("Cantidad: ");
-		cantidadLabel.setFont(new Font("Arial", Font.PLAIN, 18));
-		formPanel.add(cantidadLabel, c);
-				
-		c.gridy++;
-		JLabel esCalzadoLabel = new JLabel("Calzado(?): ");
-		esCalzadoLabel.setFont(new Font("Arial", Font.PLAIN, 18));
-		formPanel.add(esCalzadoLabel, c);
+		JLabel horaFinLabel = new JLabel("Hora fin: ");
+		horaFinLabel.setFont(new Font("Arial", Font.PLAIN, 18));
+		formPanel.add(horaFinLabel, c);
 				
 		c.gridx++;
 		c.gridy = 0;
@@ -272,16 +266,12 @@ public class TurnoGUIImpl extends JPanel implements TurnoGUI, GUI{
 		formPanel.add(nombreField, c);
 				
 		c.gridy++;
-		JTextField precioField = new JTextField(15);
-		formPanel.add(precioField, c);
+		JTextField horaInicioField = new JTextField(15);
+		formPanel.add(horaInicioField, c);
 			
 		c.gridy++;
-		JTextField cantidadField = new JTextField(15);
-		formPanel.add(cantidadField, c);
-			
-		c.gridy++;
-		JTextField esCalzadoField = new JTextField(15);
-		formPanel.add(esCalzadoField, c);
+		JTextField horaFinField = new JTextField(15);
+		formPanel.add(horaFinField, c);
 				
 		//--
 				
@@ -294,28 +284,17 @@ public class TurnoGUIImpl extends JPanel implements TurnoGUI, GUI{
 		enviarBtn.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){	
 				try {
+					TTurno turno = new TTurno();
 					String nombre = nombreField.getText();
-					Double precio = Double.parseDouble(precioField.getText());
-					Integer cantidad = Integer.parseInt(cantidadField.getText());
-					boolean calzado = Boolean.parseBoolean(esCalzadoField.getText());
-					if (nombre.length() > 0 && !nombre.equals("") && precio > 0 && !precioField.equals("") && cantidad > 0 && !cantidadField.equals("") && !esCalzadoField.equals("")) {
-						if(calzado == true) {
-							String respuesta = JOptionPane.showInputDialog(null, "Introduzca el numero de pie", "Finalizar operacion", JOptionPane.INFORMATION_MESSAGE);
-							if(respuesta != null) {
-								int numPie = Integer.parseInt(respuesta);
-								TProductoCalzado pCalzado = new TProductoCalzado(0, nombre, cantidad, precio, numPie, true);
-								Context contexto1 = new Context(EventosProducto.ANADIR_PRODUCTO, pCalzado);
-								ControladorAplicacion.getInstance().accion(contexto1);
-							}
-						}
-						else {
-							String tejido = JOptionPane.showInputDialog(null, "Introduzca el tipo de tejido", "Finalizar operacion", JOptionPane.INFORMATION_MESSAGE);
-							if(tejido != null) {
-								TProductoTextil pTextil = new TProductoTextil(0, nombre, cantidad, precio, tejido, true);
-								Context contexto1 = new Context(EventosProducto.ANADIR_PRODUCTO, pTextil);
-								ControladorAplicacion.getInstance().accion(contexto1);
-							}
-						}
+					LocalTime horaInicio = LocalTime.parse(horaInicioField.getText());
+					LocalTime horaFin = LocalTime.parse(horaFinField.getText());
+					if (nombre.length() > 0 && !nombre.equals("") && horaInicioField.getText().length() > 0 && !horaInicioField.getText().equals("") && horaFinField.getText().length() > 0 && !horaFinField.getText().equals("")) {
+						turno.setNombre(nombre);
+						turno.setHoraInicio(horaInicio);
+						turno.setHoraFin(horaFin);
+						turno.setActivo(true);
+						Context contexto = new Context(EventosTurno.ANADIR_TURNO, turno);
+						ControladorAplicacionJPA.getInstance().accion(contexto);
 					} else {
 						showOutputMsg(anadirOutputArea, anadirOutputLabel, "ERROR: El nombre introducido no es valido.", false);
 					}
@@ -342,11 +321,11 @@ public class TurnoGUIImpl extends JPanel implements TurnoGUI, GUI{
 	}
 	
 	public void editarPanel() {
-		editarProductoPanel = new JPanel();
-		editarProductoPanelCL = new CardLayout();
-		editarProductoPanel.setLayout(editarProductoPanelCL);
-		editarProductoPanel.setBackground(new Color(235, 237, 241));
-		editarProductoPanel.setMaximumSize(new Dimension(1024, 460));
+		editarTurnoPanel = new JPanel();
+		editarTurnoPanelCL = new CardLayout();
+		editarTurnoPanel.setLayout(editarTurnoPanelCL);
+		editarTurnoPanel.setBackground(new Color(235, 237, 241));
+		editarTurnoPanel.setMaximumSize(new Dimension(1024, 460));
 		
 		JPanel buscarPanel = new JPanel();
 		buscarPanel.setLayout(new BoxLayout(buscarPanel, BoxLayout.Y_AXIS));
@@ -386,7 +365,7 @@ public class TurnoGUIImpl extends JPanel implements TurnoGUI, GUI{
 		c.gridy = 0;
 		c.anchor = GridBagConstraints.LINE_END;
 		c.insets = new Insets(5,5,0,0);
-		JLabel IDLabel = new JLabel("ID Producto: ");
+		JLabel IDLabel = new JLabel("ID Turno: ");
 		IDLabel.setFont(new Font("Arial", Font.PLAIN, 18));
 		formPanel.add(IDLabel, c);
 		
@@ -441,24 +420,14 @@ public class TurnoGUIImpl extends JPanel implements TurnoGUI, GUI{
 		formPanel2.add(nombreLabel2, c2);
 		
 		c2.gridy++;
-		JLabel precioLabel = new JLabel("Precio: ");
-		precioLabel.setFont(new Font("Arial", Font.PLAIN, 18));
-		formPanel2.add(precioLabel, c2);
+		JLabel horaInicioLabel = new JLabel("Hora inicio: ");
+		horaInicioLabel.setFont(new Font("Arial", Font.PLAIN, 18));
+		formPanel2.add(horaInicioLabel, c2);
 		
 		c2.gridy++;
-		JLabel cantidadLabel = new JLabel("Cantidad: ");
-		cantidadLabel.setFont(new Font("Arial", Font.PLAIN, 18));
-		formPanel2.add(cantidadLabel, c2);
-		
-		c2.gridy++;
-		JLabel numPieLabel = new JLabel("Numero de pie: ");
-		numPieLabel.setFont(new Font("Arial", Font.PLAIN, 18));
-		formPanel2.add(numPieLabel, c2);
-		
-		c2.gridy++;
-		JLabel tejidoLabel = new JLabel("Tejido: ");
-		tejidoLabel.setFont(new Font("Arial", Font.PLAIN, 18));
-		formPanel2.add(tejidoLabel, c2);
+		JLabel horaFinLabel = new JLabel("Hora fin: ");
+		horaFinLabel.setFont(new Font("Arial", Font.PLAIN, 18));
+		formPanel2.add(horaFinLabel, c2);
 		
 		c2.gridy++;
 		JLabel activoLabel = new JLabel("Activo: ");
@@ -472,20 +441,12 @@ public class TurnoGUIImpl extends JPanel implements TurnoGUI, GUI{
 		formPanel2.add(editarNombreField, c2);
 		
 		c2.gridy++;
-		editarPrecioField = new JTextField(15);
-		formPanel2.add(editarPrecioField, c2);
+		editarHoraInicioField = new JTextField(15);
+		formPanel2.add(editarHoraInicioField, c2);
 		
 		c2.gridy++;
-		editarCantidadField = new JTextField(15);
-		formPanel2.add(editarCantidadField, c2);
-		
-		c2.gridy++;
-		editarNumPieField = new JTextField(15);
-		formPanel2.add(editarNumPieField, c2);
-		
-		c2.gridy++;
-		editarTejidoField = new JTextField(15);
-		formPanel2.add(editarTejidoField, c2);
+		editarHoraFinField = new JTextField(15);
+		formPanel2.add(editarHoraFinField, c2);
 		
 		c2.gridy++;
 		editarActivoField = new JTextField(15);
@@ -503,8 +464,8 @@ public class TurnoGUIImpl extends JPanel implements TurnoGUI, GUI{
 			public void actionPerformed(ActionEvent e){
 				String ID = IDField.getText();	
 				if (ID.length() > 0 && !ID.equals(" ")) {
-					Context contexto = new Context(EventosProducto.MODIFICAR_BUSCAR_PRODUCTO, Integer.valueOf(ID));
-					ControladorAplicacion.getInstance().accion(contexto);
+					Context contexto = new Context(EventosTurno.MODIFICAR_BUSCAR_TURNO, Integer.valueOf(ID));
+					ControladorAplicacionJPA.getInstance().accion(contexto);
 				} else {
 					showOutputMsg(editarBuscarErrorArea, editarBuscarErrorLabel, "ERROR: El ID introducido no es valido.", false);
 				}
@@ -523,23 +484,14 @@ public class TurnoGUIImpl extends JPanel implements TurnoGUI, GUI{
 			public void actionPerformed(ActionEvent e){
 				Integer ID = Integer.valueOf(IDField.getText());
 				String nombre = editarNombreField.getText();
-				String precio = editarPrecioField.getText();
-				String cantidad = editarCantidadField.getText();
-				String activo = editarActivoField.getText();
-				String npie = editarNumPieField.getText();
-				String tejido = editarTejidoField.getText();
+				LocalTime horaInicio = LocalTime.parse(editarHoraInicioField.getText());
+				LocalTime horaFin = LocalTime.parse(editarHoraFinField.getText());
+				Boolean activo = Boolean.valueOf(editarActivoField.getText());
 
-				if ((nombre.length() > 0 && !nombre.equals("")) && (precio.length() > 0 && !precio.equals("")) && (cantidad.length() > 0 && !cantidad.equals("")) && (activo.length() > 0 && !activo.equals("")) && (npie.length() > 0 && !npie.equals("")) && (tejido.length() > 0 && !tejido.equals(""))) {
-					if(npie.equalsIgnoreCase("N/A")) {
-						TProductoTextil pTextil = new TProductoTextil(ID, nombre, Integer.valueOf(cantidad), Double.valueOf(precio), tejido, Boolean.valueOf(activo));
-						Context contexto = new Context(EventosProducto.MODIFICAR_PRODUCTO, pTextil);
-						ControladorAplicacion.getInstance().accion(contexto);
-					}
-					else {
-						TProductoCalzado pCalzado = new TProductoCalzado(ID, nombre, Integer.valueOf(cantidad), Double.valueOf(precio), Integer.valueOf(npie), Boolean.valueOf(activo));
-						Context contexto = new Context(EventosProducto.MODIFICAR_PRODUCTO, pCalzado);
-						ControladorAplicacion.getInstance().accion(contexto);
-					}
+				if (nombre.length() > 0 && !nombre.equals("") && horaInicio.toString().length() > 0 && !horaInicio.toString().equals("") && horaFin.toString().length() > 0 && !horaFin.toString().equals("") && activo.toString().length() > 0 && !activo.toString().equals("")) {
+					TTurno turno = new TTurno(ID, nombre, horaInicio, horaFin, activo);
+					Context contexto = new Context(EventosTurno.MODIFICAR_TURNO, turno);
+					ControladorAplicacionJPA.getInstance().accion(contexto);
 				} else {
 					showOutputMsg(editarBuscarErrorArea, editarBuscarErrorLabel, "ERROR: Los datos introducidos no son validos.", false);
 				}
@@ -564,13 +516,13 @@ public class TurnoGUIImpl extends JPanel implements TurnoGUI, GUI{
 		
 		//-- 
 		
-		editarProductoPanel.add(buscarPanel, "BUSCAR");
-		editarProductoPanel.add(editarPanel, "SECOND");
-		add(editarProductoPanel, "EDITAR");
+		editarTurnoPanel.add(buscarPanel, "BUSCAR");
+		editarTurnoPanel.add(editarPanel, "SECOND");
+		add(editarTurnoPanel, "EDITAR");
 		
-		editarProductoPanelCL.show(editarProductoPanel, "BUSCAR");
+		editarTurnoPanelCL.show(editarTurnoPanel, "BUSCAR");
 		_localCL.show(this, "EDITAR");
-		_currentPanel = editarProductoPanel;
+		_currentPanel = editarTurnoPanel;
 	}
 	
 	public void borrarPanel() {
@@ -591,7 +543,7 @@ public class TurnoGUIImpl extends JPanel implements TurnoGUI, GUI{
 		borrarOutputArea.setBackground(new Color(172, 40, 40));
 		borrarOutputArea.setMaximumSize(new Dimension(800, 50));
 		
-		borrarOutputLabel = new JLabel("ERROR: El nombre introducido no es valido.");
+		borrarOutputLabel = new JLabel("ERROR: El ID introducido no es valido.");
 		borrarOutputLabel.setFont(new Font("Arial", Font.PLAIN, 16));
 		borrarOutputLabel.setForeground(new Color(230,230,230));
 		
@@ -612,7 +564,7 @@ public class TurnoGUIImpl extends JPanel implements TurnoGUI, GUI{
 		c.gridy = 0;
 		c.anchor = GridBagConstraints.LINE_END;
 		c.insets = new Insets(5,5,0,0);
-		JLabel IDLabel = new JLabel("ID Producto: ");
+		JLabel IDLabel = new JLabel("ID Turno: ");
 		IDLabel.setFont(new Font("Arial", Font.PLAIN, 18));
 		formPanel.add(IDLabel, c);
 		
@@ -634,8 +586,8 @@ public class TurnoGUIImpl extends JPanel implements TurnoGUI, GUI{
 			public void actionPerformed(ActionEvent e){
 				String ID = IDField.getText();	
 				if (ID.length() > 0 && !ID.equals(" ")) {
-					Context contexto = new Context(EventosProducto.BAJA_PRODUCTO, Integer.valueOf(ID));
-					ControladorAplicacion.getInstance().accion(contexto);
+					Context contexto = new Context(EventosTurno.BAJA_TURNO, Integer.valueOf(ID));
+					ControladorAplicacionJPA.getInstance().accion(contexto);
 				} else {
 					showOutputMsg(borrarOutputArea, borrarOutputLabel, "ERROR: El ID introducido no es valido.", false);
 				}
@@ -664,7 +616,7 @@ public class TurnoGUIImpl extends JPanel implements TurnoGUI, GUI{
 		panel.setBackground(new Color(235, 237, 241));
 		panel.setMaximumSize(new Dimension(1024, 460));
 		
-		JLabel tableTitle = new JLabel("PRODUCTOS");
+		JLabel tableTitle = new JLabel("TURNOS");
 		tableTitle.setAlignmentX(JComponent.CENTER_ALIGNMENT);
 		tableTitle.setFont(new Font("Arial", Font.BOLD, 18));
 		
@@ -674,7 +626,7 @@ public class TurnoGUIImpl extends JPanel implements TurnoGUI, GUI{
 		tablePanel.setBackground(new Color(235, 237, 241));
 		tablePanel.setMaximumSize(new Dimension(800, 320));
 		
-		String[] columns = {"ID Producto", "Nombre", "Precio", "Cantidad", "Numero de pie", "Tejido", "Activo"};
+		String[] columns = {"ID Turno", "Nombre", "Hora Inicio", "Hora Fin", "Activo"};
 		mostrarModel = new DefaultTableModel(); 
         for (String column : columns) {
         	mostrarModel.addColumn(column);
@@ -699,11 +651,11 @@ public class TurnoGUIImpl extends JPanel implements TurnoGUI, GUI{
 	}
 
 	public void buscarPanel() {
-		mostrarProductoPanel = new JPanel();
-		mostrarProductoPanelCL = new CardLayout();
-		mostrarProductoPanel.setLayout(mostrarProductoPanelCL);
-		mostrarProductoPanel.setBackground(new Color(235, 237, 241));
-		mostrarProductoPanel.setMaximumSize(new Dimension(1024, 460));
+		mostrarTurnoPanel = new JPanel();
+		mostrarTurnoPanelCL = new CardLayout();
+		mostrarTurnoPanel.setLayout(mostrarTurnoPanelCL);
+		mostrarTurnoPanel.setBackground(new Color(235, 237, 241));
+		mostrarTurnoPanel.setMaximumSize(new Dimension(1024, 460));
 		
 		JPanel buscarPanel = new JPanel();
 		buscarPanel.setLayout(new BoxLayout(buscarPanel, BoxLayout.Y_AXIS));
@@ -743,7 +695,7 @@ public class TurnoGUIImpl extends JPanel implements TurnoGUI, GUI{
 		c.gridy = 0;
 		c.anchor = GridBagConstraints.LINE_END;
 		c.insets = new Insets(5,5,0,0);
-		JLabel IDLabel = new JLabel("ID Producto: ");
+		JLabel IDLabel = new JLabel("ID Turno: ");
 		IDLabel.setFont(new Font("Arial", Font.PLAIN, 18));
 		formPanel.add(IDLabel, c);
 		
@@ -755,10 +707,10 @@ public class TurnoGUIImpl extends JPanel implements TurnoGUI, GUI{
 		
 		//--
 		
-		JPanel productoPanel = new JPanel();
-		productoPanel.setLayout(new BoxLayout(productoPanel, BoxLayout.Y_AXIS));
-		productoPanel.setBackground(new Color(235, 237, 241));
-		productoPanel.setMaximumSize(new Dimension(1024, 460));
+		JPanel turnoPanel = new JPanel();
+		turnoPanel.setLayout(new BoxLayout(turnoPanel, BoxLayout.Y_AXIS));
+		turnoPanel.setBackground(new Color(235, 237, 241));
+		turnoPanel.setMaximumSize(new Dimension(1024, 460));
 			
 		//--
 					
@@ -772,7 +724,7 @@ public class TurnoGUIImpl extends JPanel implements TurnoGUI, GUI{
 		c2.gridy = 0;	
 		c2.anchor = GridBagConstraints.LINE_END;
 		c2.insets = new Insets(5,5,0,0);
-		JLabel IDLabel2 = new JLabel("ID Producto: ");
+		JLabel IDLabel2 = new JLabel("ID Turno: ");
 		IDLabel2.setFont(new Font("Arial", Font.PLAIN, 22));
 		dataPanel.add(IDLabel2, c2);
 					
@@ -782,24 +734,14 @@ public class TurnoGUIImpl extends JPanel implements TurnoGUI, GUI{
 		dataPanel.add(nombreLabel, c2);
 				
 		c2.gridy++;
-		JLabel PrecioLabel = new JLabel("Precio: ");
-		PrecioLabel.setFont(new Font("Arial", Font.PLAIN, 22));
-		dataPanel.add(PrecioLabel, c2);
+		JLabel horaInicioLabel = new JLabel("Hora inicio: ");
+		horaInicioLabel.setFont(new Font("Arial", Font.PLAIN, 22));
+		dataPanel.add(horaInicioLabel, c2);
 					
 		c2.gridy++;
-		JLabel CantidadLabel = new JLabel("Cantidad: ");
-		CantidadLabel.setFont(new Font("Arial", Font.PLAIN, 22));
-		dataPanel.add(CantidadLabel, c2);
-		
-		c2.gridy++;
-		JLabel NumPieLabel = new JLabel("Numero de pie: ");
-		NumPieLabel.setFont(new Font("Arial", Font.PLAIN, 22));
-		dataPanel.add(NumPieLabel, c2);
-		
-		c2.gridy++;
-		JLabel TejidoLabel = new JLabel("Tejido: ");
-		TejidoLabel.setFont(new Font("Arial", Font.PLAIN, 22));
-		dataPanel.add(TejidoLabel, c2);
+		JLabel horaFinLabel = new JLabel("Hora fin: ");
+		horaFinLabel.setFont(new Font("Arial", Font.PLAIN, 22));
+		dataPanel.add(horaFinLabel, c2);
 		
 		c2.gridy++;
 		JLabel ActivoLabel = new JLabel("Activo: ");
@@ -819,24 +761,14 @@ public class TurnoGUIImpl extends JPanel implements TurnoGUI, GUI{
 		dataPanel.add(mostrarNombreText, c2);
 				
 		c2.gridy++;
-		mostrarPrecioText = new JLabel("0");
-		mostrarPrecioText.setFont(new Font("Arial", Font.PLAIN, 18));
-		dataPanel.add(mostrarPrecioText, c2);
+		mostrarHoraInicioText = new JLabel("0");
+		mostrarHoraInicioText.setFont(new Font("Arial", Font.PLAIN, 18));
+		dataPanel.add(mostrarHoraInicioText, c2);
 				
 		c2.gridy++;
-		mostrarCantidadText = new JLabel("0");
-		mostrarCantidadText.setFont(new Font("Arial", Font.PLAIN, 18));
-		dataPanel.add(mostrarCantidadText, c2);
-		
-		c2.gridy++;
-		mostrarNumPieText = new JLabel("0");
-		mostrarNumPieText.setFont(new Font("Arial", Font.PLAIN, 18));
-		dataPanel.add(mostrarNumPieText, c2);
-		
-		c2.gridy++;
-		mostrarTejidoText = new JLabel("0");
-		mostrarTejidoText.setFont(new Font("Arial", Font.PLAIN, 18));
-		dataPanel.add(mostrarTejidoText, c2);
+		mostrarHoraFinText = new JLabel("0");
+		mostrarHoraFinText.setFont(new Font("Arial", Font.PLAIN, 18));
+		dataPanel.add(mostrarHoraFinText, c2);
 		
 		c2.gridy++;
 		mostrarActivoText = new JLabel("true");
@@ -855,10 +787,10 @@ public class TurnoGUIImpl extends JPanel implements TurnoGUI, GUI{
 			public void actionPerformed(ActionEvent e){
 				String ID = IDField.getText();	
 				if (ID.length() > 0 && !ID.equals(" ")) {
-					Context contexto = new Context(EventosProducto.MOSTRAR_PRODUCTO, Integer.valueOf(ID));
-					ControladorAplicacion.getInstance().accion(contexto);
+					Context contexto = new Context(EventosTurno.MOSTRAR_TURNO, Integer.valueOf(ID));
+					ControladorAplicacionJPA.getInstance().accion(contexto);
 				} else {
-					showOutputMsg(mostrarErrorArea, mostrarErrorLabel, "ERROR: El nombre introducido no es valido.", false);
+					showOutputMsg(mostrarErrorArea, mostrarErrorLabel, "ERROR: El ID introducido no es valido.", false);
 				}
 			}
 		});
@@ -873,18 +805,18 @@ public class TurnoGUIImpl extends JPanel implements TurnoGUI, GUI{
 					
 		//--
 					
-		productoPanel.add(Box.createRigidArea(new Dimension(0, 100)));
-		productoPanel.add(dataPanel);
+		turnoPanel.add(Box.createRigidArea(new Dimension(0, 100)));
+		turnoPanel.add(dataPanel);
 					
 		//--
 						
-		mostrarProductoPanel.add(buscarPanel, "BUSCAR");
-		mostrarProductoPanel.add(productoPanel, "PRODUCTO");
-		add(mostrarProductoPanel, "BUSCAR");
+		mostrarTurnoPanel.add(buscarPanel, "BUSCAR");
+		mostrarTurnoPanel.add(turnoPanel, "TURNO");
+		add(mostrarTurnoPanel, "BUSCAR");
 						
-		mostrarProductoPanelCL.show(mostrarProductoPanel, "BUSCAR");
+		mostrarTurnoPanelCL.show(mostrarTurnoPanel, "BUSCAR");
 		_localCL.show(this, "BUSCAR");
-		_currentPanel = mostrarProductoPanel;
+		_currentPanel = mostrarTurnoPanel;
 	}
 	
 	public void clear() {
@@ -910,127 +842,94 @@ public class TurnoGUIImpl extends JPanel implements TurnoGUI, GUI{
 
 	public void actualizar(int evento, Object datos) {
 		String mensaje;
-		TProducto producto;
+		TTurno turno;
 		switch (evento){
-			case EventosProducto.ANADIR_PRODUCTO_OK:
+			case EventosTurno.ANADIR_TURNO_OK:
 				mensaje = (String) datos;
 				showOutputMsg(anadirOutputArea, anadirOutputLabel, mensaje, true);
-				System.out.println("Anadir Producto OK");
+				System.out.println("Anadir Turno OK");
 				break;
-			case EventosProducto.ANADIR_PRODUCTO_KO: {
+			case EventosTurno.ANADIR_TURNO_KO: {
 				mensaje = (String) datos;
 				showOutputMsg(anadirOutputArea, anadirOutputLabel, mensaje, false);
-				System.out.println("Anadir Producto KO");
+				System.out.println("Anadir Turno KO");
 				}
 				break;
-			case EventosProducto.BAJA_PRODUCTO_OK:
+			case EventosTurno.BAJA_TURNO_OK:
 				mensaje = (String) datos;
 				showOutputMsg(borrarOutputArea, borrarOutputLabel, mensaje, true);
-				System.out.println("Eliminar Producto OK");
+				System.out.println("Eliminar Turno OK");
 				break;
-			case EventosProducto.BAJA_PRODUCTO_KO:
+			case EventosTurno.BAJA_TURNO_KO:
 				mensaje = (String) datos;
 				showOutputMsg(borrarOutputArea, borrarOutputLabel, mensaje, false);
-				System.out.println("Eliminar Producto KO");
+				System.out.println("Eliminar Turno KO");
 				break;
-			case EventosProducto.MOSTRAR_PRODUCTO_OK:
-				producto = (TProducto) datos;
-				Integer id = producto.getId();
-				Integer cantidad = producto.getCantidad();
-				
+			case EventosTurno.MOSTRAR_TURNO_OK:
+				turno = (TTurno) datos;
+				Integer id = turno.getId();
+
 				mostrarIDText.setText(id.toString());
-				mostrarNombreText.setText(producto.getNombre());
-				mostrarPrecioText.setText(Double.valueOf(producto.getPrecio()).toString());
-				mostrarCantidadText.setText(cantidad.toString());
-				mostrarActivoText.setText(Boolean.toString(producto.isActivo()));
+				mostrarNombreText.setText(turno.getNombre());
+				mostrarHoraInicioText.setText(turno.getHoraInicio().toString());
+				mostrarHoraFinText.setText(turno.getHoraFin().toString());
+				mostrarActivoText.setText(Boolean.toString(turno.isActivo()));
 				
-				if(producto.isCalzado() == true) {
-					TProductoCalzado pCalzado = (TProductoCalzado) datos;
-					Integer nPie = pCalzado.getNumero();
-					mostrarNumPieText.setText(nPie.toString());
-					mostrarTejidoText.setText("N/A");
-				}
-				else {
-					TProductoTextil pTextil = (TProductoTextil) datos;
-					mostrarTejidoText.setText(pTextil.getTejido());
-					mostrarNumPieText.setText("N/A");
-				}
-				
-				mostrarProductoPanelCL.show(mostrarProductoPanel, "PRODUCTO");
-				System.out.println("Mostrar Producto OK");
+				mostrarTurnoPanelCL.show(mostrarTurnoPanel, "TURNO");
+				System.out.println("Mostrar Turno OK");
 				break;
-			case EventosProducto.MOSTRAR_PRODUCTO_KO:
+			case EventosTurno.MOSTRAR_TURNO_KO:
 				mensaje = (String) datos;
 				
 				showOutputMsg(mostrarErrorArea, mostrarErrorLabel, mensaje, false);
-				System.out.println("Mostrar Producto KO");
+				System.out.println("Mostrar Turno KO");
 				break;
 			case EventosProducto.LISTAR_PRODUCTOS_OK:
-				@SuppressWarnings("unchecked") List<TProducto> listaProductos = (List<TProducto>) datos;
+				@SuppressWarnings("unchecked") List<TTurno> listaTurnos = (List<TTurno>) datos;
 				addPathSeparator();
-				createPathButton("LISTAR PRODUCTOS");
+				createPathButton("LISTAR TURNOS");
 				mostrarPanel();
 				
-				for (TProducto p : listaProductos) {
-					if(p.isCalzado() == true) {
-						TProductoCalzado pCalzado = (TProductoCalzado)p;
-						mostrarModel.addRow(new Object[]{p.getId(), p.getNombre(), Double.valueOf(p.getPrecio()), p.getCantidad(), pCalzado.getNumero(), "N/A", p.isActivo()});
-					}
-					else {
-						TProductoTextil pTextil = (TProductoTextil)p;
-						mostrarModel.addRow(new Object[]{p.getId(), p.getNombre(), Double.valueOf(p.getPrecio()), p.getCantidad(), "N/A", pTextil.getTejido(), p.isActivo()});
-					}
+				for(TTurno t : listaTurnos) {
+					mostrarModel.addRow(new Object[]{t.getId(), t.getNombre(), t.getHoraInicio().toString(), t.getHoraFin().toString(), t.isActivo()});
 				}
-				System.out.println("Listar Productos OK");
+				
+				System.out.println("Listar Turnos OK");
 				break;
-			case EventosProducto.LISTAR_PRODUCTOS_KO:
+			case EventosTurno.LISTAR_TURNO_KO:
 				mensaje = (String) datos;
 				
 				JOptionPane.showMessageDialog(null, mensaje, "Error", JOptionPane.ERROR_MESSAGE);
-				System.out.println("Listar Productos KO");
+				System.out.println("Listar Turnos KO");
 				break;
-			case EventosProducto.MODIFICAR_BUSCAR_PRODUCTO_OK:
-				producto = (TProducto) datos;
+			case EventosTurno.MODIFICAR_BUSCAR_TURNO_OK:
+				turno = (TTurno) datos;
 				
-				editarNombreField.setText(producto.getNombre());
-				editarPrecioField.setText(Double.valueOf(producto.getPrecio()).toString());
-				editarCantidadField.setText(Integer.valueOf(producto.getCantidad()).toString());
-				editarActivoField.setText(Boolean.toString(producto.isActivo()));
+				editarNombreField.setText(turno.getNombre());
+				editarHoraInicioField.setText(turno.getHoraInicio().toString());
+				editarHoraFinField.setText(turno.getHoraFin().toString());
+				editarActivoField.setText(Boolean.toString(turno.isActivo()));
 				
-				if(producto.isCalzado() == true) {
-					TProductoCalzado pCalzado = (TProductoCalzado) datos;
-					editarNumPieField.setText(Integer.valueOf(pCalzado.getNumero()).toString());
-					editarTejidoField.setText("N/A");
-					editarTejidoField.setEnabled(false);
-				}
-				else {
-					TProductoTextil pTextil = (TProductoTextil) datos;
-					editarTejidoField.setText(pTextil.getTejido());
-					editarNumPieField.setText("N/A");
-					editarNumPieField.setEnabled(false);
-				}
-				
-				editarProductoPanelCL.show(editarProductoPanel, "SECOND");
-				
-				System.out.println("Editar Buscar Producto OK");
+				editarTurnoPanelCL.show(editarTurnoPanel, "SECOND");
+				System.out.println("Editar Buscar Turno OK");
 				break;
-			case EventosProducto.MODIFICAR_BUSCAR_PRODUCTO_KO:
+			case EventosTurno.MODIFICAR_BUSCAR_TURNO_KO:
 				mensaje = (String) datos;
 
 				showOutputMsg(editarBuscarErrorArea, editarBuscarErrorLabel, mensaje, false);
-				System.out.println("Editar Buscar Producto KO");
+				System.out.println("Editar Buscar Turno KO");
 				break;
-			case EventosProducto.MODIFICAR_PRODUCTO_OK:
+			case EventosTurno.MODIFICAR_TURNO_OK:
 				mensaje = (String) datos;
 				
 				showOutputMsg(editarOutputArea, editarOutputLabel, mensaje, true);
-				System.out.println("Editar Producto OK");
+				System.out.println("Editar Turno OK");
 				break;
-			case EventosProducto.MODIFICAR_PRODUCTO_KO:
+			case EventosTurno.MODIFICAR_TURNO_KO:
 				mensaje = (String) datos;
 				
 				showOutputMsg(editarOutputArea, editarOutputLabel, mensaje, false);
-				System.out.println("Editar Producto KO");
+				System.out.println("Editar Turno KO");
 				break;
 		}
 	}
