@@ -15,12 +15,14 @@ public class FacturaSAImp implements FacturaSA {
 	public void insertar(TFactura factura) throws Exception {
 		Transaction t = TransactionManager.getInstancia().createTransaction();
 		TCliente c = FactoriaDAO.getInstancia().getClienteDAO().mostrar(factura.getCliente());
-		if (c != null) {
+		if (c != null && c.isActivo()) {
 			FactoriaDAO.getInstancia().getFacturaDAO().insertar(factura);
 			t.commit();
 			TransactionManager.getInstancia().removeTransaction();
-		} else {
+		} else if(c == null){
 			throw  new Exception("No existe ningun cliente con ID =" + factura.getCliente());
+		} else if(!c.isActivo()){
+			throw  new Exception("El cliente seleccionado no esta activo");
 		}
 	}
 
