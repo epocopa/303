@@ -32,7 +32,6 @@ import negocio.turno.TTurno;
 import presentacion.factoria.GUI;
 import presentacion.controladorAplicacion.Context;
 import presentacion.controladorAplicacion.ControladorAplicacion;
-import presentacion.controladorAplicacion.EventosProducto;
 import presentacion.controladorAplicacion.EventosTurno;
 import presentacion.factoria.FactoriaPresentacion;
 
@@ -881,7 +880,7 @@ public class TurnoGUIImpl extends JPanel implements TurnoGUI, GUI{
 				showOutputMsg(mostrarErrorArea, mostrarErrorLabel, mensaje, false);
 				System.out.println("Mostrar Turno KO");
 				break;
-			case EventosProducto.LISTAR_PRODUCTOS_OK:
+			case EventosTurno.LISTAR_TURNO_OK:
 				@SuppressWarnings("unchecked") List<TTurno> listaTurnos = (List<TTurno>) datos;
 				addPathSeparator();
 				createPathButton("LISTAR TURNOS");
