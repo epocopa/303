@@ -14,8 +14,17 @@ import presentacion.command.factura.BorrarProductoCommand;
 import presentacion.command.factura.CerrarFacturaCommand;
 import presentacion.command.factura.ListarProductosCompradosPorFechaCommand;
 import presentacion.command.factura.MostrarFacturaCommand;
+import presentacion.command.grupo.AnadirEmpleadoAGrupoCommand;
+import presentacion.command.grupo.AnadirGrupoCommand;
+import presentacion.command.grupo.BajaEmpleadoDeGrupoCommand;
+import presentacion.command.grupo.BajaGrupoCommand;
+import presentacion.command.grupo.ListarGrupoCommand;
+import presentacion.command.grupo.ModificarBuscarGrupoCommand;
+import presentacion.command.grupo.ModificarGrupoCommand;
+import presentacion.command.grupo.MostrarGrupoCommand;
 import presentacion.command.menu.MostrarClienteGUICommand;
 import presentacion.command.menu.MostrarFacturaGUICommand;
+import presentacion.command.menu.MostrarGrupoGUICommand;
 import presentacion.command.menu.MostrarMenuGUICommand;
 import presentacion.command.menu.MostrarProductoGUICommand;
 import presentacion.command.menu.MostrarTurnoGUICommand;
@@ -33,6 +42,7 @@ import presentacion.command.turno.ModificarTurnoCommand;
 import presentacion.command.turno.MostrarTurnoCommand;
 import presentacion.controladorAplicacion.EventosCliente;
 import presentacion.controladorAplicacion.EventosFactura;
+import presentacion.controladorAplicacion.EventosGrupo;
 import presentacion.controladorAplicacion.EventosMenu;
 import presentacion.controladorAplicacion.EventosProducto;
 import presentacion.controladorAplicacion.EventosTurno;
@@ -72,11 +82,21 @@ public class FactoriaCommandImpl extends FactoriaCommand{
 			case EventosTurno.LISTAR_TURNO: comando = new ListarTurnosCommand(); break;
 			case EventosTurno.MODIFICAR_BUSCAR_TURNO: comando = new ModificarBuscarTurnoCommand(); break;
 			
+			case EventosGrupo.ANADIR_GRUPO: comando = new AnadirGrupoCommand(); break;
+			case EventosGrupo.MODIFICAR_GRUPO: comando = new ModificarGrupoCommand(); break;
+			case EventosGrupo.BAJA_GRUPO: comando = new BajaGrupoCommand(); break;
+			case EventosGrupo.MOSTRAR_GRUPO: comando = new MostrarGrupoCommand(); break;
+			case EventosGrupo.LISTAR_GRUPOS: comando = new ListarGrupoCommand(); break;
+			case EventosGrupo.MODIFICAR_BUSCAR_GRUPO: comando = new ModificarBuscarGrupoCommand(); break;
+			case EventosGrupo.ANADIR_EMPLEADO_A_GRUPO: comando = new AnadirEmpleadoAGrupoCommand(); break;
+			case EventosGrupo.BAJA_EMPLEADO_DE_GRUPO: comando = new BajaEmpleadoDeGrupoCommand(); break;
+			
 			case EventosMenu.MOSTRAR_HOME_GUI: comando = new MostrarMenuGUICommand(); break;
 			case EventosMenu.MOSTRAR_CLIENTE_GUI: comando = new MostrarClienteGUICommand(); break;
 			case EventosMenu.MOSTRAR_FACTURA_GUI: comando = new MostrarFacturaGUICommand(); break;
 			case EventosMenu.MOSTRAR_PRODUCTO_GUI: comando = new MostrarProductoGUICommand(); break;
-			case EventosMenu.MOSTRAR_TURNO_GUI: comando = new MostrarTurnoGUICommand(); break;
+			case EventosMenu.MOSTRAR_TURNO_GUI: comando = new MostrarTurnoGUICommand(); break;			
+			case EventosMenu.MOSTRAR_GRUPO_GUI: comando = new MostrarGrupoGUICommand(); break;
 		}
 
 		return comando;	

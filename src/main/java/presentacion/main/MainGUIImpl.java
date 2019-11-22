@@ -5,12 +5,14 @@ import presentacion.controladorAplicacion.Context;
 import presentacion.controladorAplicacion.ControladorAplicacion;
 import presentacion.controladorAplicacion.EventosCliente;
 import presentacion.controladorAplicacion.EventosFactura;
+import presentacion.controladorAplicacion.EventosGrupo;
 import presentacion.controladorAplicacion.EventosMenu;
 import presentacion.controladorAplicacion.EventosProducto;
 import presentacion.controladorAplicacion.EventosTurno;
 import presentacion.factoria.FactoriaPresentacion;
 import presentacion.factoria.GUI;
 import presentacion.factura.FacturaGUIImp;
+import presentacion.grupo.GrupoGUIImpl;
 import presentacion.producto.ProductoGUIImpl;
 import presentacion.turno.TurnoGUIImpl;
 
@@ -33,6 +35,7 @@ public class MainGUIImpl extends JFrame implements MainGUI, GUI{
 	private ProductoGUIImpl productosPanel;
 	private FacturaGUIImp facturasPanel;
 	private TurnoGUIImpl turnosPanel;
+	private GrupoGUIImpl gruposPanel;
 
 	private static FactoriaPresentacion presentacion;
 	private static ControladorAplicacion controlador;
@@ -118,6 +121,7 @@ public class MainGUIImpl extends JFrame implements MainGUI, GUI{
 		productosPanel = (ProductoGUIImpl)presentacion.generarVista(EventosMenu.MOSTRAR_PRODUCTO_GUI);
 		facturasPanel = (FacturaGUIImp)presentacion.generarVista(EventosMenu.MOSTRAR_FACTURA_GUI);
 		turnosPanel = (TurnoGUIImpl)presentacion.generarVista(EventosMenu.MOSTRAR_TURNO_GUI);
+		gruposPanel = (GrupoGUIImpl)presentacion.generarVista(EventosMenu.MOSTRAR_GRUPO_GUI);
 
 		homePanel = new JPanel(new GridBagLayout());
 		homePanel.setBackground(new Color(235, 237, 241));
@@ -167,11 +171,22 @@ public class MainGUIImpl extends JFrame implements MainGUI, GUI{
 		});
 		homePanel.add(turnosBtn, c);
 		
+		c.gridx++;
+		JButton gruposBtn = createMenuButton("resources/icons/home/grupos-de-trabajo.png", new Color(0, 176, 80));
+		gruposBtn.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e){
+				Context contexto = new Context(EventosMenu.MOSTRAR_GRUPO_GUI, null);
+				controlador.accion(contexto);
+			}
+		});
+		homePanel.add(gruposBtn, c);
+		
 		mainPanel.add(homePanel, name);
 		mainPanel.add(clientesPanel, clientesPanel.getName());
 		mainPanel.add(productosPanel, productosPanel.getName());
 		mainPanel.add(facturasPanel, facturasPanel.getName());
 		mainPanel.add(turnosPanel, turnosPanel.getName());
+		mainPanel.add(gruposPanel, gruposPanel.getName());
 		cl.show(mainPanel, name);
 
 		add(topBar);
@@ -303,6 +318,21 @@ public class MainGUIImpl extends JFrame implements MainGUI, GUI{
 				turnosPanel.mostrar();
 				cl.show(mainPanel, turnosPanel.getName());
 				System.out.println("TurnoGUI");
+				break;
+			case EventosMenu.MOSTRAR_GRUPO_GUI:
+				addPathSeparator();
+
+				JButton gruposPathBtn = createPathButton(gruposPanel.getName());
+				gruposPathBtn.addActionListener(new ActionListener(){
+					public void actionPerformed(ActionEvent e){
+						gruposPanel.mostrar();
+					}
+				});
+				pathPanel.add(gruposPathBtn);
+
+				gruposPanel.mostrar();
+				cl.show(mainPanel, gruposPanel.getName());
+				System.out.println("GrupoGUI");
 				break;
 
 			//--- ACTUALIZAR CLIENTE ---//
@@ -473,52 +503,119 @@ public class MainGUIImpl extends JFrame implements MainGUI, GUI{
 			//--- ACTUALIZAR TURNO ---//
 			
 			case EventosTurno.ANADIR_TURNO_OK:
-				productosPanel.actualizar(evento, datos);
+				turnosPanel.actualizar(evento, datos);
 				System.out.println("Delegando a panel turno");
 				break;
 			case EventosTurno.ANADIR_TURNO_KO:
-				productosPanel.actualizar(evento, datos);
+				turnosPanel.actualizar(evento, datos);
 				System.out.println("Delegando a panel turno");
 				break;
 			case EventosTurno.MODIFICAR_BUSCAR_TURNO_OK:
-				productosPanel.actualizar(evento, datos);
+				turnosPanel.actualizar(evento, datos);
 				System.out.println("Delegando a panel turno");
 				break;
 			case EventosTurno.MODIFICAR_BUSCAR_TURNO_KO:
-				productosPanel.actualizar(evento, datos);
+				turnosPanel.actualizar(evento, datos);
 				System.out.println("Delegando a panel turno");
 				break;
 			case EventosTurno.MODIFICAR_TURNO_OK:
-				productosPanel.actualizar(evento, datos);
+				turnosPanel.actualizar(evento, datos);
 				System.out.println("Delegando a panel turno");
 				break;
 			case EventosTurno.MODIFICAR_TURNO_KO:
-				productosPanel.actualizar(evento, datos);
+				turnosPanel.actualizar(evento, datos);
 				System.out.println("Delegando a panel turno");
 				break;
 			case EventosTurno.BAJA_TURNO_OK:
-				productosPanel.actualizar(evento, datos);
+				turnosPanel.actualizar(evento, datos);
 				System.out.println("Delegando a panel turno");
 				break;
 			case EventosTurno.BAJA_TURNO_KO:
-				productosPanel.actualizar(evento, datos);
+				turnosPanel.actualizar(evento, datos);
 				System.out.println("Delegando a panel turno");
 				break;
 			case EventosTurno.MOSTRAR_TURNO_OK:
-				productosPanel.actualizar(evento, datos);
+				turnosPanel.actualizar(evento, datos);
 				System.out.println("Delegando a panel turno");
 				break;
 			case EventosTurno.MOSTRAR_TURNO_KO:
-				productosPanel.actualizar(evento, datos);
+				turnosPanel.actualizar(evento, datos);
 				System.out.println("Delegando a panel turno");
 				break;
 			case EventosTurno.LISTAR_TURNO_OK:
-				productosPanel.actualizar(evento, datos);
+				turnosPanel.actualizar(evento, datos);
 				System.out.println("Delegando a panel turno");
 				break;
 			case EventosTurno.LISTAR_TURNO_KO:
-				productosPanel.actualizar(evento, datos);
+				turnosPanel.actualizar(evento, datos);
 				System.out.println("Delegando a panel turno");
+				break;
+				
+				//--- ACTUALIZAR GRUPO ---//
+				
+			case EventosGrupo.ANADIR_GRUPO_OK:
+				gruposPanel.actualizar(evento, datos);
+				System.out.println("Delegando a panel grupo");
+				break;
+			case EventosGrupo.ANADIR_GRUPO_KO:
+				gruposPanel.actualizar(evento, datos);
+				System.out.println("Delegando a panel grupo");
+				break;
+			case EventosGrupo.MODIFICAR_BUSCAR_GRUPO_OK:
+				gruposPanel.actualizar(evento, datos);
+				System.out.println("Delegando a panel grupo");
+				break;
+			case EventosGrupo.MODIFICAR_BUSCAR_GRUPO_KO:
+				gruposPanel.actualizar(evento, datos);
+				System.out.println("Delegando a panel grupo");
+				break;
+			case EventosGrupo.MODIFICAR_GRUPO_OK:
+				gruposPanel.actualizar(evento, datos);
+				System.out.println("Delegando a panel grupo");
+				break;
+			case EventosGrupo.MODIFICAR_GRUPO_KO:
+				gruposPanel.actualizar(evento, datos);
+				System.out.println("Delegando a panel grupo");
+				break;
+			case EventosGrupo.BAJA_GRUPO_OK:
+				gruposPanel.actualizar(evento, datos);
+				System.out.println("Delegando a panel grupo");
+				break;
+			case EventosGrupo.BAJA_GRUPO_KO:
+				gruposPanel.actualizar(evento, datos);
+				System.out.println("Delegando a panel grupo");
+				break;
+			case EventosGrupo.MOSTRAR_GRUPO_OK:
+				gruposPanel.actualizar(evento, datos);
+				System.out.println("Delegando a panel grupo");
+				break;
+			case EventosGrupo.MOSTRAR_GRUPO_KO:
+				gruposPanel.actualizar(evento, datos);
+				System.out.println("Delegando a panel grupo");
+				break;
+			case EventosGrupo.LISTAR_GRUPOS_OK:
+				gruposPanel.actualizar(evento, datos);
+				System.out.println("Delegando a panel grupo");
+				break;
+			case EventosGrupo.LISTAR_GRUPOS_KO:
+				gruposPanel.actualizar(evento, datos);
+				System.out.println("Delegando a panel grupo");
+				break;
+			case EventosGrupo.ANADIR_EMPLEADO_A_GRUPO_OK:
+				gruposPanel.actualizar(evento, datos);
+				System.out.println("Delegando a panel grupo");
+				break;
+			case EventosGrupo.ANADIR_EMPLEADO_A_GRUPO_KO:
+				gruposPanel.actualizar(evento, datos);
+				System.out.println("Delegando a panel grupo");
+				break;
+			case EventosGrupo.BAJA_EMPLEADO_DE_GRUPO_OK:
+				gruposPanel.actualizar(evento, datos);
+				System.out.println("Delegando a panel grupo");
+				break;
+			case EventosGrupo.BAJA_EMPLEADO_DE_GRUPO_KO:
+				gruposPanel.actualizar(evento, datos);
+				System.out.println("Delegando a panel grupo");
 				break;
 		}
 	}

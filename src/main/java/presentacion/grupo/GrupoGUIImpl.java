@@ -1,4 +1,4 @@
-package presentacion.turno;
+package presentacion.grupo;
 
 import java.awt.CardLayout;
 import java.awt.Color;
@@ -28,18 +28,21 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableModel;
 
-import negocio.turno.TTurno;
+import negocio.producto.TProducto;
+import negocio.producto.TProductoCalzado;
+import negocio.producto.TProductoTextil;
 import presentacion.factoria.GUI;
 import presentacion.controladorAplicacion.Context;
 import presentacion.controladorAplicacion.ControladorAplicacion;
+import presentacion.controladorAplicacion.ControladorAplicacionJPA;
 import presentacion.controladorAplicacion.EventosProducto;
 import presentacion.controladorAplicacion.EventosTurno;
 import presentacion.factoria.FactoriaPresentacion;
 
-public class TurnoGUIImpl extends JPanel implements TurnoGUI, GUI{
+public class GrupoGUIImpl extends JPanel implements GrupoGUI, GUI{
 	private static final long serialVersionUID = 1L;
 
-	private String name = "TURNOS";
+	private String name = "GRUPOS DE TRABAJO";
 	
 	private CardLayout _localCL;
 	private JPanel _homePanel;
@@ -138,7 +141,7 @@ public class TurnoGUIImpl extends JPanel implements TurnoGUI, GUI{
 		listarBtn.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				Context contexto = new Context(EventosTurno.LISTAR_TURNO, null);
-				ControladorAplicacion.getInstance().accion(contexto);
+				ControladorAplicacionJPA.getInstance().accion(contexto);
 			}
 		});
 		_homePanel.add(listarBtn, c);
@@ -291,7 +294,7 @@ public class TurnoGUIImpl extends JPanel implements TurnoGUI, GUI{
 						turno.setHoraFin(horaFin);
 						turno.setActivo(true);
 						Context contexto = new Context(EventosTurno.ANADIR_TURNO, turno);
-						ControladorAplicacion.getInstance().accion(contexto);
+						ControladorAplicacionJPA.getInstance().accion(contexto);
 					} else {
 						showOutputMsg(anadirOutputArea, anadirOutputLabel, "ERROR: El nombre introducido no es valido.", false);
 					}
@@ -462,7 +465,7 @@ public class TurnoGUIImpl extends JPanel implements TurnoGUI, GUI{
 				String ID = IDField.getText();	
 				if (ID.length() > 0 && !ID.equals(" ")) {
 					Context contexto = new Context(EventosTurno.MODIFICAR_BUSCAR_TURNO, Integer.valueOf(ID));
-					ControladorAplicacion.getInstance().accion(contexto);
+					ControladorAplicacionJPA.getInstance().accion(contexto);
 				} else {
 					showOutputMsg(editarBuscarErrorArea, editarBuscarErrorLabel, "ERROR: El ID introducido no es valido.", false);
 				}
@@ -488,7 +491,7 @@ public class TurnoGUIImpl extends JPanel implements TurnoGUI, GUI{
 				if (nombre.length() > 0 && !nombre.equals("") && horaInicio.toString().length() > 0 && !horaInicio.toString().equals("") && horaFin.toString().length() > 0 && !horaFin.toString().equals("") && activo.toString().length() > 0 && !activo.toString().equals("")) {
 					TTurno turno = new TTurno(ID, nombre, horaInicio, horaFin, activo);
 					Context contexto = new Context(EventosTurno.MODIFICAR_TURNO, turno);
-					ControladorAplicacion.getInstance().accion(contexto);
+					ControladorAplicacionJPA.getInstance().accion(contexto);
 				} else {
 					showOutputMsg(editarBuscarErrorArea, editarBuscarErrorLabel, "ERROR: Los datos introducidos no son validos.", false);
 				}
@@ -584,7 +587,7 @@ public class TurnoGUIImpl extends JPanel implements TurnoGUI, GUI{
 				String ID = IDField.getText();	
 				if (ID.length() > 0 && !ID.equals(" ")) {
 					Context contexto = new Context(EventosTurno.BAJA_TURNO, Integer.valueOf(ID));
-					ControladorAplicacion.getInstance().accion(contexto);
+					ControladorAplicacionJPA.getInstance().accion(contexto);
 				} else {
 					showOutputMsg(borrarOutputArea, borrarOutputLabel, "ERROR: El ID introducido no es valido.", false);
 				}
@@ -785,7 +788,7 @@ public class TurnoGUIImpl extends JPanel implements TurnoGUI, GUI{
 				String ID = IDField.getText();	
 				if (ID.length() > 0 && !ID.equals(" ")) {
 					Context contexto = new Context(EventosTurno.MOSTRAR_TURNO, Integer.valueOf(ID));
-					ControladorAplicacion.getInstance().accion(contexto);
+					ControladorAplicacionJPA.getInstance().accion(contexto);
 				} else {
 					showOutputMsg(mostrarErrorArea, mostrarErrorLabel, "ERROR: El ID introducido no es valido.", false);
 				}
