@@ -10,7 +10,7 @@ import presentacion.controladorAplicacion.EventosGrupo;
 public class AnadirGrupoCommand implements Command {
 
 	@Override
-	public Context execute(Object datos) {
+	public Context execute(Object datos) {//
 		String mensaje;
 		TGrupo grupo = (TGrupo) datos;
 		GrupoSA grupoSA = FactoriaSA.getInstancia().generaGrupoSA();
