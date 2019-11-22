@@ -12,10 +12,10 @@ public class BajaGrupoCommand implements Command{
 	public Context execute(Object datos) {
 		String mensaje;
 		int id = (int) datos;
-		GrupoSA grupooSA = FactoriaSA.getInstancia().generaGrupoSA();
+		GrupoSA grupoSA = FactoriaSA.getInstancia().generaGrupoSA();
 		
 		try{
-			grupooSA.eliminar(id);
+			grupoSA.eliminar(id);
 			mensaje = "El grupo de trabajo se ha eliminado con exito.";
 			return new Context(EventosGrupo.BAJA_GRUPO_OK, mensaje);
 		}catch(Exception e){

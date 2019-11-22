@@ -13,10 +13,10 @@ public class AnadirGrupoCommand implements Command {
 	public Context execute(Object datos) {
 		String mensaje;
 		TGrupo grupo = (TGrupo) datos;
-		GrupoSA grupooSA = FactoriaSA.getInstancia().generaGrupoSA();
+		GrupoSA grupoSA = FactoriaSA.getInstancia().generaGrupoSA();
 		
 		try{
-			grupooSA.insertar(grupo);
+			grupoSA.insertar(grupo);
 			mensaje = "El grupo de trabajo se ha registrado con exito. Su id es:" + grupo.getId();
 			return new Context(EventosGrupo.ANADIR_GRUPO_OK, mensaje);
 		} catch(Exception e){
