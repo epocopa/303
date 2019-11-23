@@ -301,7 +301,7 @@ public class EmpleadoGUIImpl extends JPanel implements EmpleadoGUI, GUI{
 					double salarioBase = Double.parseDouble(salarioBaseField.getText());
 					boolean encargado = Boolean.valueOf(encargadoField.getText());
 
-					if (nombre.length() > 0 && !nombre.equals("") && dni.length() > 0 && dni.equals("") && salarioBaseField.getText().length() > 0 && !salarioBaseField.getText().equals("") && encargadoField.getText().length() > 0 && !encargadoField.getText().equals("")) {
+					if (nombre.length() > 0 && !nombre.equals("") && dni.length() > 0 && !dni.equals("") && salarioBaseField.getText().length() > 0 && !salarioBaseField.getText().equals("") && encargadoField.getText().length() > 0 && !encargadoField.getText().equals("")) {
 						if(encargado == true) {
 							String valor_incentivo = JOptionPane.showInputDialog(null, "Introduzca el incentivo", "Finalizar operacion", JOptionPane.INFORMATION_MESSAGE);
 							if(valor_incentivo != null) {
@@ -311,7 +311,7 @@ public class EmpleadoGUIImpl extends JPanel implements EmpleadoGUI, GUI{
 							}
 						}
 						else {
-							String practicante = JOptionPane.showInputDialog(null, "Introduzca el incentivo", "Finalizar operacion", JOptionPane.INFORMATION_MESSAGE);
+							String practicante = JOptionPane.showInputDialog(null, "¿Es practicante?", "Finalizar operacion", JOptionPane.INFORMATION_MESSAGE);
 							if(practicante != null) {
 								TDependiente dependiente = new TDependiente(0, nombre, dni, salarioBase, true, Boolean.valueOf(practicante));
 								Context contexto = new Context(EventosEmpleado.ANADIR_EMPLEADO, dependiente);
@@ -775,7 +775,7 @@ public class EmpleadoGUIImpl extends JPanel implements EmpleadoGUI, GUI{
 		JPanel dataPanel = new JPanel(new GridBagLayout());
 		dataPanel.setBackground(new Color(235, 237, 241));
 		dataPanel.setAlignmentX(JComponent.CENTER_ALIGNMENT);
-		dataPanel.setMaximumSize(new Dimension(1024, 210));
+		dataPanel.setMaximumSize(new Dimension(1024, 250));
 						
 		GridBagConstraints c2 = new GridBagConstraints();
 		c2.gridx = 0;
@@ -974,8 +974,8 @@ public class EmpleadoGUIImpl extends JPanel implements EmpleadoGUI, GUI{
 				else {
 					TDependiente eDependiente = (TDependiente)datos;
 					String practicante = String.valueOf(eDependiente.getPracticante());
-					mostrarIncentivoText.setText(practicante);
-					mostrarPracticanteText.setText("N/A");
+					mostrarPracticanteText.setText(practicante);
+					mostrarIncentivoText.setText("N/A");
 				}
 				
 				mostrarEmpleadoPanelCL.show(mostrarEmpleadoPanel, "EMPLEADO");
@@ -1020,6 +1020,7 @@ public class EmpleadoGUIImpl extends JPanel implements EmpleadoGUI, GUI{
 				editarSalarioField.setText(String.valueOf(empleado.getSalarioBase()));
 				editarActivoField.setText(Boolean.toString(empleado.isActivo()));
 				editarEncargadoField.setText(Boolean.toString(empleado.isEncargado()));
+				editarEncargadoField.setEnabled(false);
 				
 				if(empleado.isEncargado() == true) {
 					TEncargado eEncargado = (TEncargado)datos;
