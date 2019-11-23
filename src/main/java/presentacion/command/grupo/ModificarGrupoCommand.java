@@ -18,11 +18,11 @@ public class ModificarGrupoCommand implements Command{
 		try{
 			grupoSA.modificar(grupo);
 			mensaje = "El grupo de trabajo seleccionado ha sido editado correctamente.";
-			return new Context(EventosGrupo.MODIFICAR_BUSCAR_GRUPO_OK, mensaje);
+			return new Context(EventosGrupo.MODIFICAR_GRUPO_OK, mensaje);
 
 		} catch(Exception e){
 			mensaje = e.getMessage();
-			return new Context(EventosGrupo.MODIFICAR_BUSCAR_GRUPO_KO, mensaje);
+			return new Context(EventosGrupo.MODIFICAR_GRUPO_KO, mensaje);
 		}
 	}
 }

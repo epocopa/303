@@ -17,10 +17,10 @@ public class ModificarBuscarGrupoCommand implements Command {
 		
 		try{
 			TGrupo grupo = grupoSA.mostrar(id);
-			return new Context(EventosGrupo.MODIFICAR_BUSCAR_TURNO_OK, grupo);
+			return new Context(EventosGrupo.MODIFICAR_BUSCAR_GRUPO_OK, grupo);
 		} catch(Exception e){
 			mensaje = e.getMessage();
-			return new Context(EventosGrupo.MODIFICAR_BUSCAR_TURNO_KO, mensaje);
+			return new Context(EventosGrupo.MODIFICAR_BUSCAR_GRUPO_KO, mensaje);
 		}
 	}
 }

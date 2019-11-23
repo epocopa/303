@@ -13,10 +13,10 @@ public class AnadirEmpleadoAGrupoCommand  implements Command {
 	public Context execute(Object datos) {
 		String mensaje;
 		TTrabaja trabaja = (TTrabaja) datos;
-		GrupoSA grupooSA = FactoriaSA.getInstancia().generaGrupoSA();
+		GrupoSA grupoSA = FactoriaSA.getInstancia().generaGrupoSA();
 		
 		try{
-			grupooSA.insertarEmpleado(trabaja);
+			grupoSA.insertarEmpleado(trabaja);
 			mensaje = "El empleado se ha añadido al grupo de trabajo con exito.";
 			return new Context(EventosGrupo.ANADIR_EMPLEADO_A_GRUPO_OK, mensaje);
 		} catch(Exception e){
