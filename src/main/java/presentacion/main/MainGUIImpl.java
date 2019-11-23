@@ -4,11 +4,13 @@ import presentacion.cliente.ClienteGUIImpl;
 import presentacion.controladorAplicacion.Context;
 import presentacion.controladorAplicacion.ControladorAplicacion;
 import presentacion.controladorAplicacion.EventosCliente;
+import presentacion.controladorAplicacion.EventosEmpleado;
 import presentacion.controladorAplicacion.EventosFactura;
 import presentacion.controladorAplicacion.EventosGrupo;
 import presentacion.controladorAplicacion.EventosMenu;
 import presentacion.controladorAplicacion.EventosProducto;
 import presentacion.controladorAplicacion.EventosTurno;
+import presentacion.empleado.EmpleadoGUIImpl;
 import presentacion.factoria.FactoriaPresentacion;
 import presentacion.factoria.GUI;
 import presentacion.factura.FacturaGUIImp;
@@ -36,6 +38,7 @@ public class MainGUIImpl extends JFrame implements MainGUI, GUI{
 	private FacturaGUIImp facturasPanel;
 	private TurnoGUIImpl turnosPanel;
 	private GrupoGUIImpl gruposPanel;
+	private EmpleadoGUIImpl empleadosPanel;
 
 	private static FactoriaPresentacion presentacion;
 	private static ControladorAplicacion controlador;
@@ -122,6 +125,7 @@ public class MainGUIImpl extends JFrame implements MainGUI, GUI{
 		facturasPanel = (FacturaGUIImp)presentacion.generarVista(EventosMenu.MOSTRAR_FACTURA_GUI);
 		turnosPanel = (TurnoGUIImpl)presentacion.generarVista(EventosMenu.MOSTRAR_TURNO_GUI);
 		gruposPanel = (GrupoGUIImpl)presentacion.generarVista(EventosMenu.MOSTRAR_GRUPO_GUI);
+		empleadosPanel = (EmpleadoGUIImpl)presentacion.generarVista(EventosMenu.MOSTRAR_EMPLEADO_GUI);
 
 		homePanel = new JPanel(new GridBagLayout());
 		homePanel.setBackground(new Color(235, 237, 241));
@@ -181,12 +185,23 @@ public class MainGUIImpl extends JFrame implements MainGUI, GUI{
 		});
 		homePanel.add(gruposBtn, c);
 		
+		c.gridx++;
+		JButton empleadosBtn = createMenuButton("resources/icons/home/empleados.png", new Color(0, 112, 192));
+		empleadosBtn.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e){
+				Context contexto = new Context(EventosMenu.MOSTRAR_EMPLEADO_GUI, null);
+				controlador.accion(contexto);
+			}
+		});
+		homePanel.add(empleadosBtn, c);
+		
 		mainPanel.add(homePanel, name);
 		mainPanel.add(clientesPanel, clientesPanel.getName());
 		mainPanel.add(productosPanel, productosPanel.getName());
 		mainPanel.add(facturasPanel, facturasPanel.getName());
 		mainPanel.add(turnosPanel, turnosPanel.getName());
 		mainPanel.add(gruposPanel, gruposPanel.getName());
+		mainPanel.add(empleadosPanel, empleadosPanel.getName());
 		cl.show(mainPanel, name);
 
 		add(topBar);
@@ -333,6 +348,21 @@ public class MainGUIImpl extends JFrame implements MainGUI, GUI{
 				gruposPanel.mostrar();
 				cl.show(mainPanel, gruposPanel.getName());
 				System.out.println("GrupoGUI");
+				break;
+			case EventosMenu.MOSTRAR_EMPLEADO_GUI:
+				addPathSeparator();
+
+				JButton empleadosPathBtn = createPathButton(empleadosPanel.getName());
+				empleadosPathBtn.addActionListener(new ActionListener(){
+					public void actionPerformed(ActionEvent e){
+						empleadosPanel.mostrar();
+					}
+				});
+				pathPanel.add(empleadosPathBtn);
+
+				empleadosPanel.mostrar();
+				cl.show(mainPanel, empleadosPanel.getName());
+				System.out.println("EmpleadoGUI");
 				break;
 
 			//--- ACTUALIZAR CLIENTE ---//
@@ -616,6 +646,57 @@ public class MainGUIImpl extends JFrame implements MainGUI, GUI{
 			case EventosGrupo.BAJA_EMPLEADO_DE_GRUPO_KO:
 				gruposPanel.actualizar(evento, datos);
 				System.out.println("Delegando a panel grupo");
+				break;
+				
+				//--- ACTUALIZAR EMPLEADO ---//
+				
+			case EventosEmpleado.ANADIR_EMPLEADO_OK:
+				empleadosPanel.actualizar(evento, datos);
+				System.out.println("Delegando a panel empleado");
+				break;
+			case EventosEmpleado.ANADIR_EMPLEADO_KO:
+				empleadosPanel.actualizar(evento, datos);
+				System.out.println("Delegando a panel empleado");
+				break;
+			case EventosEmpleado.MODIFICAR_BUSCAR_EMPLEADO_OK:
+				empleadosPanel.actualizar(evento, datos);
+				System.out.println("Delegando a panel empleado");
+				break;
+			case EventosEmpleado.MODIFICAR_BUSCAR_EMPLEADO_KO:
+				empleadosPanel.actualizar(evento, datos);
+				System.out.println("Delegando a panel empleado");
+				break;
+			case EventosEmpleado.MODIFICAR_EMPLEADO_OK:
+				empleadosPanel.actualizar(evento, datos);
+				System.out.println("Delegando a panel empleado");
+				break;
+			case EventosEmpleado.MODIFICAR_EMPLEADO_KO:
+				empleadosPanel.actualizar(evento, datos);
+				System.out.println("Delegando a panel empleado");
+				break;
+			case EventosEmpleado.BAJA_EMPLEADO_OK:
+				empleadosPanel.actualizar(evento, datos);
+				System.out.println("Delegando a panel empleado");
+				break;
+			case EventosEmpleado.BAJA_EMPLEADO_KO:
+				empleadosPanel.actualizar(evento, datos);
+				System.out.println("Delegando a panel empleado");
+				break;
+			case EventosEmpleado.MOSTRAR_EMPLEADO_OK:
+				empleadosPanel.actualizar(evento, datos);
+				System.out.println("Delegando a panel empleado");
+				break;
+			case EventosEmpleado.MOSTRAR_EMPLEADO_KO:
+				empleadosPanel.actualizar(evento, datos);
+				System.out.println("Delegando a panel empleado");
+				break;
+			case EventosEmpleado.LISTAR_EMPLEADO_OK:
+				empleadosPanel.actualizar(evento, datos);
+				System.out.println("Delegando a panel empleado");
+				break;
+			case EventosEmpleado.LISTAR_EMPLEADO_KO:
+				empleadosPanel.actualizar(evento, datos);
+				System.out.println("Delegando a panel empleado");
 				break;
 		}
 	}

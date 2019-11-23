@@ -2,6 +2,7 @@ package presentacion.factoria;
 
 import presentacion.cliente.ClienteGUIImpl;
 import presentacion.controladorAplicacion.EventosMenu;
+import presentacion.empleado.EmpleadoGUIImpl;
 import presentacion.factura.FacturaGUIImp;
 import presentacion.grupo.GrupoGUIImpl;
 import presentacion.main.MainGUIImpl;
@@ -22,6 +23,7 @@ public class FactoriaPresentacionImpl extends FactoriaPresentacion {
 		case EventosMenu.MOSTRAR_PRODUCTO_GUI: return new ProductoGUIImpl();
 		case EventosMenu.MOSTRAR_TURNO_GUI: return new TurnoGUIImpl();
 		case EventosMenu.MOSTRAR_GRUPO_GUI: return new GrupoGUIImpl();
+		case EventosMenu.MOSTRAR_EMPLEADO_GUI: return new EmpleadoGUIImpl();
 		default: return null;
 		}
 	}
