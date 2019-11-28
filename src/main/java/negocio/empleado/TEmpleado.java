@@ -4,11 +4,11 @@ public class TEmpleado {
 	private int id;
 	private String nombre;
 	private String dni;
-	private double salarioBase;
+	private int salarioBase;
 	private boolean activo;
 	private boolean encargado;
 	
-	public TEmpleado(int id, String nombre, String dni, double salarioBase, boolean activo, boolean encargado){
+	public TEmpleado(int id, String nombre, String dni, int salarioBase, boolean activo, boolean encargado){
 		this.id = id;
 		this.nombre = nombre;
 		this.dni = dni;
@@ -31,7 +31,7 @@ public class TEmpleado {
 		return dni;
 	}
 	
-	public double getSalarioBase() {
+	public int getSalarioBase() {
 		return salarioBase;
 	}
 	
@@ -55,7 +55,7 @@ public class TEmpleado {
 		this.dni = dni;
 	}
 	
-	public void setSalarioBase(double salarioBase) {
+	public void setSalarioBase(int salarioBase) {
 		this.salarioBase = salarioBase;
 	}
 	

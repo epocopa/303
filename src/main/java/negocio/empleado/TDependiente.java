@@ -1,25 +1,25 @@
 package negocio.empleado;
 
 public class TDependiente extends TEmpleado{
-	private boolean practicante;
+	private int sumador;
 	
-	public TDependiente(int id, String nombre, String dni, double salarioBase, boolean activo, boolean practicante) {
+	public TDependiente(int id, String nombre, String dni, int salarioBase, boolean activo, int sumador) {
 		super(id, nombre, dni, salarioBase, activo, false);
-		this.practicante = practicante;
+		this.sumador = sumador;
 	}
 	
-	public boolean getPracticante() {
-		return practicante;
+	public int getSumador() {
+		return sumador;
 	}
 	
-	public void setPracticante(boolean practicante) {
-		this.practicante = practicante;
+	public void setSumador(int sumador) {
+		this.sumador = sumador;
 	}
 	
 	@Override
 	public String toString() {
 		return "TDependiente{" +
-				"practicante=" + practicante +
+				"sumador=" + sumador +
 				'}';
 	}
 }

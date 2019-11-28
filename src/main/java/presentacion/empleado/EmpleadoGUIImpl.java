@@ -298,7 +298,7 @@ public class EmpleadoGUIImpl extends JPanel implements EmpleadoGUI, GUI{
 				try {
 					String nombre = nombreField.getText();
 					String dni = dniField.getText();
-					double salarioBase = Double.parseDouble(salarioBaseField.getText());
+					int salarioBase = Integer.parseInt(salarioBaseField.getText());
 					boolean encargado = Boolean.valueOf(encargadoField.getText());
 
 					if (nombre.length() > 0 && !nombre.equals("") && dni.length() > 0 && !dni.equals("") && salarioBaseField.getText().length() > 0 && !salarioBaseField.getText().equals("") && encargadoField.getText().length() > 0 && !encargadoField.getText().equals("")) {
@@ -311,9 +311,9 @@ public class EmpleadoGUIImpl extends JPanel implements EmpleadoGUI, GUI{
 							}
 						}
 						else {
-							String practicante = JOptionPane.showInputDialog(null, "¿Es practicante?", "Finalizar operacion", JOptionPane.INFORMATION_MESSAGE);
+							String practicante = JOptionPane.showInputDialog(null, "ï¿½Es practicante?", "Finalizar operacion", JOptionPane.INFORMATION_MESSAGE);
 							if(practicante != null) {
-								TDependiente dependiente = new TDependiente(0, nombre, dni, salarioBase, true, Boolean.valueOf(practicante));
+								TDependiente dependiente = new TDependiente(0, nombre, dni, salarioBase, true, Integer.parseInt(practicante));
 								Context contexto = new Context(EventosEmpleado.ANADIR_EMPLEADO, dependiente);
 								ControladorAplicacion.getInstance().accion(contexto);
 							}
@@ -535,13 +535,13 @@ public class EmpleadoGUIImpl extends JPanel implements EmpleadoGUI, GUI{
 				Integer ID = Integer.valueOf(IDField.getText());
 				String nombre = editarNombreField.getText();
 				String dni = editarDNIField.getText();
-				double salario = Double.parseDouble(editarSalarioField.getText());
+				int salario = Integer.parseInt(editarSalarioField.getText());
 				Boolean activo = Boolean.valueOf(editarActivoField.getText());
 				Boolean encargado = Boolean.valueOf(editarEncargadoField.getText());
 				
 				if (nombre.length() > 0 && !nombre.equals("") && dni.length() > 0 && !dni.equals("") && editarSalarioField.getText().length() > 0 && !editarSalarioField.getText().equals("") && editarActivoField.getText().length() > 0 && !editarActivoField.getText().equals("") && editarEncargadoField.getText().length() > 0 && !editarEncargadoField.getText().equals("")) {
 					if(encargado == false) {
-						TDependiente eDependiente = new TDependiente(ID, nombre, dni, salario, activo, Boolean.valueOf(editarPracticanteField.getText()));
+						TDependiente eDependiente = new TDependiente(ID, nombre, dni, salario, activo, Integer.parseInt(editarPracticanteField.getText()));
 						Context contexto = new Context(EventosEmpleado.MODIFICAR_EMPLEADO, eDependiente);
 						ControladorAplicacion.getInstance().accion(contexto);
 					}
@@ -967,13 +967,13 @@ public class EmpleadoGUIImpl extends JPanel implements EmpleadoGUI, GUI{
 				
 				if(empleado.isEncargado() == true) {
 					TEncargado eEncargado = (TEncargado)datos;
-					String incentivo = String.valueOf(eEncargado.getIncentivo());
+					String incentivo = String.valueOf(eEncargado.getMultiplicador());
 					mostrarIncentivoText.setText(incentivo);
 					mostrarPracticanteText.setText("N/A");
 				}
 				else {
 					TDependiente eDependiente = (TDependiente)datos;
-					String practicante = String.valueOf(eDependiente.getPracticante());
+					String practicante = String.valueOf(eDependiente.getSumador());
 					mostrarPracticanteText.setText(practicante);
 					mostrarIncentivoText.setText("N/A");
 				}
@@ -996,11 +996,11 @@ public class EmpleadoGUIImpl extends JPanel implements EmpleadoGUI, GUI{
 				for(TEmpleado e : listaEmpleados) {
 					if(e.isEncargado() == true) {
 						TEncargado eEncargado = (TEncargado)e;
-						mostrarModel.addRow(new Object[]{e.getId(), e.getNombre(), e.getDNI(), e.getSalarioBase(), e.isActivo(), e.isEncargado(), eEncargado.getIncentivo(), "N/A"});
+						mostrarModel.addRow(new Object[]{e.getId(), e.getNombre(), e.getDNI(), e.getSalarioBase(), e.isActivo(), e.isEncargado(), eEncargado.getMultiplicador(), "N/A"});
 					}
 					else {
 						TDependiente eDependiente = (TDependiente)e;
-						mostrarModel.addRow(new Object[]{e.getId(), e.getNombre(), e.getDNI(), e.getSalarioBase(), e.isActivo(), e.isEncargado(), "N/A", eDependiente.getPracticante()});
+						mostrarModel.addRow(new Object[]{e.getId(), e.getNombre(), e.getDNI(), e.getSalarioBase(), e.isActivo(), e.isEncargado(), "N/A", eDependiente.getSumador()});
 					}
 				}
 				
@@ -1024,13 +1024,13 @@ public class EmpleadoGUIImpl extends JPanel implements EmpleadoGUI, GUI{
 				
 				if(empleado.isEncargado() == true) {
 					TEncargado eEncargado = (TEncargado)datos;
-					editarIncentivoField.setText(String.valueOf(eEncargado.getIncentivo()));
+					editarIncentivoField.setText(String.valueOf(eEncargado.getMultiplicador()));
 					editarPracticanteField.setText("N/A");
 					editarPracticanteField.setEnabled(false);
 				}
 				else {
 					TDependiente eDependiente = (TDependiente)datos;
-					editarPracticanteField.setText(String.valueOf(eDependiente.getPracticante()));
+					editarPracticanteField.setText(String.valueOf(eDependiente.getSumador()));
 					editarIncentivoField.setText("N/A");
 					editarIncentivoField.setEnabled(false);
 				}

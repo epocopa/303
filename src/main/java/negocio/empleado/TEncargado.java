@@ -1,25 +1,25 @@
 package negocio.empleado;
 
 public class TEncargado extends TEmpleado{
-	private double incentivo;
+	private double multiplicador;
 	
-	public TEncargado(int id, String nombre, String dni, double salarioBase, boolean activo, double incentivo) {
+	public TEncargado(int id, String nombre, String dni, int salarioBase, boolean activo, double multiplicador) {
 		super(id, nombre, dni, salarioBase, activo, true);
-		this.incentivo = incentivo;
+		this.multiplicador = multiplicador;
 	}
 	
-	public double getIncentivo() {
-		return incentivo;
+	public double getMultiplicador() {
+		return multiplicador;
 	}
 	
-	public void setPracticante(double incentivo) {
-		this.incentivo = incentivo;
+	public void setMultiplicador(double multiplicador) {
+		this.multiplicador = multiplicador;
 	}
 	
 	@Override
 	public String toString() {
 		return "TEncargado{" +
-				"incentivo=" + incentivo +
+				"multiplicador=" + multiplicador +
 				'}';
 	}
 }

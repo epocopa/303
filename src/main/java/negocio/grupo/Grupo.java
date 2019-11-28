@@ -13,6 +13,7 @@ public class Grupo {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 	private String seccion;
+	private boolean activo;
 	@OneToMany(mappedBy = "empleado")
 	private List<AsignacionGrupo> asignaciones;
 }
