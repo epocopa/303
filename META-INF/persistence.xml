@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence xmlns="http://java.sun.com/xml/ns/persistence" version="2.0">
+	<!--https://thoughts-on-java.org/jpa-persistence-xml/-->
+	<persistence-unit name="303" transaction-type="RESOURCE_LOCAL">
+		<class>negocio.empleado.Empleado</class>
+		<class>negocio.empleado.Encargado</class>
+		<class>negocio.empleado.Dependiente</class>
+		<class>negocio.empleado.AsignacionGrupo</class>
+		<class>negocio.grupo.Grupo</class>
+		<class>negocio.turno.Turno</class>
+		<properties>
+			<property name="javax.persistence.jdbc.driver" value="org.mariadb.jdbc.Driver" />
+			<property name="javax.persistence.jdbc.url" value="jdbc:mariadb://localhost:3306/trescerotres" />
+			<property name="javax.persistence.jdbc.user" value="empleado" />
+			<property name="javax.persistence.jdbc.password" value="password" />
+			<property name="javax.persistence.schema-generation.database.action" value="create"/>
+		</properties>
+	</persistence-unit>
+</persistence>

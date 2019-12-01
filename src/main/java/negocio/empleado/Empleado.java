@@ -4,7 +4,7 @@ import negocio.turno.Turno;
 
 import javax.persistence.*;
 import java.util.List;
-
+@Entity
 public abstract class Empleado {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
