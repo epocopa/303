@@ -1,5 +1,7 @@
 package negocio.grupo;
 
+import negocio.empleado.TEmpleado;
+
 import java.util.List;
 
 public class GrupoSAImp implements GrupoSA {
@@ -25,6 +27,16 @@ public class GrupoSAImp implements GrupoSA {
 
 	@Override
 	public void eliminar(int id) throws Exception {
+
+	}
+
+	@Override
+	public void insertarEmpleado(TEmpleado empleado) throws Exception {
+
+	}
+
+	@Override
+	public void eliminarEmpleado(TEmpleado empleado) throws Exception {
 
 	}
 }

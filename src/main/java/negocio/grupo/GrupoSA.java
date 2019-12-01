@@ -1,5 +1,7 @@
 package negocio.grupo;
 
+import negocio.empleado.TEmpleado;
+
 import java.util.List;
 
 public interface GrupoSA {
@@ -8,4 +10,6 @@ public interface GrupoSA {
 	List<TGrupo> mostrarTodos() throws Exception;
 	void modificar(TGrupo grupo) throws Exception;
 	void eliminar(int id) throws Exception;
+	void insertarEmpleado(TEmpleado empleado) throws Exception;
+	void eliminarEmpleado(TEmpleado empleado) throws Exception;
 }

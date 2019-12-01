@@ -1,6 +1,5 @@
 package presentacion.command.grupo;
 
-import negocio.empleado.TTrabaja;
 import negocio.factoriaSA.FactoriaSA;
 import negocio.grupo.GrupoSA;
 import presentacion.command.Command;
@@ -17,7 +16,7 @@ public class AnadirEmpleadoAGrupoCommand  implements Command {
 		
 		try{
 			grupoSA.insertarEmpleado(trabaja);
-			mensaje = "El empleado se ha añadido al grupo de trabajo con exito.";
+			mensaje = "El empleado se ha aï¿½adido al grupo de trabajo con exito.";
 			return new Context(EventosGrupo.ANADIR_EMPLEADO_A_GRUPO_OK, mensaje);
 		} catch(Exception e){
 			mensaje = e.getMessage();

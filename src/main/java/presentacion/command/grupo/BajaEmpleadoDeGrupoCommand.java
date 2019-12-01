@@ -1,6 +1,5 @@
 package presentacion.command.grupo;
 
-import negocio.empleado.TTrabaja;
 import negocio.factoriaSA.FactoriaSA;
 import negocio.grupo.GrupoSA;
 import presentacion.command.Command;
