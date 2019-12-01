@@ -7,7 +7,7 @@ public abstract class FactoriaCommand {
 	
 	public static FactoriaCommand getInstance() {
 		if (instance == null)
-			instance = new FactoriaCommandImpl();
+			instance = new FactoriaCommandJPAImpl();
 		return instance;
 	}
 

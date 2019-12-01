@@ -4,13 +4,11 @@ public class TGrupo {
 	
 	private int id;
 	private String seccion;
-	private int horas;	// Es una cantidad de trabajo, ¿no?
 	private boolean activo;
 	
-	public TGrupo(int id, String seccion, int horas, boolean activo) {
+	public TGrupo(int id, String seccion, boolean activo) {
 		this.id = id;
 		this.seccion = seccion;
-		this.horas = horas;
 		this.activo = activo;
 	}
 	
@@ -32,14 +30,6 @@ public class TGrupo {
 		this.seccion = seccion;
 	}
 
-	public void setHoras(int horas) {
-		this.horas = horas;
-	}
-	
-	public int getHoras() {
-		return horas;
-	}
-
 	public boolean isActivo() {
 		return activo;
 	}
@@ -53,7 +43,6 @@ public class TGrupo {
 		return "TGrupo{" +
 				"id=" + id +
 				", secion=" + seccion +
-				", horas=" + horas +
 				", activo=" + activo +
 				'}';
 	}

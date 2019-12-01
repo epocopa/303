@@ -68,8 +68,8 @@ public class EmpleadoGUIImpl extends JPanel implements EmpleadoGUI, GUI{
 	private JLabel mostrarSalarioBaseText;
 	private JLabel mostrarActivoText;
 	private JLabel mostrarEncargadoText;
-	private JLabel mostrarIncentivoText;
-	private JLabel mostrarPracticanteText;
+	private JLabel mostrarMultiplicadorText;
+	private JLabel mostrarSumadorText;
 	
 	private DefaultTableModel mostrarModel;
 	
@@ -84,8 +84,8 @@ public class EmpleadoGUIImpl extends JPanel implements EmpleadoGUI, GUI{
 	private JTextField editarSalarioField;
 	private JTextField editarActivoField;
 	private JTextField editarEncargadoField;
-	private JTextField editarIncentivoField;
-	private JTextField editarPracticanteField;
+	private JTextField editarMultiplicadorField;
+	private JTextField editarSumadorField;
 	
 	public EmpleadoGUIImpl() {
 		initialize();
@@ -303,17 +303,17 @@ public class EmpleadoGUIImpl extends JPanel implements EmpleadoGUI, GUI{
 
 					if (nombre.length() > 0 && !nombre.equals("") && dni.length() > 0 && !dni.equals("") && salarioBaseField.getText().length() > 0 && !salarioBaseField.getText().equals("") && encargadoField.getText().length() > 0 && !encargadoField.getText().equals("")) {
 						if(encargado == true) {
-							String valor_incentivo = JOptionPane.showInputDialog(null, "Introduzca el incentivo", "Finalizar operacion", JOptionPane.INFORMATION_MESSAGE);
-							if(valor_incentivo != null) {
-								TEncargado e1 = new TEncargado(0, nombre, dni, salarioBase, true, Double.parseDouble(valor_incentivo));
+							String mul = JOptionPane.showInputDialog(null, "Introduzca el multiplicador", "Finalizar operacion", JOptionPane.INFORMATION_MESSAGE);
+							if(mul != null) {
+								TEncargado e1 = new TEncargado(0, nombre, dni, salarioBase, true, Double.parseDouble(mul));
 								Context contexto = new Context(EventosEmpleado.ANADIR_EMPLEADO, e1);
 								ControladorAplicacion.getInstance().accion(contexto);
 							}
 						}
 						else {
-							String practicante = JOptionPane.showInputDialog(null, "�Es practicante?", "Finalizar operacion", JOptionPane.INFORMATION_MESSAGE);
-							if(practicante != null) {
-								TDependiente dependiente = new TDependiente(0, nombre, dni, salarioBase, true, Integer.parseInt(practicante));
+							String sum = JOptionPane.showInputDialog(null, "Introduzca el sumador", "Finalizar operacion", JOptionPane.INFORMATION_MESSAGE);
+							if(sum != null) {
+								TDependiente dependiente = new TDependiente(0, nombre, dni, salarioBase, true, Integer.parseInt(sum));
 								Context contexto = new Context(EventosEmpleado.ANADIR_EMPLEADO, dependiente);
 								ControladorAplicacion.getInstance().accion(contexto);
 							}
@@ -463,14 +463,14 @@ public class EmpleadoGUIImpl extends JPanel implements EmpleadoGUI, GUI{
 		formPanel2.add(encargadoLabel, c2);
 		
 		c2.gridy++;
-		JLabel incentivoLabel = new JLabel("Incentivo: ");
-		incentivoLabel.setFont(new Font("Arial", Font.PLAIN, 18));
-		formPanel2.add(incentivoLabel, c2);
+		JLabel multiplicadorLabel = new JLabel("Multiplicador: ");
+		multiplicadorLabel.setFont(new Font("Arial", Font.PLAIN, 18));
+		formPanel2.add(multiplicadorLabel, c2);
 		
 		c2.gridy++;
-		JLabel practicanteLabel = new JLabel("Practicante: ");
-		practicanteLabel.setFont(new Font("Arial", Font.PLAIN, 18));
-		formPanel2.add(practicanteLabel, c2);
+		JLabel sumadorLabel = new JLabel("Sumador: ");
+		sumadorLabel.setFont(new Font("Arial", Font.PLAIN, 18));
+		formPanel2.add(sumadorLabel, c2);
 		
 		c2.gridx++;
 		c2.gridy = 0;
@@ -495,12 +495,12 @@ public class EmpleadoGUIImpl extends JPanel implements EmpleadoGUI, GUI{
 		formPanel2.add(editarEncargadoField, c2);
 		
 		c2.gridy++;
-		editarIncentivoField = new JTextField(15);
-		formPanel2.add(editarIncentivoField, c2);
+		editarMultiplicadorField = new JTextField(15);
+		formPanel2.add(editarMultiplicadorField, c2);
 		
 		c2.gridy++;
-		editarPracticanteField = new JTextField(15);
-		formPanel2.add(editarPracticanteField, c2);
+		editarSumadorField = new JTextField(15);
+		formPanel2.add(editarSumadorField, c2);
 		
 		//--
 		
@@ -541,12 +541,12 @@ public class EmpleadoGUIImpl extends JPanel implements EmpleadoGUI, GUI{
 				
 				if (nombre.length() > 0 && !nombre.equals("") && dni.length() > 0 && !dni.equals("") && editarSalarioField.getText().length() > 0 && !editarSalarioField.getText().equals("") && editarActivoField.getText().length() > 0 && !editarActivoField.getText().equals("") && editarEncargadoField.getText().length() > 0 && !editarEncargadoField.getText().equals("")) {
 					if(encargado == false) {
-						TDependiente eDependiente = new TDependiente(ID, nombre, dni, salario, activo, Integer.parseInt(editarPracticanteField.getText()));
+						TDependiente eDependiente = new TDependiente(ID, nombre, dni, salario, activo, Integer.parseInt(editarSumadorField.getText()));
 						Context contexto = new Context(EventosEmpleado.MODIFICAR_EMPLEADO, eDependiente);
 						ControladorAplicacion.getInstance().accion(contexto);
 					}
 					else {
-						TEncargado eEncargado = new TEncargado(ID, nombre, dni, salario, activo, Double.parseDouble(editarIncentivoField.getText()));
+						TEncargado eEncargado = new TEncargado(ID, nombre, dni, salario, activo, Double.parseDouble(editarMultiplicadorField.getText()));
 						Context contexto = new Context(EventosEmpleado.MODIFICAR_EMPLEADO, eEncargado);
 						ControladorAplicacion.getInstance().accion(contexto);
 					}
@@ -684,7 +684,7 @@ public class EmpleadoGUIImpl extends JPanel implements EmpleadoGUI, GUI{
 		tablePanel.setBackground(new Color(235, 237, 241));
 		tablePanel.setMaximumSize(new Dimension(800, 320));
 		
-		String[] columns = {"ID Empleado", "Nombre", "DNI", "Salario base", "Activo", "Encargado", "Incentivo", "Practicante"};
+		String[] columns = {"ID Empleado", "Nombre", "DNI", "Salario base", "Activo", "Encargado", "Multiplicador", "Sumador"};
 		mostrarModel = new DefaultTableModel(); 
         for (String column : columns) {
         	mostrarModel.addColumn(column);
@@ -812,14 +812,14 @@ public class EmpleadoGUIImpl extends JPanel implements EmpleadoGUI, GUI{
 		dataPanel.add(encargadoLabel, c2);
 		
 		c2.gridy++;
-		JLabel incentivoLabel = new JLabel("Incentivo: ");
-		incentivoLabel.setFont(new Font("Arial", Font.PLAIN, 22));
-		dataPanel.add(incentivoLabel, c2);
+		JLabel multiplicadorLabel = new JLabel("Multiplicador: ");
+		multiplicadorLabel.setFont(new Font("Arial", Font.PLAIN, 22));
+		dataPanel.add(multiplicadorLabel, c2);
 		
 		c2.gridy++;
-		JLabel practicanteLabel = new JLabel("Practicante: ");
-		practicanteLabel.setFont(new Font("Arial", Font.PLAIN, 22));
-		dataPanel.add(practicanteLabel, c2);
+		JLabel sumadorLabel = new JLabel("Sumador: ");
+		sumadorLabel.setFont(new Font("Arial", Font.PLAIN, 22));
+		dataPanel.add(sumadorLabel, c2);
 						
 		c2.gridx++;
 		c2.gridy = 0;
@@ -854,14 +854,14 @@ public class EmpleadoGUIImpl extends JPanel implements EmpleadoGUI, GUI{
 		dataPanel.add(mostrarEncargadoText, c2);
 		
 		c2.gridy++;
-		mostrarIncentivoText = new JLabel("true");
-		mostrarIncentivoText.setFont(new Font("Arial", Font.PLAIN, 18));
-		dataPanel.add(mostrarIncentivoText, c2);
+		mostrarMultiplicadorText = new JLabel("true");
+		mostrarMultiplicadorText.setFont(new Font("Arial", Font.PLAIN, 18));
+		dataPanel.add(mostrarMultiplicadorText, c2);
 		
 		c2.gridy++;
-		mostrarPracticanteText = new JLabel("true");
-		mostrarPracticanteText.setFont(new Font("Arial", Font.PLAIN, 18));
-		dataPanel.add(mostrarPracticanteText, c2);
+		mostrarSumadorText = new JLabel("true");
+		mostrarSumadorText.setFont(new Font("Arial", Font.PLAIN, 18));
+		dataPanel.add(mostrarSumadorText, c2);
 						
 		//--
 		
@@ -968,14 +968,14 @@ public class EmpleadoGUIImpl extends JPanel implements EmpleadoGUI, GUI{
 				if(empleado.isEncargado() == true) {
 					TEncargado eEncargado = (TEncargado)datos;
 					String incentivo = String.valueOf(eEncargado.getMultiplicador());
-					mostrarIncentivoText.setText(incentivo);
-					mostrarPracticanteText.setText("N/A");
+					mostrarMultiplicadorText.setText(incentivo);
+					mostrarSumadorText.setText("N/A");
 				}
 				else {
 					TDependiente eDependiente = (TDependiente)datos;
 					String practicante = String.valueOf(eDependiente.getSumador());
-					mostrarPracticanteText.setText(practicante);
-					mostrarIncentivoText.setText("N/A");
+					mostrarSumadorText.setText(practicante);
+					mostrarMultiplicadorText.setText("N/A");
 				}
 				
 				mostrarEmpleadoPanelCL.show(mostrarEmpleadoPanel, "EMPLEADO");
@@ -1024,15 +1024,15 @@ public class EmpleadoGUIImpl extends JPanel implements EmpleadoGUI, GUI{
 				
 				if(empleado.isEncargado() == true) {
 					TEncargado eEncargado = (TEncargado)datos;
-					editarIncentivoField.setText(String.valueOf(eEncargado.getMultiplicador()));
-					editarPracticanteField.setText("N/A");
-					editarPracticanteField.setEnabled(false);
+					editarMultiplicadorField.setText(String.valueOf(eEncargado.getMultiplicador()));
+					editarSumadorField.setText("N/A");
+					editarSumadorField.setEnabled(false);
 				}
 				else {
 					TDependiente eDependiente = (TDependiente)datos;
-					editarPracticanteField.setText(String.valueOf(eDependiente.getSumador()));
-					editarIncentivoField.setText("N/A");
-					editarIncentivoField.setEnabled(false);
+					editarSumadorField.setText(String.valueOf(eDependiente.getSumador()));
+					editarMultiplicadorField.setText("N/A");
+					editarMultiplicadorField.setEnabled(false);
 				}
 				
 				editarEmpleadoPanelCL.show(editarEmpleadoPanel, "SECOND");

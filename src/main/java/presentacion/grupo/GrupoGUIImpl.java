@@ -69,7 +69,6 @@ public class GrupoGUIImpl extends JPanel implements GrupoGUI, GUI{
 	private JLabel mostrarErrorLabel;
 	private JLabel mostrarIDText;
 	private JLabel mostrarSeccionText;
-	private JLabel mostrarHorasText;
 	private JLabel mostrarActivoText;
 	
 	private DefaultTableModel mostrarModel;
@@ -81,7 +80,6 @@ public class GrupoGUIImpl extends JPanel implements GrupoGUI, GUI{
 	private JPanel editarOutputArea;
 	private JLabel editarOutputLabel;
 	private JTextField editarSeccionField;
-	private JTextField editarHorasField;
 	private JTextField editarActivoField;
 	
 	public GrupoGUIImpl() {
@@ -271,20 +269,11 @@ public class GrupoGUIImpl extends JPanel implements GrupoGUI, GUI{
 		seccionLabel.setFont(new Font("Arial", Font.PLAIN, 18));
 		formPanel.add(seccionLabel, c);
 				
-		c.gridy++;
-		JLabel horasLabel = new JLabel("Horas: ");
-		horasLabel.setFont(new Font("Arial", Font.PLAIN, 18));
-		formPanel.add(horasLabel, c);
-				
 		c.gridx++;
 		c.gridy = 0;
 		c.anchor = GridBagConstraints.LINE_START;
 		JTextField seccionField = new JTextField(15);
 		formPanel.add(seccionField, c);
-				
-		c.gridy++;
-		JTextField horasField = new JTextField(15);
-		formPanel.add(horasField, c);
 				
 		//--
 				
@@ -299,10 +288,8 @@ public class GrupoGUIImpl extends JPanel implements GrupoGUI, GUI{
 				try {
 					TGrupo grupo = new TGrupo();
 					String seccion = seccionField.getText();
-					int horas = Integer.parseInt(horasField.getText());
-					if (seccion.length() > 0 && !seccion.equals("") && horasField.getText().length() > 0 && !horasField.getText().equals("")) {
+					if (seccion.length() > 0 && !seccion.equals("")) {
 						grupo.setSeccion(seccion);
-						grupo.setHoras(horas);
 						grupo.setActivo(true);
 						Context contexto = new Context(EventosGrupo.ANADIR_GRUPO, grupo);
 						ControladorAplicacion.getInstance().accion(contexto);
@@ -429,11 +416,6 @@ public class GrupoGUIImpl extends JPanel implements GrupoGUI, GUI{
 		JLabel seccionLabel2 = new JLabel("Seccion: ");
 		seccionLabel2.setFont(new Font("Arial", Font.PLAIN, 18));
 		formPanel2.add(seccionLabel2, c2);
-		
-		c2.gridy++;
-		JLabel horasLabel = new JLabel("Horas: ");
-		horasLabel.setFont(new Font("Arial", Font.PLAIN, 18));
-		formPanel2.add(horasLabel, c2);
 
 		c2.gridy++;
 		JLabel activoLabel = new JLabel("Activo: ");
@@ -445,10 +427,6 @@ public class GrupoGUIImpl extends JPanel implements GrupoGUI, GUI{
 		c2.anchor = GridBagConstraints.LINE_START;
 		editarSeccionField = new JTextField(15);
 		formPanel2.add(editarSeccionField, c2);
-		
-		c2.gridy++;
-		editarHorasField = new JTextField(15);
-		formPanel2.add(editarHorasField, c2);
 		
 		c2.gridy++;
 		editarActivoField = new JTextField(15);
@@ -486,11 +464,10 @@ public class GrupoGUIImpl extends JPanel implements GrupoGUI, GUI{
 			public void actionPerformed(ActionEvent e){
 				Integer ID = Integer.valueOf(IDField.getText());
 				String seccion = editarSeccionField.getText();
-				int horas = Integer.parseInt(editarHorasField.getText());
 				Boolean activo = Boolean.valueOf(editarActivoField.getText());
 
-				if (seccion.length() > 0 && !seccion.equals("") && editarHorasField.getText().length() > 0 && !editarHorasField.getText().equals("") && activo.toString().length() > 0 && !activo.toString().equals("")) {
-					TGrupo grupo = new TGrupo(ID, seccion, horas, activo);
+				if (seccion.length() > 0 && !seccion.equals("") && activo.toString().length() > 0 && !activo.toString().equals("")) {
+					TGrupo grupo = new TGrupo(ID, seccion, activo);
 					Context contexto = new Context(EventosGrupo.MODIFICAR_GRUPO, grupo);
 					ControladorAplicacion.getInstance().accion(contexto);
 				} else {
@@ -627,7 +604,7 @@ public class GrupoGUIImpl extends JPanel implements GrupoGUI, GUI{
 		tablePanel.setBackground(new Color(235, 237, 241));
 		tablePanel.setMaximumSize(new Dimension(800, 320));
 		
-		String[] columns = {"ID Grupo", "Seccion", "Horas", "Activo"};
+		String[] columns = {"ID Grupo", "Seccion", "Activo"};
 		mostrarModel = new DefaultTableModel(); 
         for (String column : columns) {
         	mostrarModel.addColumn(column);
@@ -675,7 +652,7 @@ public class GrupoGUIImpl extends JPanel implements GrupoGUI, GUI{
 		mostrarErrorArea.setBackground(new Color(172, 40, 40));
 		mostrarErrorArea.setMaximumSize(new Dimension(800, 50));
 		
-		mostrarErrorLabel = new JLabel("ERROR: El Id introducido no es valido.");
+		mostrarErrorLabel = new JLabel("ERROR: El ID introducido no es valido.");
 		mostrarErrorLabel.setFont(new Font("Arial", Font.PLAIN, 16));
 		mostrarErrorLabel.setForeground(new Color(230,230,230));
 		
@@ -733,11 +710,6 @@ public class GrupoGUIImpl extends JPanel implements GrupoGUI, GUI{
 		JLabel seccionLabel = new JLabel("Seccion: ");	
 		seccionLabel.setFont(new Font("Arial", Font.PLAIN, 22));
 		dataPanel.add(seccionLabel, c2);
-				
-		c2.gridy++;
-		JLabel horasLabel = new JLabel("Horas: ");
-		horasLabel.setFont(new Font("Arial", Font.PLAIN, 22));
-		dataPanel.add(horasLabel, c2);
 
 		c2.gridy++;
 		JLabel ActivoLabel = new JLabel("Activo: ");
@@ -755,11 +727,6 @@ public class GrupoGUIImpl extends JPanel implements GrupoGUI, GUI{
 		mostrarSeccionText = new JLabel("Nombre");
 		mostrarSeccionText.setFont(new Font("Arial", Font.PLAIN, 18));
 		dataPanel.add(mostrarSeccionText, c2);
-				
-		c2.gridy++;
-		mostrarHorasText = new JLabel("0");
-		mostrarHorasText.setFont(new Font("Arial", Font.PLAIN, 18));
-		dataPanel.add(mostrarHorasText, c2);
 		
 		c2.gridy++;
 		mostrarActivoText = new JLabel("true");
@@ -1063,11 +1030,9 @@ public class GrupoGUIImpl extends JPanel implements GrupoGUI, GUI{
 			case EventosGrupo.MOSTRAR_GRUPO_OK:
 				grupo = (TGrupo) datos;
 				Integer id = grupo.getId();
-				Integer horas = grupo.getHoras();
 
 				mostrarIDText.setText(id.toString());
 				mostrarSeccionText.setText(grupo.getSeccion());
-				mostrarHorasText.setText(horas.toString());
 				mostrarActivoText.setText(Boolean.toString(grupo.isActivo()));
 				
 				mostrarGrupoPanelCL.show(mostrarGrupoPanel, "GRUPO");
@@ -1086,7 +1051,7 @@ public class GrupoGUIImpl extends JPanel implements GrupoGUI, GUI{
 				mostrarPanel();
 				
 				for(TGrupo g : listaGrupos) {
-					mostrarModel.addRow(new Object[]{g.getId(), g.getSeccion(), g.getHoras(), g.isActivo()});
+					mostrarModel.addRow(new Object[]{g.getId(), g.getSeccion(), g.isActivo()});
 				}
 				
 				System.out.println("Listar Grupos OK");
@@ -1099,10 +1064,8 @@ public class GrupoGUIImpl extends JPanel implements GrupoGUI, GUI{
 				break;
 			case EventosGrupo.MODIFICAR_BUSCAR_GRUPO_OK:
 				grupo = (TGrupo) datos;
-				Integer nhoras = grupo.getHoras();	
 				
 				editarSeccionField.setText(grupo.getSeccion());
-				editarHorasField.setText(nhoras.toString());
 				editarActivoField.setText(Boolean.toString(grupo.isActivo()));
 				
 				editarGrupoPanelCL.show(editarGrupoPanel, "SECOND");

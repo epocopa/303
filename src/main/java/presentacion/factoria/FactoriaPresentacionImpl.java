@@ -2,13 +2,9 @@ package presentacion.factoria;
 
 import presentacion.cliente.ClienteGUIImpl;
 import presentacion.controladorAplicacion.EventosMenu;
-import presentacion.empleado.EmpleadoGUIImpl;
 import presentacion.factura.FacturaGUIImp;
-import presentacion.grupo.GrupoGUIImpl;
 import presentacion.main.MainGUIImpl;
 import presentacion.producto.ProductoGUIImpl;
-import presentacion.turno.TurnoGUIImpl;
-
 import javax.swing.*;
 import java.awt.*;
 
@@ -16,16 +12,14 @@ public class FactoriaPresentacionImpl extends FactoriaPresentacion {
 	JPanel pathPanel;
 	
 	public GUI generarVista(int evento){
+		GUI gui = null;
 		switch(evento){
-		case EventosMenu.MOSTRAR_HOME_GUI: return new MainGUIImpl();
-		case EventosMenu.MOSTRAR_CLIENTE_GUI: return new ClienteGUIImpl(); 
-		case EventosMenu.MOSTRAR_FACTURA_GUI: return new FacturaGUIImp(); 
-		case EventosMenu.MOSTRAR_PRODUCTO_GUI: return new ProductoGUIImpl();
-		case EventosMenu.MOSTRAR_TURNO_GUI: return new TurnoGUIImpl();
-		case EventosMenu.MOSTRAR_GRUPO_GUI: return new GrupoGUIImpl();
-		case EventosMenu.MOSTRAR_EMPLEADO_GUI: return new EmpleadoGUIImpl();
-		default: return null;
+		case EventosMenu.MOSTRAR_HOME_GUI: gui = new MainGUIImpl(); break;
+		case EventosMenu.MOSTRAR_CLIENTE_GUI: gui = new ClienteGUIImpl(); break;
+		case EventosMenu.MOSTRAR_FACTURA_GUI: gui = new FacturaGUIImp(); break;
+		case EventosMenu.MOSTRAR_PRODUCTO_GUI: gui = new ProductoGUIImpl(); break;
 		}
+		return gui;
 	}
 	
 	public JPanel generarPath() {

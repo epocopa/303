@@ -8,7 +8,7 @@ public abstract class FactoriaPresentacion {
 	
 	public static FactoriaPresentacion getInstance() {
 		if(presentacion == null) {
-			presentacion = new FactoriaPresentacionImpl();
+			presentacion = new FactoriaPresentacionJPAImpl();
 		}
 		return presentacion;
 	}
