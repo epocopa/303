@@ -4,6 +4,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
+import javax.persistence.Query;
 import java.util.List;
 
 public class EmpleadoSAImp implements EmpleadoSA {
@@ -19,7 +20,7 @@ public class EmpleadoSAImp implements EmpleadoSA {
 
 		//check if DNI exists --> (comprobar consulta, lo estoy haciendo a pelo)
 		String statement = "SELECT emp FROM Empleado emp WHERE emp.dni = :dni";
-		Query query = em.createQuery(consulta);
+		Query query = em.createQuery(statement);
 		query.setParameter("dni", empleado.getDNI());
 		Empleado empl = null;
 		try{
@@ -48,8 +49,8 @@ public class EmpleadoSAImp implements EmpleadoSA {
 			}
 			catch(Exception e){
 				tr.rollback();
-				emf.close();
-				em.close();
+				//emf.close();
+				//em.close();
 				//MENSAJE DE ERROR EN CONCURRENCIA
 			}
 		}
@@ -68,8 +69,8 @@ public class EmpleadoSAImp implements EmpleadoSA {
 				}
 				catch(Exception e){
 					tr.rollback();
-					emf.close();
-					em.close();
+					//emf.close();
+					//em.close();
 				}
 				//MENSAJE DADO DE ALTA TRAS ESTAR INACTIVO
 			}
@@ -86,6 +87,8 @@ public class EmpleadoSAImp implements EmpleadoSA {
 		EntityManager em = emf.createEntityManager();
 		EntityTransaction tr = em.getTransaction();
 		tr.begin();
+
+		
 
 
 
