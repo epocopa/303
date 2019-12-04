@@ -13,6 +13,8 @@ public class EmpleadoSAImp implements EmpleadoSA {
 
 		em.getTransaction().begin();
 
+		//TODO checks acording to SRS
+
 		if (empleado.isEncargado()) {
 			Encargado encargado = new Encargado((TEncargado) empleado);
 			em.persist(encargado);
