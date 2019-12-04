@@ -27,6 +27,7 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableModel;
 
+import negocio.empleado.TTrabaja;
 import negocio.grupo.TGrupo;
 import presentacion.factoria.GUI;
 import presentacion.controladorAplicacion.Context;

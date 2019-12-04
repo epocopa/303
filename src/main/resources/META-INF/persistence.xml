@@ -2,6 +2,7 @@
 <persistence xmlns="http://java.sun.com/xml/ns/persistence" version="2.0">
 	<!--https://thoughts-on-java.org/jpa-persistence-xml/-->
 	<persistence-unit name="303" transaction-type="RESOURCE_LOCAL">
+		<provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
 		<class>negocio.empleado.Empleado</class>
 		<class>negocio.empleado.Encargado</class>
 		<class>negocio.empleado.Dependiente</class>

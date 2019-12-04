@@ -1,6 +1,7 @@
 package negocio.grupo;
 
 import negocio.empleado.TEmpleado;
+import negocio.empleado.TTrabaja;
 
 import java.util.List;
 
@@ -31,12 +32,12 @@ public class GrupoSAImp implements GrupoSA {
 	}
 
 	@Override
-	public void insertarEmpleado(TEmpleado empleado) throws Exception {
+	public void insertarEmpleado(TTrabaja empleado) throws Exception {
 
 	}
 
 	@Override
-	public void eliminarEmpleado(TEmpleado empleado) throws Exception {
+	public void eliminarEmpleado(TTrabaja empleado) throws Exception {
 
 	}
 }
