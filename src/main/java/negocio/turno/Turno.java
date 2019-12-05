@@ -17,6 +17,13 @@ public class Turno {//TODO mapear empleado tambien
 	@OneToMany(mappedBy = "turno")
 	private List<Empleado> empleados;
 
+	public Turno(int id, String nombre, boolean activo, int inicio, int fin){
+		this.id = id;
+		this.nombre = nombre;
+		this.activo = activo;
+		this.inicio = inicio;
+		this.fin = fin;	
+	}	
 	public int getId() {
 		return id;
 	}
@@ -55,5 +62,13 @@ public class Turno {//TODO mapear empleado tambien
 
 	public void setFin(int fin) {
 		this.fin = fin;
+	}
+
+	public void setEmpleados(List<Empleado> empleados){
+		this.empleados = empleados;
+	}
+
+	public List<Empleado> getEmpleados(){
+		return this.empleados;
 	}
 }
