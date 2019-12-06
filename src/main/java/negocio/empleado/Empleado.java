@@ -35,7 +35,6 @@ public class Empleado {
 	private int version;
 	@ManyToOne
 	private Turno turno;
-	//no me queda claro si es oneToMany o ManyToMany ya que en modelo la relación es N a N
 	@OneToMany(mappedBy = "empleado")
 	private List<AsignacionGrupo> asignaciones;
 

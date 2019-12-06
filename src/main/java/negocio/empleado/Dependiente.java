@@ -7,14 +7,16 @@ import javax.persistence.Id;
 
 @Entity
 public class Dependiente extends Empleado {
-	@Id
+	/*@Id no lo coge de empleado¿
 	@GeneratedValue(strategy= GenerationType.IDENTITY)
-	private int id;
+	private int id;*/
+	@Column(nullable=false)
 	private int sumador;
 
 	public Dependiente() {}
 
-	public Dependiente(int sumador) {
+	public Dependiente(int sumador, TEmpleado t) {
+		super(t);
 		this.sumador = sumador;
 	}
 

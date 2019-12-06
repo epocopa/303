@@ -5,6 +5,9 @@ public class TGrupo {
 	private int id;
 	private String seccion;
 	private boolean activo;
+	/*
+	private List<TTrabaja> empleadosGrupo;
+	*/
 	
 	public TGrupo(int id, String seccion, boolean activo) {
 		this.id = id;

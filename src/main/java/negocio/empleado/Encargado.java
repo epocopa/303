@@ -7,15 +7,17 @@ import javax.persistence.Id;
 
 @Entity
 public class Encargado extends Empleado {
-
+	/* No coge el id de empleado?
 	@Id
 	@GeneratedValue(strategy= GenerationType.IDENTITY)
-	private int id;
+	private int id;*/
+	@Column(nullable=false)
 	private double multiplicador;
 
 	public Encargado() {}
 
-	public Encargado(double multiplicador) {
+	public Encargado(double multiplicador, TEmpleado t) {
+		super(t);
 		this.multiplicador = multiplicador;
 	}
 
