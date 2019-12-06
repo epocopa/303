@@ -15,6 +15,14 @@ public class Grupo {
 	@OneToMany(mappedBy = "grupo")
 	private List<AsignacionGrupo> grupos;
 
+	public Grupo(){}
+
+	public Grupo(TGrupo g){
+		this.activo = g.isActivo();
+		this.id = g.getId();
+		this.seccion = g.getSeccion();
+	}
+
 	public int getId() {
 		return id;
 	}

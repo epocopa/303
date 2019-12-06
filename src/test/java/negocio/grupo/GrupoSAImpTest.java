@@ -1,5 +1,8 @@
 package negocio.grupo;
 
+import negocio.empleado.EmpleadoSAImp;
+import negocio.empleado.TEmpleado;
+import negocio.empleado.TTrabaja;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -16,9 +19,13 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class GrupoSAImpTest {
     private static Connection conn;
+    private GrupoSAImp grupoSAImpl;
     private TGrupo grupo1;
     private TGrupo grupo2;
-    private GrupoSAImp grupoSAImpl;
+    private EmpleadoSAImp empleadoSAImp;
+    private TEmpleado empleado1;
+    private TTrabaja trabaja1;
+
     @BeforeAll
     static void beforeAll() {
 
@@ -40,6 +47,9 @@ class GrupoSAImpTest {
         grupo1 = new TGrupo(1,"textil",true);
         grupo2 = new TGrupo(2,"calzado",true);
 
+        empleado1 = new TEmpleado(1,"Jose","578344400S",1000,true,false);
+
+        trabaja1 = new TTrabaja(1,1,5);
     }
     @Test
     void testInsertar() {
@@ -100,10 +110,29 @@ class GrupoSAImpTest {
 
     @Test
     void testInsertarEmpleado() {
+        try{
+           empleadoSAImp.insertar(empleado1);
+           grupoSAImpl.insertar(grupo1);
+           grupoSAImpl.insertarEmpleado(trabaja1);
+           assertTrue(trabaja1.getIdEmpleado()==empleado1.getId() &&
+                   trabaja1.getIdGrupo() == grupo1.getId());
+        }catch(Exception e){
+            fail("Excepcion al insertar empleado en turno");
+        }
     }
 
     @Test
     void testEliminarEmpleado() {
+        try{
+            empleadoSAImp.insertar(empleado1);
+            grupoSAImpl.insertar(grupo1);
+            grupoSAImpl.insertarEmpleado(trabaja1);
+            grupoSAImpl.eliminarEmpleado(trabaja1);
+            //assertTrue(trabaja1.getIdEmpleado()==empleado1.getId() &&
+            //        trabaja1.getIdGrupo() == grupo1.getId());
+        }catch(Exception e){
+            fail("Excepcion al eliminar empleado en turno");
+        }
     }
 
     @AfterAll

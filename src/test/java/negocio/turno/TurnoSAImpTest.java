@@ -1,5 +1,6 @@
 package negocio.turno;
 
+import negocio.empleado.EmpleadoSAImp;
 import negocio.empleado.TEmpleado;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -22,6 +23,9 @@ class TurnoSAImpTest {
     private TTurno turno1;
     private TTurno turno2;
     private TurnoSAImp turnoSAImp;
+    private EmpleadoSAImp empleadoSAImp;
+    private TEmpleado empleado1;
+
     @BeforeAll
     static void beforeAll() {
 
@@ -43,6 +47,8 @@ class TurnoSAImpTest {
         turnoSAImp = new TurnoSAImp();
         turno1 = new TTurno(1,"mañana", LocalTime.of(8,00),LocalTime.of(14,00),true);
         turno2 = new TTurno(2,"tarde", LocalTime.of(14,00),LocalTime.of(20,00),true);
+
+        empleado1 = new TEmpleado(1,"Jose","578344400S",1000,true,false);
     }
     @Test
     void testInsertar() {

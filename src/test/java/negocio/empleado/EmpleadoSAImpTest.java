@@ -17,8 +17,10 @@ import static org.junit.jupiter.api.Assertions.*;
 class EmpleadoSAImpTest {
     private static Connection conn;
     private EmpleadoSAImp empleadoSAImp;
-    private TEmpleado empleado1;
-    private TEmpleado empleado2;
+    private TEmpleado tEmpleado1;
+    private TEmpleado tEmpleado2;
+    private Empleado empleado1;
+    private Empleado empleado2;
     @BeforeAll
     static void beforeAll() {
 
@@ -39,28 +41,33 @@ class EmpleadoSAImpTest {
 
         empleadoSAImp = new EmpleadoSAImp();
         //Empleado 1
-        empleado1 = new TEmpleado();
-        empleado1.setActivo(true);
-        empleado1.setDNI("842582382H");
-        empleado1.setEncargado(true);
-        empleado1.setNombre("Olegario");
-        empleado1.setSalarioBase(650);
-        empleado1.setId(1);
+        tEmpleado1 = new TEmpleado();
+        tEmpleado1.setActivo(true);
+        tEmpleado1.setDNI("842582382H");
+        tEmpleado1.setEncargado(true);
+        tEmpleado1.setNombre("Olegario");
+        tEmpleado1.setSalarioBase(650);
+        tEmpleado1.setId(1);
+
+        empleado1 = new Empleado(tEmpleado1);
+
         //Empleado 2
-        empleado2 = new TEmpleado();
-        empleado2.setActivo(true);
-        empleado2.setDNI("256256256F");
-        empleado2.setEncargado(false);
-        empleado2.setNombre("AlmeidaCP");
-        empleado2.setSalarioBase(30);
-        empleado2.setId(2);
+        tEmpleado2 = new TEmpleado();
+        tEmpleado2.setActivo(true);
+        tEmpleado2.setDNI("256256256F");
+        tEmpleado2.setEncargado(false);
+        tEmpleado2.setNombre("AlmeidaCP");
+        tEmpleado2.setSalarioBase(30);
+        tEmpleado2.setId(2);
+
+        empleado2 = new Empleado(tEmpleado2);
     }
     @Test
     void testInsertar() {
         try{
-            empleadoSAImp.insertar(empleado1);
-            TEmpleado auxiliar = empleadoSAImp.mostrar(empleado1.getId());
-            assertTrue(iguales(empleado1,auxiliar));
+            empleadoSAImp.insertar(tEmpleado1);
+            TEmpleado auxiliar = empleadoSAImp.mostrar(tEmpleado1.getId());
+            assertTrue(iguales(tEmpleado1,auxiliar));
         }catch (Exception e) {
             fail("Excepcion al insertar");
         }
@@ -69,8 +76,8 @@ class EmpleadoSAImpTest {
     @Test
     void testMostrarTodos() {
         ArrayList<TEmpleado> lista = new ArrayList<>();
-        lista.add(empleado1);
-        lista.add(empleado2);
+        lista.add(tEmpleado1);
+        lista.add(tEmpleado2);
         try{
             for (TEmpleado tEmpleado : lista) {
                 empleadoSAImp.insertar(tEmpleado);
@@ -90,12 +97,12 @@ class EmpleadoSAImpTest {
     @Test
     void testModificar() {
         try{
-            empleadoSAImp.insertar(empleado1);
-            empleado1.setSalarioBase(1919);
-            empleado1.setNombre("Rodolfo");
-            empleadoSAImp.modificar(empleado1);
-            TEmpleado auxiliar = empleadoSAImp.mostrar(empleado1.getId());
-            assertTrue(iguales(empleado1,auxiliar));
+            empleadoSAImp.insertar(tEmpleado1);
+            tEmpleado1.setSalarioBase(1919);
+            tEmpleado1.setNombre("Rodolfo");
+            empleadoSAImp.modificar(tEmpleado1);
+            TEmpleado auxiliar = empleadoSAImp.mostrar(tEmpleado1.getId());
+            assertTrue(iguales(tEmpleado1,auxiliar));
 
         }catch (Exception e){
             fail("Excepcion al modificar");
@@ -105,9 +112,9 @@ class EmpleadoSAImpTest {
     @Test
     void testEliminar() {
         try{
-            empleadoSAImp.insertar(empleado1);
-            empleadoSAImp.eliminar(empleado1.getId());
-            assertFalse(empleadoSAImp.mostrar(empleado1.getId()).isActivo());
+            empleadoSAImp.insertar(tEmpleado1);
+            empleadoSAImp.eliminar(tEmpleado1.getId());
+            assertFalse(empleadoSAImp.mostrar(tEmpleado1.getId()).isActivo());
         }catch (Exception e){
             fail("Excepcion al eliminar");
         }

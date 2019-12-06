@@ -19,7 +19,7 @@ import java.util.List;
 @Entity
 @MappedSuperclass
 @Inheritance(strategy=InheritanceType.) //InheritanceType.JOINED si tablas diferentes para subclases con solo datos de ellas
-public abstract class Empleado {
+public class Empleado {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
