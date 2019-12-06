@@ -10,6 +10,6 @@ public interface TurnoSA {
 	List<TTurno> mostrarTodos() throws Exception;
 	void modificar(TTurno turno) throws Exception;
 	void eliminar(int id) throws Exception;
-	void anadirEmpleado(TEmpleado empleado) throws Exception;
-	void borrarEmpleado(TEmpleado empleado) throws Exception;
+	void anadirEmpleado(int idTurno, TEmpleado empleado) throws Exception;
+	void borrarEmpleado(int idTurno, TEmpleado empleado) throws Exception;
 }
