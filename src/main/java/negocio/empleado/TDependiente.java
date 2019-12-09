@@ -3,8 +3,8 @@ package negocio.empleado;
 public class TDependiente extends TEmpleado{
 	private int sumador;
 	
-	public TDependiente(int id, String nombre, String dni, int salarioBase, boolean activo, int sumador) {
-		super(id, nombre, dni, salarioBase, activo, false);
+	public TDependiente(int id, String nombre, String dni, int salarioBase, boolean activo, int sumador, int idTurno) {
+		super(id, nombre, dni, salarioBase, activo, false, idTurno);
 		this.sumador = sumador;
 	}
 	

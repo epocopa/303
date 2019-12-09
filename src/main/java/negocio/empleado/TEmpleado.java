@@ -7,14 +7,16 @@ public class TEmpleado {
 	private int salarioBase;
 	private boolean activo;
 	private boolean encargado;
+	private int idTurno;
 	
-	public TEmpleado(int id, String nombre, String dni, int salarioBase, boolean activo, boolean encargado){
+	public TEmpleado(int id, String nombre, String dni, int salarioBase, boolean activo, boolean encargado, int idTurno){
 		this.id = id;
 		this.nombre = nombre;
 		this.dni = dni;
 		this.salarioBase = salarioBase;
 		this.activo = activo;
 		this.encargado = encargado;
+		this.idTurno = idTurno;
 	}
 	
 	public TEmpleado(){}
@@ -43,6 +45,10 @@ public class TEmpleado {
 		return encargado;
 	}
 	
+	public int getIdTurno() {
+		return idTurno;
+	}
+	
 	public void setId(int id) {
 		this.id = id;
 	}
@@ -65,6 +71,10 @@ public class TEmpleado {
 	
 	public void setEncargado(boolean encargado) {
 		this.encargado = encargado;
+	}
+	
+	public void setIdTurno(int idTurno) {
+		this.idTurno = idTurno;
 	}
 
 	@Override
