@@ -17,10 +17,10 @@ public class AnadirEmpleadoATurnoCommand implements Command{
 		try{
 			turnoSA.insertarEmpleado(empleado);
 			mensaje = "El empleado se ha anadido con exito.";
-			return new Context(EventosTurno.BAJA_TURNO_OK, mensaje);
+			return new Context(EventosTurno.ANADIR_EMPLEADO_A_TURNO_OK, mensaje);
 		}catch(Exception e){
 			mensaje = e.getMessage();
-			return new Context(EventosTurno.BAJA_TURNO_KO, mensaje);
+			return new Context(EventosTurno.ANADIR_EMPLEADO_A_TURNO_KO, mensaje);
 		}
 	}
 }
