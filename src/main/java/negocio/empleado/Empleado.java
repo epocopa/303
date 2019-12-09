@@ -4,13 +4,14 @@ import negocio.turno.Turno;
 
 import javax.persistence.*;
 
+import java.io.Serializable;
 import java.util.List;
 
 @Entity
 @NamedQueries({
 		@NamedQuery(name = "Empleado.READ", query = "SELECT emp FROM Empleado emp WHERE emp.DNI = :dni")
 })
-public abstract class Empleado {
+public abstract class Empleado implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;

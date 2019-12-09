@@ -2,12 +2,11 @@ package negocio.empleado;
 
 import javax.persistence.*;
 import java.util.List;
-//TODO
 
 public class EmpleadoSAImp implements EmpleadoSA {
 
 	@Override
-	public void insertar(TEmpleado empleado) {
+	public void insertar(TEmpleado empleado) throws Exception {
 
 		EntityManagerFactory emf = Persistence.createEntityManagerFactory("303");
 		EntityManager em = emf.createEntityManager();
@@ -25,22 +24,23 @@ public class EmpleadoSAImp implements EmpleadoSA {
 			if (empleado.isEncargado()) {
 				Encargado encargado = new Encargado((TEncargado) empleado);
 				em.persist(encargado);
+				em.getTransaction().commit();
 				empleado.setId(encargado.getId());
 			} else {
 				Dependiente dependiente = new Dependiente((TDependiente) empleado);
 				em.persist(dependiente);
+				em.getTransaction().commit();
 				empleado.setId(dependiente.getId());
 			}
 		} else {
 			if (empl.isActivo()) {
 				em.getTransaction().rollback();
-				return;
+				throw new Exception("Ya existe un empleado con DNI =" + empleado.getDNI());
 			} else {
 				empl.setActivo(true);
 			}
 		}
 
-		em.getTransaction().commit();
 		em.close();
 		emf.close();
 	}

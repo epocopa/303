@@ -1,9 +1,10 @@
 package negocio.empleado;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
-public class Encargado extends Empleado {
+public class Encargado extends Empleado implements Serializable {
 	@Id
 	@GeneratedValue(strategy= GenerationType.IDENTITY)
 	private int id;
