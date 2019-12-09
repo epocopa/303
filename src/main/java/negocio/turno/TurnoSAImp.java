@@ -16,7 +16,7 @@ public class TurnoSAImp implements TurnoSA {
 		em.getTransaction().begin();
 
 		
-		Query query = em.createNamedQuery("Turno.READ", Empleado.class);
+		Query query = em.createNamedQuery("Turno.READ", Turno.class);
 		query.setParameter("nombre", turno.getNombre());
 		Turno t = null;
 		try{
@@ -36,7 +36,7 @@ public class TurnoSAImp implements TurnoSA {
 				//MENSAJE DADO DE ALTA CON Ã‰XITO
 			}catch(Exception e){
 				em.getTransaction().rollback();
-				//MENSAJE DE ERROR EN CONCURRENCIA
+				throw new Exception("Error en concurrencia");
 			}
 			
 		}
@@ -54,7 +54,7 @@ public class TurnoSAImp implements TurnoSA {
 				}
 				catch(Exception e){
 					em.getTransaction().rollback();
-					//ERROR EN CONCURRENCIA
+					throw new Exception("Error en concurrencia");
 				}
 				//MENSAJE DADO DE ALTA TRAS INACTIVIDAD
 			}
@@ -75,7 +75,9 @@ public class TurnoSAImp implements TurnoSA {
 		Turno t = em.find(Turno.class,id);
 		TTurno turno = null;
 		if(t==null){
-			//MENSAJE NO EXISTE TURNO CON ESE ID
+			em.close();
+			emf.close();
+			throw new Exception("No existe el turno con id: "+id);
 		}
 		else{
 			//MIRAR SI FALTA AÃ‘ADIR LISTA DE EMPLEADOS COMO CAMPO EN EL TRANSFER
@@ -127,9 +129,20 @@ public class TurnoSAImp implements TurnoSA {
 		EntityManagerFactory emf = Persistence.createEntityManagerFactory("303");
 		EntityManager em = emf.createEntityManager();
 		em.getTransaction().begin();
-
-
-
+		/*
+		Turno t = null;
+		
+		t = em.find(Turno.class, turno.getId());
+		t.setActivo(turno.isActivo());
+	//	em.persist(t);
+		try{
+			em.getTransaction().commit();
+		}
+		catch (Exception e){
+			
+		}
+		
+ 		*/
 
 		
 		em.close();
@@ -146,14 +159,16 @@ public class TurnoSAImp implements TurnoSA {
 
 		//turno no existe
 		if(turno == null){
-			//MENSAJE TURNO CON ESE ID NO EXISTE
 			em.getTransaction().rollback();
+			em.close();
+			emf.close();
+			throw new Exception("No existe el turno con id: "+id);
 		}
 		//turno existe
 		else{
 			if(!turno.isActivo()){
-				//MENSAJE YA ESTA DADO DE BAJA
 				em.getTransaction().rollback();
+				throw new Exception("El turno con id "+id+" ya está dado de baja");
 			}
 			else{
 				if(turno.getEmpleados().size()>0){
@@ -169,7 +184,7 @@ public class TurnoSAImp implements TurnoSA {
 					em.getTransaction().commit();
 				}
 				catch(Exception e){
-					//ERROR EN CONCURRENCIA
+					throw new Exception("Error en concurrencia");
 				}
 				
 			}
@@ -190,7 +205,7 @@ public class TurnoSAImp implements TurnoSA {
 		Turno turno = em.find(Turno.class, idTurno);
 
 		if(turno == null){
-			//MENSAJE TURNO CON ESE ID NO EXISTE
+			throw new Exception("No existe el turno con id"+idTurno);
 		}
 		else{
 	/*		Empleado emp = new Empleado(empleado.getDNI(),empleado.getNombre(),
@@ -201,8 +216,8 @@ public class TurnoSAImp implements TurnoSA {
 				em.getTransaction().commit();
 			}
 			catch(Exception e){
-				//MENSAJE ERROR CONCURRENCIA
 				em.getTransaction().rollback();
+				throw new Exception("Error en concurrencia");
 			}
 		}
 

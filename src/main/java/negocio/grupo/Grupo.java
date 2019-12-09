@@ -3,9 +3,11 @@ package negocio.grupo;
 import negocio.empleado.AsignacionGrupo;
 
 import javax.persistence.*;
+
 import java.util.List;
 
 @Entity
+@NamedQueries({ @NamedQuery(name = "Grupo.READ", query = "SELECT g FROM Grupo g WHERE g.seccion = :seccion")})
 public class Grupo {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
