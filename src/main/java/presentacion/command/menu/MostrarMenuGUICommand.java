@@ -4,7 +4,7 @@ import presentacion.command.Command;
 import presentacion.controladorAplicacion.Context;
 import presentacion.controladorAplicacion.EventosMenu;
 
-public class MostrarMenuGUICommand implements Command{
+public class MostrarMenuGUICommand implements Command {
 
 	@Override
 	public Context execute(Object datos) {

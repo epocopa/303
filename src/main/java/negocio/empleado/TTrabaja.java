@@ -11,7 +11,8 @@ public class TTrabaja {
 		this.horas = horas;
 	}
 
-	public TTrabaja() {}
+	public TTrabaja() {
+	}
 
 	public int getIdGrupo() {
 		return idGrupo;

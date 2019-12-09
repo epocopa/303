@@ -4,36 +4,36 @@ import negocio.empleado.Empleado;
 import negocio.empleado.TEmpleado;
 
 import javax.persistence.*;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class TurnoSAImp implements TurnoSA {
 	@Override
 	public void insertar(TTurno turno) throws Exception {
-/*		EntityManagerFactory emf = Persistence.createEntityManagerFactory("303");
+		EntityManagerFactory emf = Persistence.createEntityManagerFactory("303");
 		EntityManager em = emf.createEntityManager();
 		em.getTransaction().begin();
 
 		
-		String statement = "SELECT t FROM Turno emp WHERE t.id = :id";
-		Query query = em.createQuery(statement);
-		query.setParameter("id", empleado.getId());
-		Turno turno = null;
+		Query query = em.createNamedQuery("Turno.READ", Empleado.class);
+		query.setParameter("nombre", turno.getNombre());
+		Turno t = null;
 		try{
-			turno = (Turno) query.getSingleResult();
+			t = (Turno) query.getSingleResult();
 		}
 		catch(NoResultException e){}
 		//TODO checks acording to SRS
 
 		//turno does not exists in DB
-		if(turno == null){
-			Turno trn = new Turno((TTurno))turno);
+		if(t == null){
+			Turno trn = new Turno(turno);
 			em.persist(trn);
 			//TURNO PERSISTIDO
 
 			try{
 				em.getTransaction().commit();
-				//MENSAJE DADO DE ALTA CON ÉXITO
+				//MENSAJE DADO DE ALTA CON Ã‰XITO
 			}catch(Exception e){
 				em.getTransaction().rollback();
 				//MENSAJE DE ERROR EN CONCURRENCIA
@@ -42,13 +42,13 @@ public class TurnoSAImp implements TurnoSA {
 		}
 		//turno exists in DB
 		else{
-			if(turno.isActivo()){
-				//MENSAJE YA ESTÁ DADO DE ALTA
+			if(t.isActivo()){
 				em.getTransaction().rollback();
+				throw new Exception("Ya existe un turno con nombre =" + t.getNombre());
 			}
 			//reactivamos el turno
 			else{
-				turno.setActivo(true);
+				t.setActivo(true);
 				try{
 					em.getTransaction().commit();
 				}
@@ -61,9 +61,9 @@ public class TurnoSAImp implements TurnoSA {
 		}
 
 
-			
+		em.close();
 		emf.close();
-		em.close();*/
+		
 	}
 
 	@Override
@@ -73,13 +73,13 @@ public class TurnoSAImp implements TurnoSA {
 		em.getTransaction().begin();
 		
 		Turno t = em.find(Turno.class,id);
-
+		TTurno turno = null;
 		if(t==null){
 			//MENSAJE NO EXISTE TURNO CON ESE ID
 		}
 		else{
-			//MIRAR SI FALTA AÑADIR LISTA DE EMPLEADOS COMO CAMPO EN EL TRANSFER
-			TTurno turno = new TTurno(t.getId(),t.getNombre(),t.getInicio(),t.getFin(),t.isActivo()); 
+			//MIRAR SI FALTA AÃ‘ADIR LISTA DE EMPLEADOS COMO CAMPO EN EL TRANSFER
+			turno = new TTurno(t.getId(),t.getNombre(),t.getInicio(),t.getFin(),t.isActivo()); 
 		}
 		
 		try{
@@ -87,9 +87,10 @@ public class TurnoSAImp implements TurnoSA {
 		}catch(RollbackException e){}
 		
 		
-		emf.close();
+		
 		em.close();
-		return null;
+		emf.close();
+		return turno;
 
 	}
 
@@ -115,8 +116,9 @@ public class TurnoSAImp implements TurnoSA {
 		catch(Exception e){}
 
 			
-		emf.close();
+		
 		em.close();
+		emf.close();
 		return listaTransferTurno;
 	}
 
@@ -129,8 +131,9 @@ public class TurnoSAImp implements TurnoSA {
 
 
 
-		emf.close();
+		
 		em.close();
+		emf.close();
 	}
 
 	@Override
@@ -173,8 +176,9 @@ public class TurnoSAImp implements TurnoSA {
 		}
 
 
-		emf.close();
+		
 		em.close();
+		emf.close();
 	}
 
 	@Override
@@ -203,8 +207,8 @@ public class TurnoSAImp implements TurnoSA {
 		}
 
 
-		emf.close();
 		em.close();
+		emf.close();
 	}
 
 	@Override
@@ -233,7 +237,8 @@ public class TurnoSAImp implements TurnoSA {
 			}
 		}
 
-		emf.close();
+		
 		em.close();
+		emf.close();
 	}
 }

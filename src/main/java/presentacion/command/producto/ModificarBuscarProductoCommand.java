@@ -14,13 +14,15 @@ public class ModificarBuscarProductoCommand implements Command {
 		String mensaje;
 		int id = (int) datos;
 		ProductoSA productoSA = FactoriaSA.getInstancia().generaProductoSA();
-		
-		try{
+
+		try {
 			TProducto producto = productoSA.mostrar(id);
-			return new Context(EventosProducto.MODIFICAR_BUSCAR_PRODUCTO_OK, producto);
-		} catch(Exception e){
+			return new Context(EventosProducto.MODIFICAR_BUSCAR_PRODUCTO_OK,
+					producto);
+		} catch (Exception e) {
 			mensaje = e.getMessage();
-			return new Context(EventosProducto.MODIFICAR_BUSCAR_PRODUCTO_KO, mensaje);
+			return new Context(EventosProducto.MODIFICAR_BUSCAR_PRODUCTO_KO,
+					mensaje);
 		}
 	}
 }

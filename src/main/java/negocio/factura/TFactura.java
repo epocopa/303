@@ -13,8 +13,9 @@ public class TFactura {
 
 	public TFactura() {
 	}
-	
-	public TFactura(int id, double precio, boolean abierta, LocalDate fecha, List<TLineaFactura> lineaFacturas, int cliente) {
+
+	public TFactura(int id, double precio, boolean abierta, LocalDate fecha,
+			List<TLineaFactura> lineaFacturas, int cliente) {
 		this.id = id;
 		this.precio = precio;
 		this.abierta = abierta;
@@ -73,13 +74,8 @@ public class TFactura {
 
 	@Override
 	public String toString() {
-		return "TFactura{" +
-				"id=" + id +
-				", precio=" + precio +
-				", abierta=" + abierta +
-				", fecha=" + fecha +
-				", lineaFacturas=" + lineaFacturas +
-				", cliente=" + cliente +
-				'}';
+		return "TFactura{" + "id=" + id + ", precio=" + precio + ", abierta="
+				+ abierta + ", fecha=" + fecha + ", lineaFacturas="
+				+ lineaFacturas + ", cliente=" + cliente + '}';
 	}
 }

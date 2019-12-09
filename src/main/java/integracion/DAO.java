@@ -14,4 +14,3 @@ public interface DAO<T> {
 
 	void eliminar(int id) throws Exception;
 }
-

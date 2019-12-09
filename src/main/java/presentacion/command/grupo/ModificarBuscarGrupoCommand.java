@@ -14,11 +14,11 @@ public class ModificarBuscarGrupoCommand implements Command {
 		String mensaje;
 		int id = (int) datos;
 		GrupoSA grupoSA = FactoriaSA.getInstancia().generaGrupoSA();
-		
-		try{
+
+		try {
 			TGrupo grupo = grupoSA.mostrar(id);
 			return new Context(EventosGrupo.MODIFICAR_BUSCAR_GRUPO_OK, grupo);
-		} catch(Exception e){
+		} catch (Exception e) {
 			mensaje = e.getMessage();
 			return new Context(EventosGrupo.MODIFICAR_BUSCAR_GRUPO_KO, mensaje);
 		}

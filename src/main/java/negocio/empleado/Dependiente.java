@@ -6,11 +6,12 @@ import java.io.Serializable;
 @Entity
 public class Dependiente extends Empleado implements Serializable {
 	@Id
-	@GeneratedValue(strategy= GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 	private int sumador;
 
-	public Dependiente() {}
+	public Dependiente() {
+	}
 
 	public Dependiente(int sumador, TEmpleado t) {
 		super(t);

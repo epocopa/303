@@ -3,10 +3,12 @@ package negocio.turno;
 import negocio.empleado.Empleado;
 
 import javax.persistence.*;
+
 import java.time.LocalTime;
 import java.util.List;
 
 @Entity
+@NamedQueries({ @NamedQuery(name = "Turno.READ", query = "SELECT trn FROM Turno trn WHERE trn.nombre = :nombre") })
 public class Turno {//TODO mapear empleado tambien
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

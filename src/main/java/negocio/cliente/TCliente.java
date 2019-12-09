@@ -11,7 +11,8 @@ public class TCliente {
 	public TCliente() {
 	}
 
-	public TCliente(int id, boolean activo, LocalDate fecha_registro, String nombre) {
+	public TCliente(int id, boolean activo, LocalDate fecha_registro,
+			String nombre) {
 		this.id = id;
 		this.activo = activo;
 		this.fecha_registro = fecha_registro;
@@ -52,11 +53,8 @@ public class TCliente {
 
 	@Override
 	public String toString() {
-		return "TCliente{" +
-				"id=" + id +
-				", activo=" + activo +
-				", fecha_registro=" + fecha_registro +
-				", nombre='" + nombre + '\'' +
-				'}';
+		return "TCliente{" + "id=" + id + ", activo=" + activo
+				+ ", fecha_registro=" + fecha_registro + ", nombre='" + nombre
+				+ '\'' + '}';
 	}
 }

@@ -18,13 +18,14 @@ public class ClienteDAOImp implements ClienteDAO {
 	private final String DELETE = "UPDATE cliente SET activo = 0 WHERE id_cliente = ?";
 	private final String READFECHA = "SELECT * FROM cliente WHERE fecha_registro BETWEEN ? AND ?";
 
-
 	public ClienteDAOImp() {
-		this.conn =  TransactionManager.getInstancia().getTransaction().getConnection();
+		this.conn = TransactionManager.getInstancia().getTransaction()
+				.getConnection();
 	}
 
 	public void insertar(TCliente e) throws Exception {
-		try (PreparedStatement st = conn.prepareStatement(INSERT, PreparedStatement.RETURN_GENERATED_KEYS)) {
+		try (PreparedStatement st = conn.prepareStatement(INSERT,
+				PreparedStatement.RETURN_GENERATED_KEYS)) {
 			st.setString(1, e.getNombre());
 			st.setDate(2, Date.valueOf(e.getFecha_registro()));
 			st.setBoolean(3, e.isActivo());
@@ -47,7 +48,8 @@ public class ClienteDAOImp implements ClienteDAO {
 			st.setInt(1, id);
 			try (ResultSet rs = st.executeQuery()) {
 				if (rs.next()) {
-					c = new TCliente(id, rs.getBoolean("activo"), rs.getDate("fecha_registro").toLocalDate(),
+					c = new TCliente(id, rs.getBoolean("activo"), rs.getDate(
+							"fecha_registro").toLocalDate(),
 							rs.getString("nombre"));
 				}
 			}
@@ -60,10 +62,12 @@ public class ClienteDAOImp implements ClienteDAO {
 
 	public List<TCliente> mostrarTodos() throws Exception {
 		ArrayList<TCliente> lista = new ArrayList<>();
-		try (PreparedStatement st = conn.prepareStatement(READALL); ResultSet rs = st.executeQuery()) {
+		try (PreparedStatement st = conn.prepareStatement(READALL);
+				ResultSet rs = st.executeQuery()) {
 			while (rs.next()) {
-				lista.add(new TCliente(rs.getInt("id_cliente"), rs.getBoolean("activo"), rs.getDate("fecha_registro").toLocalDate(),
-						rs.getString("nombre")));
+				lista.add(new TCliente(rs.getInt("id_cliente"), rs
+						.getBoolean("activo"), rs.getDate("fecha_registro")
+						.toLocalDate(), rs.getString("nombre")));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -101,8 +105,9 @@ public class ClienteDAOImp implements ClienteDAO {
 			st.setDate(2, Date.valueOf(fecha.getFechaFin()));
 			try (ResultSet rs = st.executeQuery()) {
 				while (rs.next()) {
-					lista.add(new TCliente(rs.getInt("id_cliente"), rs.getBoolean("activo"), rs.getDate("fecha_registro").toLocalDate(),
-							rs.getString("nombre")));
+					lista.add(new TCliente(rs.getInt("id_cliente"), rs
+							.getBoolean("activo"), rs.getDate("fecha_registro")
+							.toLocalDate(), rs.getString("nombre")));
 				}
 			} catch (Exception e) {
 				e.printStackTrace();

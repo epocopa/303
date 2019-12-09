@@ -52,8 +52,9 @@ public class EmpleadoSAImp implements EmpleadoSA {
 		em.getTransaction().begin();
 
 
-		emf.close();
+		
 		em.close();
+		emf.close();
 		return null;
 	}
 
@@ -64,8 +65,9 @@ public class EmpleadoSAImp implements EmpleadoSA {
 		em.getTransaction().begin();
 
 
-		emf.close();
+		
 		em.close();
+		emf.close();
 		return null;
 	}
 
@@ -95,8 +97,9 @@ public class EmpleadoSAImp implements EmpleadoSA {
 		}
 
 
-		emf.close();
+		
 		em.close();
+		emf.close();
 	}
 
 	@Override
@@ -118,12 +121,12 @@ public class EmpleadoSAImp implements EmpleadoSA {
 
 			/**
 			 * NO SE SI SE PUEDE DAR DE BAJA SI EXISTE ALGUNA
-			 * ASIGNACIÓN DE GRUPO
+			 * ASIGNACIÃ“N DE GRUPO
 			 * if(empl.getAsiganciones().isEmpty()){
 			 * 		tr.rollback();
 			 * 		MENSAJE
 			 * }
-			 * else{ TODO LO DEMÁS}
+			 * else{ TODO LO DEMÃ�S}
 			 */
 			if (empl.isActivo()) {
 				empl.setActivo(false);
@@ -141,7 +144,8 @@ public class EmpleadoSAImp implements EmpleadoSA {
 			}
 		}
 
-		emf.close();
+		
 		em.close();
+		emf.close();
 	}
 }

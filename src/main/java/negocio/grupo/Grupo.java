@@ -10,16 +10,17 @@ public class Grupo {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
-	@Column(nullable=false)
+	@Column(nullable = false)
 	private String seccion;
-	@Column(nullable=false)
+	@Column(nullable = false)
 	private boolean activo;
 	@OneToMany(mappedBy = "grupo")
 	private List<AsignacionGrupo> grupos;
 
-	public Grupo(){}
+	public Grupo() {
+	}
 
-	public Grupo(TGrupo g){
+	public Grupo(TGrupo g) {
 		this.activo = g.isActivo();
 		this.id = g.getId();
 		this.seccion = g.getSeccion();

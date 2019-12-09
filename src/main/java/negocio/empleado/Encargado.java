@@ -6,11 +6,12 @@ import java.io.Serializable;
 @Entity
 public class Encargado extends Empleado implements Serializable {
 	@Id
-	@GeneratedValue(strategy= GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 	private double multiplicador;
 
-	public Encargado() {}
+	public Encargado() {
+	}
 
 	public Encargado(double multiplicador, TEmpleado t) {
 		super(t);
@@ -32,6 +33,6 @@ public class Encargado extends Empleado implements Serializable {
 
 	@Override
 	public int getSalario() {
-		return  (int) (getSalarioBase() * multiplicador);
+		return (int) (getSalarioBase() * multiplicador);
 	}
 }

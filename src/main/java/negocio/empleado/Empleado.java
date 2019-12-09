@@ -8,9 +8,8 @@ import java.io.Serializable;
 import java.util.List;
 
 @Entity
-@NamedQueries({
-		@NamedQuery(name = "Empleado.READ", query = "SELECT emp FROM Empleado emp WHERE emp.DNI = :dni")
-})
+@NamedQueries({ @NamedQuery(name = "Empleado.READ", query = "SELECT emp FROM Empleado emp WHERE emp.DNI = :dni") })
+@Inheritance(strategy=InheritanceType.JOINED) //creo que se debe meter esto
 public abstract class Empleado implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,9 +25,10 @@ public abstract class Empleado implements Serializable {
 	@OneToMany(mappedBy = "empleado")
 	private List<AsignacionGrupo> asignaciones;
 
-	public Empleado() {}
+	public Empleado() {
+	}
 
-	public Empleado(TEmpleado e){
+	public Empleado(TEmpleado e) {
 		this.id = e.getId();
 		this.DNI = e.getDNI();
 		this.salarioBase = e.getSalarioBase();
