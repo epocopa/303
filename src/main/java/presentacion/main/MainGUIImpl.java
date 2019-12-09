@@ -580,6 +580,22 @@ public class MainGUIImpl extends JFrame implements MainGUI, GUI{
 				turnosPanel.actualizar(evento, datos);
 				System.out.println("Delegando a panel turno");
 				break;
+			case EventosTurno.ANADIR_EMPLEADO_A_TURNO_OK:
+				turnosPanel.actualizar(evento, datos);
+				System.out.println("Delegando a panel turno");
+				break;
+			case EventosTurno.ANADIR_EMPLEADO_A_TURNO_KO:
+				turnosPanel.actualizar(evento, datos);
+				System.out.println("Delegando a panel turno");
+				break;
+			case EventosTurno.BAJA_EMPLEADO_A_TURNO_OK:
+				turnosPanel.actualizar(evento, datos);
+				System.out.println("Delegando a panel turno");
+				break;
+			case EventosTurno.BAJA_EMPLEADO_A_TURNO_KO:
+				turnosPanel.actualizar(evento, datos);
+				System.out.println("Delegando a panel turno");
+				break;
 				
 				//--- ACTUALIZAR GRUPO ---//
 				

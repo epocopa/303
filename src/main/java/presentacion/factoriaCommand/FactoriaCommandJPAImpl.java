@@ -18,7 +18,9 @@ import presentacion.command.grupo.MostrarGrupoCommand;
 import presentacion.command.menu.MostrarEmpleadoGUICommand;
 import presentacion.command.menu.MostrarGrupoGUICommand;
 import presentacion.command.menu.MostrarTurnoGUICommand;
+import presentacion.command.turno.AnadirEmpleadoATurnoCommand;
 import presentacion.command.turno.AnadirTurnoCommand;
+import presentacion.command.turno.BajaEmpleadoATurnoCommand;
 import presentacion.command.turno.BajaTurnoCommand;
 import presentacion.command.turno.ListarTurnosCommand;
 import presentacion.command.turno.ModificarBuscarTurnoCommand;
@@ -44,6 +46,8 @@ public class FactoriaCommandJPAImpl extends FactoriaCommandImpl{
 			case EventosTurno.MOSTRAR_TURNO: comando = new MostrarTurnoCommand(); break;
 			case EventosTurno.LISTAR_TURNO: comando = new ListarTurnosCommand(); break;
 			case EventosTurno.MODIFICAR_BUSCAR_TURNO: comando = new ModificarBuscarTurnoCommand(); break;
+			case EventosTurno.ANADIR_EMPLEADO_A_TURNO: comando = new AnadirEmpleadoATurnoCommand(); break;
+			case EventosTurno.BAJA_EMPLEADO_A_TURNO: comando = new BajaEmpleadoATurnoCommand(); break;
 			
 			case EventosGrupo.ANADIR_GRUPO: comando = new AnadirGrupoCommand(); break;
 			case EventosGrupo.MODIFICAR_GRUPO: comando = new ModificarGrupoCommand(); break;
