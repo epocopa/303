@@ -1,13 +1,16 @@
 package negocio.turno;
 
+import negocio.empleado.Empleado;
 import negocio.empleado.TEmpleado;
 
+import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 public class TurnoSAImp implements TurnoSA {
 	@Override
 	public void insertar(TTurno turno) throws Exception {
-		EntityManagerFactory emf = Persistence.createEntityManagerFactory("303");
+/*		EntityManagerFactory emf = Persistence.createEntityManagerFactory("303");
 		EntityManager em = emf.createEntityManager();
 		em.getTransaction().begin();
 
@@ -60,7 +63,7 @@ public class TurnoSAImp implements TurnoSA {
 
 			
 		emf.close();
-		em.close();
+		em.close();*/
 	}
 
 	@Override
@@ -86,8 +89,8 @@ public class TurnoSAImp implements TurnoSA {
 		
 		emf.close();
 		em.close();
-		return turno;
-	
+		return null;
+
 	}
 
 	@Override
@@ -123,7 +126,7 @@ public class TurnoSAImp implements TurnoSA {
 		EntityManager em = emf.createEntityManager();
 		em.getTransaction().begin();
 
-		Turno 
+
 
 
 		emf.close();
@@ -186,9 +189,9 @@ public class TurnoSAImp implements TurnoSA {
 			//MENSAJE TURNO CON ESE ID NO EXISTE
 		}
 		else{
-			Empleado emp = new Empleado(empleado.getDNI(),empleado.getNombre(),
+	/*		Empleado emp = new Empleado(empleado.getDNI(),empleado.getNombre(),
 							empleado.getSalarioBase(),empleado.isActivo(),empleado.getId());
-			turno.getEmpleados().add(emp);
+			turno.getEmpleados().add(emp);*/
 
 			try{
 				em.getTransaction().commit();
@@ -216,10 +219,10 @@ public class TurnoSAImp implements TurnoSA {
 			//MENSAJE TURNO CON ESE ID NO EXISTE
 		}
 		else{
-			Empleado emp = new Empleado(empleado.getDNI(),empleado.getNombre(),
+/*			Empleado emp = new Empleado(empleado.getDNI(),empleado.getNombre(),
 							empleado.getSalarioBase(),empleado.isActivo(),empleado.getId());
 			
-			turno.getEmpleados().remove(emp);
+			turno.getEmpleados().remove(emp);*/
 			
 			try{
 				em.getTransaction().commit();

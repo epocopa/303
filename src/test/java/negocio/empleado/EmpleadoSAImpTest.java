@@ -49,7 +49,9 @@ class EmpleadoSAImpTest {
         tEmpleado1.setSalarioBase(650);
         tEmpleado1.setId(1);
 
+/* TODO
         empleado1 = new Empleado(tEmpleado1);
+*/
 
         //Empleado 2
         tEmpleado2 = new TEmpleado();
@@ -60,7 +62,9 @@ class EmpleadoSAImpTest {
         tEmpleado2.setSalarioBase(30);
         tEmpleado2.setId(2);
 
+/*TODO
         empleado2 = new Empleado(tEmpleado2);
+*/
     }
     @Test
     void testInsertar() {

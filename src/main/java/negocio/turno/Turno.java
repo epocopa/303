@@ -22,7 +22,6 @@ public class Turno {//TODO mapear empleado tambien
 	@OneToMany(mappedBy = "turno")
 	private List<Empleado> empleados;
 
-<<<<<<< HEAD
 	public Turno(){}
 
 	public Turno(TTurno t){
@@ -33,15 +32,6 @@ public class Turno {//TODO mapear empleado tambien
 		this.fin = t.getHoraFin();
 	}
 
-=======
-	public Turno(int id, String nombre, boolean activo, int inicio, int fin){
-		this.id = id;
-		this.nombre = nombre;
-		this.activo = activo;
-		this.inicio = inicio;
-		this.fin = fin;	
-	}	
->>>>>>> c47a4600c97294d0e2c04e6e30fb159e2c21ce37
 	public int getId() {
 		return id;
 	}

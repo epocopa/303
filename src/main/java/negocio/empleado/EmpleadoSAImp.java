@@ -1,37 +1,27 @@
 package negocio.empleado;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
-import javax.persistence.Query;
+import javax.persistence.*;
 import java.util.List;
+//TODO
 
 public class EmpleadoSAImp implements EmpleadoSA {
-	
+
 	@Override
-	public void insertar(TEmpleado empleado) throws Exception {
+	public void insertar(TEmpleado empleado) {
 
 		EntityManagerFactory emf = Persistence.createEntityManagerFactory("303");
 		EntityManager em = emf.createEntityManager();
 		em.getTransaction().begin();
 
-		//check if DNI exists --> (comprobar consulta, lo estoy haciendo a pelo)
-		String statement = "SELECT emp FROM Empleado emp WHERE emp.dni = :dni";
-		Query query = em.createQuery(statement);
-		query.setParameter("id", empleado.getId());
+		Query query = em.createNamedQuery("Empleado.READ", Empleado.class);
+		query.setParameter("dni", empleado.getDNI());
 		Empleado empl = null;
-		try{
+		try {
 			empl = (Empleado) query.getSingleResult();
-		}
-		catch(Exception e){}//creo que es NoResultException
-		//TODO checks acording to SRS
+		} catch (NoResultException ignored) {}
 
 		//empl does not exists in DB
-		if(empl == null){
-			/**
-			 * DUDA: comprobar estado de los datos de turno/grupo
-			 * si los hubiera al altaEmpleadoSA
-			 */
+		if (empl == null) {
 			if (empleado.isEncargado()) {
 				Encargado encargado = new Encargado((TEncargado) empleado);
 				em.persist(encargado);
@@ -41,37 +31,18 @@ public class EmpleadoSAImp implements EmpleadoSA {
 				em.persist(dependiente);
 				empleado.setId(dependiente.getId());
 			}
-			try{
-				em.getTransaction().commit();
-			}
-			catch(Exception e){
+		} else {
+			if (empl.isActivo()) {
 				em.getTransaction().rollback();
-				//MENSAJE DE ERROR EN CONCURRENCIA
-			}
-		}
-		//empl exists in DB
-		else{
-			//check state
-			if(empl.isActivo()){
-				//MENSAJE YA ESTA DADO DE ALTA
-				em.getTransaction().rollback();
-			}
-			else{
-				//Activamos el empleado
+				return;
+			} else {
 				empl.setActivo(true);
-				try{
-					em.getTransaction().commit();
-				}
-				catch(Exception e){
-					em.getTransaction().rollback();
-				}
-				//MENSAJE DADO DE ALTA TRAS ESTAR INACTIVO
 			}
 		}
-		
-		
-		emf.close();
+
+		em.getTransaction().commit();
 		em.close();
+		emf.close();
 	}
 
 	@Override
@@ -80,26 +51,10 @@ public class EmpleadoSAImp implements EmpleadoSA {
 		EntityManager em = emf.createEntityManager();
 		em.getTransaction().begin();
 
-		
-
-		
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 		emf.close();
 		em.close();
+		return null;
 	}
 
 	@Override
@@ -109,19 +64,9 @@ public class EmpleadoSAImp implements EmpleadoSA {
 		em.getTransaction().begin();
 
 
-
-
-
-
-
-
-
-
-
-
-
 		emf.close();
 		em.close();
+		return null;
 	}
 
 	@Override
@@ -135,28 +80,19 @@ public class EmpleadoSAImp implements EmpleadoSA {
 		Query query = em.createQuery(statement);
 		query.setParameter("id", empleado.getId());
 
-		try{
+		try {
 			empl = (Empleado) query.getSingleResult();
+		} catch (NoResultException e) {
 		}
-		catch(NoResultException){}
 
 		//Empl exists in DB
-		if(empl != null){
+		if (empl != null) {
 
 
 		}//Empl does not exists in DB
-		else{
-			
+		else {
+
 		}
-
-
-
-
-
-
-
-
-
 
 
 		emf.close();
@@ -169,15 +105,15 @@ public class EmpleadoSAImp implements EmpleadoSA {
 		EntityManager em = emf.createEntityManager();
 		em.getTransaction().begin();
 
-		Empleado empl = em.find(Empleado.class,id);
+		Empleado empl = em.find(Empleado.class, id);
 
 		//empl does not exists in DB
-		if(empl == null){
+		if (empl == null) {
 			//MENSAJE EMPLEADO CON ESE ID NO EXISTE
 			em.getTransaction().rollback();
 		}
 		//empl exists in DB
-		else{
+		else {
 			//empl activated
 
 			/**
@@ -189,23 +125,22 @@ public class EmpleadoSAImp implements EmpleadoSA {
 			 * }
 			 * else{ TODO LO DEMÁS}
 			 */
-			if(empl.isActivo()){
+			if (empl.isActivo()) {
 				empl.setActivo(false);
-				try{
+				try {
 					em.getTransaction().commit();
-				}
-				catch(Exception e){
+				} catch (Exception e) {
 					em.getTransaction().rollback();
 					//MENSAJE ERROR DE CONCURRENCIA
 				}
 			}
 			//empl deactivaded
-			else{
+			else {
 				//MENSAJE DE YA ESTA DADO DE BAJA
 				em.getTransaction().rollback();
 			}
 		}
-		
+
 		emf.close();
 		em.close();
 	}

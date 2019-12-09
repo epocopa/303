@@ -1,17 +1,12 @@
 package negocio.empleado;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 public class Encargado extends Empleado {
-	/* No coge el id de empleado?
 	@Id
 	@GeneratedValue(strategy= GenerationType.IDENTITY)
-	private int id;*/
-	@Column(nullable=false)
+	private int id;
 	private double multiplicador;
 
 	public Encargado() {}
