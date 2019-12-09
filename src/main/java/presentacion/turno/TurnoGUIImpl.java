@@ -37,7 +37,7 @@ import presentacion.controladorAplicacion.EventosTurno;
 import presentacion.factoria.FactoriaPresentacion;
 
 public class TurnoGUIImpl extends JPanel implements TurnoGUI, GUI{
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;//
 
 	private String name = "TURNOS";
 	
