@@ -37,7 +37,6 @@ public class GrupoSAImp implements GrupoSA {
 			g = (Grupo) query.getSingleResult();
 		}
 		catch(NoResultException e){}
-		//TODO checks acording to SRS
 
 		//grupo does not exists in DB
 		if(g == null){
@@ -144,7 +143,41 @@ public class GrupoSAImp implements GrupoSA {
 
 	@Override
 	public void modificar(TGrupo grupo) throws Exception {
+		EntityManagerFactory emf = Persistence.createEntityManagerFactory("303");
+		EntityManager em = emf.createEntityManager();
+		em.getTransaction().begin();
+		
+		Grupo g = em.find(Grupo.class, grupo.getId());
 
+		if (g == null) {
+			em.getTransaction().rollback();
+			em.close();
+			emf.close();
+			throw new Exception("No existe un grupo con ID =" + g.getId());
+		}
+		
+		Query query = em.createNamedQuery("Grupo.READ", Turno.class);
+		query.setParameter("seccion", grupo.getSeccion());
+		Grupo grp = null;
+		try {
+			grp = (Grupo) query.getSingleResult();
+		} catch (NoResultException ignored) {}
+
+		if (grp != null && !g.getSeccion().equals(grupo.getSeccion())) {
+			em.getTransaction().rollback();
+			em.close();
+			emf.close();
+			throw new Exception("Ya existe un grupo con seccion  =" + grupo.getSeccion());
+		}
+
+
+		g.setSeccion(grupo.getSeccion());
+		g.setActivo(grupo.isActivo());
+		
+
+		em.getTransaction().commit();
+		em.close();
+		emf.close();
 	}
 
 	@Override
@@ -166,14 +199,19 @@ public class GrupoSAImp implements GrupoSA {
 		else{
 			if(!grupo.isActivo()){
 				em.getTransaction().rollback();
+				em.close();
+				emf.close();
 				throw new Exception("El grupo con id "+id+" ya está dado de baja");
 			}
 			else{
-				/*if(grupo.getEmpleados().size()>0){
+				if(grupo.getGrupos().size()>0){
 					//MENSAJE: ESE TURNO TIENE EMPLEADOS
 					em.getTransaction().rollback();
+					em.close();
+					emf.close();
+					throw new Exception("El grupo no se puede borrar ya que contiene empleados");
 				}
-				else{*/
+				else{
 				grupo.setActivo(false);
 					//MENSAJE BAJA CORRECTA
 				}
@@ -189,6 +227,7 @@ public class GrupoSAImp implements GrupoSA {
 				}
 				
 			//}
+			}
 		}
 
 
@@ -203,8 +242,8 @@ public class GrupoSAImp implements GrupoSA {
 		EntityManager em = emf.createEntityManager();
 		em.getTransaction().begin();
 
-		Grupo grupo = em.find(Grupo.class, empleado.getIdGrupo(),LockModeType.OPTIMISTIC);
-		Empleado emp = em.find(Empleado.class, empleado.getIdEmpleado(),LockModeType.OPTIMISTIC);
+		Grupo grupo = em.find(Grupo.class, empleado.getIdGrupo());
+		Empleado emp = em.find(Empleado.class, empleado.getIdEmpleado());
 		
 		if(grupo == null && emp == null){
 			throw new Exception("No existe el grupo con id "+empleado.getIdGrupo()+" ni el empleado con id "+empleado.getIdEmpleado());
