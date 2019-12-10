@@ -93,7 +93,7 @@ public class GrupoSAImp implements GrupoSA {
 			throw new Exception("No existe el grupo con id: "+id);
 		}
 		else{
-			//MIRAR SI FALTA AÃ‘ADIR LISTA DE EMPLEADOS COMO CAMPO EN EL TRANSFER
+			//MIRAR SI FALTA ANADIR LISTA DE EMPLEADOS COMO CAMPO EN EL TRANSFER
 			grupo = new TGrupo(g.getId(),g.getSeccion(),g.isActivo()); 
 		}
 		
@@ -160,7 +160,7 @@ public class GrupoSAImp implements GrupoSA {
 		else{
 			if(!grupo.isActivo()){
 				em.getTransaction().rollback();
-				throw new Exception("El grupo con id "+id+" ya está dado de baja");
+				throw new Exception("El grupo con id "+id+" ya estï¿½ dado de baja");
 			}
 			else{
 				/*if(grupo.getEmpleados().size()>0){
