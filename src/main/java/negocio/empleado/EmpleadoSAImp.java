@@ -164,43 +164,25 @@ public class EmpleadoSAImp implements EmpleadoSA {
 		EntityManager em = emf.createEntityManager();
 		em.getTransaction().begin();
 
-		Empleado empl = em.find(Empleado.class, id);
+		Empleado e = em.find(Empleado.class, id);
 
-		//empl does not exists in DB
-		if (empl == null) {
-			//MENSAJE EMPLEADO CON ESE ID NO EXISTE
+		if (e == null) {
 			em.getTransaction().rollback();
-		}
-		//empl exists in DB
-		else {
-			//empl activated
-
-			/**
-			 * NO SE SI SE PUEDE DAR DE BAJA SI EXISTE ALGUNA
-			 * ASIGNACIÃ“N DE GRUPO
-			 * if(empl.getAsiganciones().isEmpty()){
-			 * 		tr.rollback();
-			 * 		MENSAJE
-			 * }
-			 * else{ TODO LO DEMÃ�S}
-			 */
-			if (empl.isActivo()) {
-				empl.setActivo(false);
-				try {
-					em.getTransaction().commit();
-				} catch (Exception e) {
-					em.getTransaction().rollback();
-					//MENSAJE ERROR DE CONCURRENCIA
-				}
-			}
-			//empl deactivaded
-			else {
-				//MENSAJE DE YA ESTA DADO DE BAJA
-				em.getTransaction().rollback();
-			}
+			em.close();
+			emf.close();
+			throw new Exception("No existe un empleado con ID =" + id);
 		}
 
+		if (e.isActivo()) {
+			e.setActivo(false);
+		} else {
+			em.getTransaction().rollback();
+			em.close();
+			emf.close();
+			throw new Exception("El empleado ya estaba dado de baja");
+		}
 
+		em.getTransaction().commit();
 		em.close();
 		emf.close();
 	}
