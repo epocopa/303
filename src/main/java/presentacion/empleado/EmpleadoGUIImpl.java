@@ -265,11 +265,6 @@ public class EmpleadoGUIImpl extends JPanel implements EmpleadoGUI, GUI{
 		formPanel.add(salarioBaseLabel, c);
 		
 		c.gridy++;
-		JLabel idTurnoLabel = new JLabel("ID Turno: ");
-		idTurnoLabel.setFont(new Font("Arial", Font.PLAIN, 18));
-		formPanel.add(idTurnoLabel, c);
-
-		c.gridy++;
 		JLabel encargadoLabel = new JLabel("Encargado(?): ");
 		encargadoLabel.setFont(new Font("Arial", Font.PLAIN, 18));
 		formPanel.add(encargadoLabel, c);
@@ -287,10 +282,6 @@ public class EmpleadoGUIImpl extends JPanel implements EmpleadoGUI, GUI{
 		c.gridy++;
 		JTextField salarioBaseField = new JTextField(15);
 		formPanel.add(salarioBaseField, c);
-		
-		c.gridy++;
-		JTextField idTurnoField = new JTextField(15);
-		formPanel.add(idTurnoField, c);
 		
 		c.gridy++;
 		JTextField encargadoField = new JTextField(15);
@@ -312,11 +303,11 @@ public class EmpleadoGUIImpl extends JPanel implements EmpleadoGUI, GUI{
 					int salarioBase = Integer.parseInt(salarioBaseField.getText());
 					boolean encargado = Boolean.valueOf(encargadoField.getText());
 
-					if (nombre.length() > 0 && !nombre.equals("") && dni.length() > 0 && !dni.equals("") && salarioBaseField.getText().length() > 0 && !salarioBaseField.getText().equals("") && encargadoField.getText().length() > 0 && !encargadoField.getText().equals("") && idTurnoField.getText().length() > 0 && !idTurnoField.getText().equals("")) {
+					if (nombre.length() > 0 && !nombre.equals("") && dni.length() > 0 && !dni.equals("") && salarioBaseField.getText().length() > 0 && !salarioBaseField.getText().equals("") && encargadoField.getText().length() > 0 && !encargadoField.getText().equals("")) {
 						if(encargado == true) {
 							String mul = JOptionPane.showInputDialog(null, "Introduzca el multiplicador", "Finalizar operacion", JOptionPane.INFORMATION_MESSAGE);
 							if(mul != null) {
-								TEncargado e1 = new TEncargado(0, nombre, dni, salarioBase, true, Double.parseDouble(mul), Integer.parseInt(idTurnoField.getText()));
+								TEncargado e1 = new TEncargado(-1, nombre, dni, salarioBase, true, Double.parseDouble(mul), -1);
 								Context contexto = new Context(EventosEmpleado.ANADIR_EMPLEADO, e1);
 								ControladorAplicacion.getInstance().accion(contexto);
 							}
@@ -324,7 +315,7 @@ public class EmpleadoGUIImpl extends JPanel implements EmpleadoGUI, GUI{
 						else {
 							String sum = JOptionPane.showInputDialog(null, "Introduzca el sumador", "Finalizar operacion", JOptionPane.INFORMATION_MESSAGE);
 							if(sum != null) {
-								TDependiente dependiente = new TDependiente(0, nombre, dni, salarioBase, true, Integer.parseInt(sum), Integer.parseInt(idTurnoField.getText()));
+								TDependiente dependiente = new TDependiente(-1, nombre, dni, salarioBase, true, Integer.parseInt(sum), -1);
 								Context contexto = new Context(EventosEmpleado.ANADIR_EMPLEADO, dependiente);
 								ControladorAplicacion.getInstance().accion(contexto);
 							}
