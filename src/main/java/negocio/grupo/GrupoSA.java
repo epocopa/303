@@ -6,7 +6,7 @@ import negocio.empleado.TTrabaja;
 import java.util.List;
 
 public interface GrupoSA {
-	void insertar(TGrupo grupo) throws Exception;
+	int insertar(TGrupo grupo) throws Exception;
 	TGrupo mostrar(int id) throws Exception;
 	List<TGrupo> mostrarTodos() throws Exception;
 	void modificar(TGrupo grupo) throws Exception;

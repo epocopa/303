@@ -13,14 +13,19 @@ public class Turno {//TODO mapear empleado tambien
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
+	
 	@Column(nullable=false)
 	private String nombre;
+	
 	@Column(nullable=false)
 	private boolean activo;
+	
 	@Column(nullable=false)
 	private LocalTime inicio;
+	
 	@Column(nullable=false)
 	private LocalTime fin;
+	
 	@OneToMany(mappedBy = "turno")
 	private List<Empleado> empleados;
 

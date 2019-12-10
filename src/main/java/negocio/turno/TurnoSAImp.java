@@ -1,7 +1,11 @@
 package negocio.turno;
 
+import negocio.empleado.Dependiente;
 import negocio.empleado.Empleado;
+import negocio.empleado.Encargado;
+import negocio.empleado.TDependiente;
 import negocio.empleado.TEmpleado;
+import negocio.empleado.TEncargado;
 
 import javax.persistence.*;
 
@@ -10,7 +14,7 @@ import java.util.List;
 
 public class TurnoSAImp implements TurnoSA {
 	@Override
-	public void insertar(TTurno turno) throws Exception {
+	public int insertar(TTurno turno) throws Exception {
 		EntityManagerFactory emf = Persistence.createEntityManagerFactory("303");
 		EntityManager em = emf.createEntityManager();
 		em.getTransaction().begin();
@@ -23,7 +27,7 @@ public class TurnoSAImp implements TurnoSA {
 			t = (Turno) query.getSingleResult();
 		}
 		catch(NoResultException e){}
-		//TODO checks acording to SRS
+		
 
 		//turno does not exists in DB
 		if(t == null){
@@ -33,9 +37,11 @@ public class TurnoSAImp implements TurnoSA {
 
 			try{
 				em.getTransaction().commit();
-				//MENSAJE DADO DE ALTA CON Ã‰XITO
-			}catch(Exception e){
+			}
+			catch(Exception e){
 				em.getTransaction().rollback();
+				em.close();
+				emf.close();
 				throw new Exception("Error en concurrencia");
 			}
 			
@@ -44,7 +50,9 @@ public class TurnoSAImp implements TurnoSA {
 		else{
 			if(t.isActivo()){
 				em.getTransaction().rollback();
-				throw new Exception("Ya existe un turno con nombre =" + t.getNombre());
+				em.close();
+				emf.close();
+				throw new Exception("Ya existe un turno con nombre = " + t.getNombre());
 			}
 			//reactivamos el turno
 			else{
@@ -54,16 +62,19 @@ public class TurnoSAImp implements TurnoSA {
 				}
 				catch(Exception e){
 					em.getTransaction().rollback();
+					em.close();
+					emf.close();
 					throw new Exception("Error en concurrencia");
 				}
-				//MENSAJE DADO DE ALTA TRAS INACTIVIDAD
 			}
 		}
 
-
+		Turno trn = (Turno) query.getSingleResult();
+		int id = trn.getId();
+		
 		em.close();
 		emf.close();
-		
+		return id;
 	}
 
 	@Override
@@ -75,12 +86,13 @@ public class TurnoSAImp implements TurnoSA {
 		Turno t = em.find(Turno.class,id);
 		TTurno turno = null;
 		if(t==null){
+			em.getTransaction().rollback();
 			em.close();
 			emf.close();
 			throw new Exception("No existe el turno con id: "+id);
 		}
 		else{
-			//MIRAR SI FALTA AÃ‘ADIR LISTA DE EMPLEADOS COMO CAMPO EN EL TRANSFER
+			
 			turno = new TTurno(t.getId(),t.getNombre(),t.getInicio(),t.getFin(),t.isActivo()); 
 		}
 		
@@ -129,22 +141,37 @@ public class TurnoSAImp implements TurnoSA {
 		EntityManagerFactory emf = Persistence.createEntityManagerFactory("303");
 		EntityManager em = emf.createEntityManager();
 		em.getTransaction().begin();
-		/*
-		Turno t = null;
 		
-		t = em.find(Turno.class, turno.getId());
-		t.setActivo(turno.isActivo());
-	//	em.persist(t);
-		try{
-			em.getTransaction().commit();
-		}
-		catch (Exception e){
-			
-		}
-		
- 		*/
+		Turno t = em.find(Turno.class, turno.getId());
 
+		if (t == null) {
+			em.getTransaction().rollback();
+			em.close();
+			emf.close();
+			throw new Exception("No existe un turno con ID =" + t.getId());
+		}
 		
+		Query query = em.createNamedQuery("Turno.READ", Turno.class);
+		query.setParameter("nombre", turno.getNombre());
+		Turno turn = null;
+		try {
+			turn = (Turno) query.getSingleResult();
+		} catch (NoResultException ignored) {}
+
+		if (turn != null && !t.getNombre().equals(turno.getNombre())) {
+			em.getTransaction().rollback();
+			em.close();
+			emf.close();
+			throw new Exception("Ya existe un turno con nombre  =" + turno.getNombre());
+		}
+
+
+		t.setNombre(turno.getNombre());
+		t.setInicio(turno.getHoraInicio());
+		t.setFin(turno.getHoraFin());
+		t.setActivo(turno.isActivo());
+
+		em.getTransaction().commit();
 		em.close();
 		emf.close();
 	}
@@ -168,6 +195,8 @@ public class TurnoSAImp implements TurnoSA {
 		else{
 			if(!turno.isActivo()){
 				em.getTransaction().rollback();
+				em.close();
+				emf.close();
 				throw new Exception("El turno con id "+id+" ya está dado de baja");
 			}
 			else{
@@ -189,8 +218,6 @@ public class TurnoSAImp implements TurnoSA {
 				
 			}
 		}
-
-
 		
 		em.close();
 		emf.close();
@@ -205,6 +232,9 @@ public class TurnoSAImp implements TurnoSA {
 		Turno turno = em.find(Turno.class, idTurno);
 
 		if(turno == null){
+			em.getTransaction().rollback();
+			em.close();
+			emf.close();
 			throw new Exception("No existe el turno con id"+idTurno);
 		}
 		else{
@@ -217,6 +247,8 @@ public class TurnoSAImp implements TurnoSA {
 			}
 			catch(Exception e){
 				em.getTransaction().rollback();
+				em.close();
+				emf.close();
 				throw new Exception("Error en concurrencia");
 			}
 		}

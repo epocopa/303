@@ -16,8 +16,8 @@ public class AnadirEmpleadoCommand implements Command{
 		EmpleadoSA empleadoSA = FactoriaSA.getInstancia().generaEmpleadoSA();
 		
 		try{
-			empleadoSA.insertar(empleado);
-			mensaje = "El empleado se ha registrado con exito. Su id es:" + empleado.getId();
+			int id = empleadoSA.insertar(empleado);
+			mensaje = "El empleado se ha registrado con exito. Su id es:" + id;
 			return new Context(EventosEmpleado.ANADIR_EMPLEADO_OK, mensaje);
 		} catch(Exception e){
 			mensaje = e.getMessage();

@@ -16,8 +16,8 @@ public class AnadirGrupoCommand implements Command {
 		GrupoSA grupoSA = FactoriaSA.getInstancia().generaGrupoSA();
 		
 		try{
-			grupoSA.insertar(grupo);
-			mensaje = "El grupo de trabajo se ha registrado con exito. Su id es:" + grupo.getId();
+			int id = grupoSA.insertar(grupo);
+			mensaje = "El grupo de trabajo se ha registrado con exito. Su id es:" + id;
 			return new Context(EventosGrupo.ANADIR_GRUPO_OK, mensaje);
 		} catch(Exception e){
 			mensaje = e.getMessage();

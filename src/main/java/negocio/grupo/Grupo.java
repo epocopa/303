@@ -12,10 +12,13 @@ public class Grupo {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
+	
 	@Column(nullable = false)
 	private String seccion;
+	
 	@Column(nullable = false)
 	private boolean activo;
+	
 	@OneToMany(mappedBy = "grupo")
 	private List<AsignacionGrupo> grupos;
 

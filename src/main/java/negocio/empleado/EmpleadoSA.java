@@ -3,7 +3,7 @@ package negocio.empleado;
 import java.util.List;
 
 public interface EmpleadoSA {
-	void insertar(TEmpleado empleado) throws Exception;
+	int insertar(TEmpleado empleado) throws Exception;
 
 	TEmpleado mostrar(int id) throws Exception;
 

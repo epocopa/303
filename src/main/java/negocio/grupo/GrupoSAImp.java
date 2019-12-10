@@ -24,7 +24,7 @@ import javax.persistence.TypedQuery;
 
 public class GrupoSAImp implements GrupoSA {
 	@Override
-	public void insertar(TGrupo grupo) throws Exception {
+	public int insertar(TGrupo grupo) throws Exception {
 		EntityManagerFactory emf = Persistence.createEntityManagerFactory("303");
 		EntityManager em = emf.createEntityManager();
 		em.getTransaction().begin();
@@ -50,6 +50,8 @@ public class GrupoSAImp implements GrupoSA {
 				//MENSAJE DADO DE ALTA CON Ã‰XITO
 			}catch(Exception e){
 				em.getTransaction().rollback();
+				em.close();
+				emf.close();
 				throw new Exception("Error en concurrencia");
 			}
 			
@@ -58,6 +60,8 @@ public class GrupoSAImp implements GrupoSA {
 		else{
 			if(g.isActivo()){
 				em.getTransaction().rollback();
+				em.close();
+				emf.close();
 				throw new Exception("Ya existe un grupo con seccion = " + g.getSeccion());
 			}
 			//reactivamos el grupo
@@ -68,15 +72,21 @@ public class GrupoSAImp implements GrupoSA {
 				}
 				catch(Exception e){
 					em.getTransaction().rollback();
+					em.close();
+					emf.close();
 					throw new Exception("Error en concurrencia");
 				}
 				//MENSAJE DADO DE ALTA TRAS INACTIVIDAD
 			}
 		}
 
-
+		Grupo gr = (Grupo) query.getSingleResult();
+		int id = gr.getId();
+		
 		em.close();
 		emf.close();
+		
+		return id;
 	}
 
 	@Override
@@ -88,6 +98,7 @@ public class GrupoSAImp implements GrupoSA {
 		Grupo g = em.find(Grupo.class,id);
 		TGrupo grupo = null;
 		if(g==null){
+			em.getTransaction().rollback();
 			em.close();
 			emf.close();
 			throw new Exception("No existe el grupo con id: "+id);
@@ -160,7 +171,7 @@ public class GrupoSAImp implements GrupoSA {
 		else{
 			if(!grupo.isActivo()){
 				em.getTransaction().rollback();
-				throw new Exception("El grupo con id "+id+" ya estï¿½ dado de baja");
+				throw new Exception("El grupo con id "+id+" ya está dado de baja");
 			}
 			else{
 				/*if(grupo.getEmpleados().size()>0){
@@ -176,6 +187,9 @@ public class GrupoSAImp implements GrupoSA {
 					em.getTransaction().commit();
 				}
 				catch(Exception e){
+					em.getTransaction().rollback();
+					em.close();
+					emf.close();
 					throw new Exception("Error en concurrencia");
 				}
 				

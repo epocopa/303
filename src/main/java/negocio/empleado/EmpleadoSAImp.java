@@ -1,13 +1,16 @@
 package negocio.empleado;
 
 import javax.persistence.*;
+
+import negocio.grupo.Grupo;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class EmpleadoSAImp implements EmpleadoSA {
 
 	@Override
-	public void insertar(TEmpleado empleado) throws Exception {
+	public int insertar(TEmpleado empleado) throws Exception {
 
 		EntityManagerFactory emf = Persistence.createEntityManagerFactory("303");
 		EntityManager em = emf.createEntityManager();
@@ -43,9 +46,14 @@ public class EmpleadoSAImp implements EmpleadoSA {
 				empl.setActivo(true);
 			}
 		}
+		
+		Empleado emp = (Empleado) query.getSingleResult();
+		int id = emp.getId();
 
 		em.close();
 		emf.close();
+		
+		return id;
 	}
 
 	@Override

@@ -16,8 +16,8 @@ public class AnadirTurnoCommand implements Command{
 		TurnoSA turnoSA = FactoriaSA.getInstancia().generaTurnoSA();
 		
 		try{
-			turnoSA.insertar(turno);
-			mensaje = "El turno se ha registrado con exito. Su id es:" + turno.getId();
+			int id = turnoSA.insertar(turno);
+			mensaje = "El turno se ha registrado con exito. Su id es:" + id;
 			return new Context(EventosTurno.ANADIR_TURNO_OK, mensaje);
 		} catch(Exception e){
 			mensaje = e.getMessage();
