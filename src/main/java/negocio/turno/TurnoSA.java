@@ -5,7 +5,7 @@ import negocio.empleado.TEmpleado;
 import java.util.List;
 
 public interface TurnoSA {
-	int insertar(TTurno turno) throws Exception;
+	void insertar(TTurno turno) throws Exception;
 	TTurno mostrar(int id) throws Exception;
 	List<TTurno> mostrarTodos() throws Exception;
 	void modificar(TTurno turno) throws Exception;

@@ -24,7 +24,7 @@ import javax.persistence.TypedQuery;
 
 public class GrupoSAImp implements GrupoSA {
 	@Override
-	public int insertar(TGrupo grupo) throws Exception {
+	public void insertar(TGrupo grupo) throws Exception {
 		EntityManagerFactory emf = Persistence.createEntityManagerFactory("303");
 		EntityManager em = emf.createEntityManager();
 		em.getTransaction().begin();
@@ -43,7 +43,7 @@ public class GrupoSAImp implements GrupoSA {
 		if(g == null){
 			Grupo gr = new Grupo(grupo);
 			em.persist(gr);
-			//GRUPO PERSISTIDO
+			grupo.setId(gr.getId());
 
 			try{
 				em.getTransaction().commit();
@@ -79,14 +79,9 @@ public class GrupoSAImp implements GrupoSA {
 				//MENSAJE DADO DE ALTA TRAS INACTIVIDAD
 			}
 		}
-
-		Grupo gr = (Grupo) query.getSingleResult();
-		int id = gr.getId();
 		
 		em.close();
 		emf.close();
-		
-		return id;
 	}
 
 	@Override

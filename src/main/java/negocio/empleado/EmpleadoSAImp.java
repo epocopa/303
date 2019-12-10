@@ -10,7 +10,7 @@ import java.util.List;
 public class EmpleadoSAImp implements EmpleadoSA {
 
 	@Override
-	public int insertar(TEmpleado empleado) throws Exception {
+	public void insertar(TEmpleado empleado) throws Exception {
 
 		EntityManagerFactory emf = Persistence.createEntityManagerFactory("303");
 		EntityManager em = emf.createEntityManager();
@@ -47,13 +47,11 @@ public class EmpleadoSAImp implements EmpleadoSA {
 			}
 		}
 		
-		Empleado emp = (Empleado) query.getSingleResult();
-		int id = emp.getId();
 
 		em.close();
 		emf.close();
 		
-		return id;
+		
 	}
 
 	@Override

@@ -14,7 +14,7 @@ import java.util.List;
 
 public class TurnoSAImp implements TurnoSA {
 	@Override
-	public int insertar(TTurno turno) throws Exception {
+	public void insertar(TTurno turno) throws Exception {
 		EntityManagerFactory emf = Persistence.createEntityManagerFactory("303");
 		EntityManager em = emf.createEntityManager();
 		em.getTransaction().begin();
@@ -33,7 +33,7 @@ public class TurnoSAImp implements TurnoSA {
 		if(t == null){
 			Turno trn = new Turno(turno);
 			em.persist(trn);
-			//TURNO PERSISTIDO
+			turno.setId(trn.getId());
 
 			try{
 				em.getTransaction().commit();
@@ -69,12 +69,9 @@ public class TurnoSAImp implements TurnoSA {
 			}
 		}
 
-		Turno trn = (Turno) query.getSingleResult();
-		int id = trn.getId();
 		
 		em.close();
 		emf.close();
-		return id;
 	}
 
 	@Override
