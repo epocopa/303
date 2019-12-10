@@ -74,6 +74,7 @@ public class EmpleadoGUIImpl extends JPanel implements EmpleadoGUI, GUI{
 	
 	private DefaultTableModel mostrarModel;
 	
+	private int ID_Turno;
 	private JPanel editarEmpleadoPanel;
 	private CardLayout editarEmpleadoPanelCL;
 	private JPanel editarBuscarErrorArea;
@@ -87,7 +88,6 @@ public class EmpleadoGUIImpl extends JPanel implements EmpleadoGUI, GUI{
 	private JTextField editarEncargadoField;
 	private JTextField editarMultiplicadorField;
 	private JTextField editarSumadorField;
-	private JTextField editarIdTurnoField;
 	
 	public EmpleadoGUIImpl() {
 		initialize();
@@ -474,11 +474,6 @@ public class EmpleadoGUIImpl extends JPanel implements EmpleadoGUI, GUI{
 		sumadorLabel.setFont(new Font("Arial", Font.PLAIN, 18));
 		formPanel2.add(sumadorLabel, c2);
 		
-		c2.gridy++;
-		JLabel idTurnoLabel = new JLabel("ID Turno: ");
-		idTurnoLabel.setFont(new Font("Arial", Font.PLAIN, 18));
-		formPanel2.add(idTurnoLabel, c2);
-		
 		c2.gridx++;
 		c2.gridy = 0;
 		c2.anchor = GridBagConstraints.LINE_START;
@@ -508,10 +503,6 @@ public class EmpleadoGUIImpl extends JPanel implements EmpleadoGUI, GUI{
 		c2.gridy++;
 		editarSumadorField = new JTextField(15);
 		formPanel2.add(editarSumadorField, c2);
-		
-		c2.gridy++;
-		editarIdTurnoField = new JTextField(15);
-		formPanel2.add(editarIdTurnoField, c2);
 		
 		//--
 		
@@ -549,16 +540,15 @@ public class EmpleadoGUIImpl extends JPanel implements EmpleadoGUI, GUI{
 				int salario = Integer.parseInt(editarSalarioField.getText());
 				Boolean activo = Boolean.valueOf(editarActivoField.getText());
 				Boolean encargado = Boolean.valueOf(editarEncargadoField.getText());
-				Integer IdTurno = Integer.valueOf(editarIdTurnoField.getText());
 				
-				if (nombre.length() > 0 && !nombre.equals("") && dni.length() > 0 && !dni.equals("") && editarSalarioField.getText().length() > 0 && !editarSalarioField.getText().equals("") && editarActivoField.getText().length() > 0 && !editarActivoField.getText().equals("") && editarEncargadoField.getText().length() > 0 && !editarEncargadoField.getText().equals("") && editarIdTurnoField.getText().length() > 0 && !editarIdTurnoField.getText().equals("")) {
+				if (nombre.length() > 0 && !nombre.equals("") && dni.length() > 0 && !dni.equals("") && editarSalarioField.getText().length() > 0 && !editarSalarioField.getText().equals("") && editarActivoField.getText().length() > 0 && !editarActivoField.getText().equals("") && editarEncargadoField.getText().length() > 0 && !editarEncargadoField.getText().equals("")) {
 					if(encargado == false) {
-						TDependiente eDependiente = new TDependiente(ID, nombre, dni, salario, activo, Integer.parseInt(editarSumadorField.getText()), IdTurno);
+						TDependiente eDependiente = new TDependiente(ID, nombre, dni, salario, activo, Integer.parseInt(editarSumadorField.getText()), ID_Turno);
 						Context contexto = new Context(EventosEmpleado.MODIFICAR_EMPLEADO, eDependiente);
 						ControladorAplicacion.getInstance().accion(contexto);
 					}
 					else {
-						TEncargado eEncargado = new TEncargado(ID, nombre, dni, salario, activo, Double.parseDouble(editarMultiplicadorField.getText()), IdTurno);
+						TEncargado eEncargado = new TEncargado(ID, nombre, dni, salario, activo, Double.parseDouble(editarMultiplicadorField.getText()), ID_Turno);
 						Context contexto = new Context(EventosEmpleado.MODIFICAR_EMPLEADO, eEncargado);
 						ControladorAplicacion.getInstance().accion(contexto);
 					}
@@ -1045,7 +1035,7 @@ public class EmpleadoGUIImpl extends JPanel implements EmpleadoGUI, GUI{
 				editarActivoField.setText(Boolean.toString(empleado.isActivo()));
 				editarEncargadoField.setText(Boolean.toString(empleado.isEncargado()));
 				editarEncargadoField.setEnabled(false);
-				editarIdTurnoField.setText(String.valueOf(empleado.getIdTurno()));
+				ID_Turno = empleado.getIdTurno();
 				
 				if(empleado.isEncargado() == true) {
 					TEncargado eEncargado = (TEncargado)datos;
