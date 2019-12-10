@@ -15,7 +15,7 @@ public class BajaEmpleadoATurnoCommand implements Command{
 		TurnoSA turnoSA = FactoriaSA.getInstancia().generaTurnoSA();
 		
 		try{
-			turnoSA.eliminarEmpleado(empleado);
+			turnoSA.eliminarEmpleado(empleado.getIdTurno(), empleado);
 			mensaje = "El empleado se ha eliminado con exito.";
 			return new Context(EventosTurno.BAJA_EMPLEADO_A_TURNO_OK, mensaje);
 		}catch(Exception e){

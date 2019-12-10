@@ -47,7 +47,9 @@ class GrupoSAImpTest {
         grupo1 = new TGrupo(1,"textil",true);
         grupo2 = new TGrupo(2,"calzado",true);
 
+/*TODO
         empleado1 = new TEmpleado(1,"Jose","578344400S",1000,true,false);
+*/
 
         trabaja1 = new TTrabaja(1,1,5);
     }

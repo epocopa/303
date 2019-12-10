@@ -15,7 +15,7 @@ public class AnadirEmpleadoATurnoCommand implements Command{
 		TurnoSA turnoSA = FactoriaSA.getInstancia().generaTurnoSA();
 		
 		try{
-			turnoSA.insertarEmpleado(empleado);
+			turnoSA.insertarEmpleado(empleado.getIdTurno() ,empleado);
 			mensaje = "El empleado se ha anadido con exito.";
 			return new Context(EventosTurno.ANADIR_EMPLEADO_A_TURNO_OK, mensaje);
 		}catch(Exception e){

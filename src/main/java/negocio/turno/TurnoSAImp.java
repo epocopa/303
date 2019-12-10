@@ -197,7 +197,7 @@ public class TurnoSAImp implements TurnoSA {
 	}
 
 	@Override
-	public void anadirEmpleado(int idTurno, TEmpleado empleado) throws Exception {
+	public void insertarEmpleado(int idTurno, TEmpleado empleado) throws Exception {
 		EntityManagerFactory emf = Persistence.createEntityManagerFactory("303");
 		EntityManager em = emf.createEntityManager();
 		em.getTransaction().begin();
@@ -227,7 +227,7 @@ public class TurnoSAImp implements TurnoSA {
 	}
 
 	@Override
-	public void borrarEmpleado(int idTurno, TEmpleado empleado) throws Exception {
+	public void eliminarEmpleado(int idTurno, TEmpleado empleado) throws Exception {
 		EntityManagerFactory emf = Persistence.createEntityManagerFactory("303");
 		EntityManager em = emf.createEntityManager();
 		em.getTransaction().begin();

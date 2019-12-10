@@ -48,7 +48,9 @@ class TurnoSAImpTest {
         turno1 = new TTurno(1,"mañana", LocalTime.of(8,00),LocalTime.of(14,00),true);
         turno2 = new TTurno(2,"tarde", LocalTime.of(14,00),LocalTime.of(20,00),true);
 
+/*TODO
         empleado1 = new TEmpleado(1,"Jose","578344400S",1000,true,false);
+*/
     }
     @Test
     void testInsertar() {
