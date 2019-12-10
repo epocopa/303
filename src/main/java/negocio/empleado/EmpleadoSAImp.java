@@ -35,6 +35,8 @@ public class EmpleadoSAImp implements EmpleadoSA {
 		} else {
 			if (empl.isActivo()) {
 				em.getTransaction().rollback();
+				em.close();
+				emf.close();
 				throw new Exception("Ya existe un empleado con DNI =" + empleado.getDNI());
 			} else {
 				empl.setActivo(true);
@@ -51,11 +53,34 @@ public class EmpleadoSAImp implements EmpleadoSA {
 		EntityManager em = emf.createEntityManager();
 		em.getTransaction().begin();
 
+		Empleado e = em.find(Empleado.class, id);
 
-		
+		if (e == null) {
+			em.getTransaction().rollback();
+			em.close();
+			emf.close();
+			throw new Exception("No existe un empleado con ID =" + id);
+		}
+
+		TEmpleado empleado = null;
+		int t = -1;
+		if (e.getTurno() != null) {
+			t = e.getTurno().getId();
+		}
+
+		if (e.getType().equals("Encargado")) {
+			Encargado enc = (Encargado) e;
+			empleado = new TEncargado(enc.getId(), enc.getNombre(), enc.getDNI(), enc.getSalarioBase(), enc.isActivo(), enc.getMultiplicador(), t);
+		} else {
+			Dependiente dep = (Dependiente) e;
+			empleado = new TEncargado(dep.getId(), dep.getNombre(), dep.getDNI(), dep.getSalarioBase(), dep.isActivo(), dep.getSumador(), t);
+		}
+
+
+		em.getTransaction().commit();
 		em.close();
 		emf.close();
-		return null;
+		return empleado;
 	}
 
 	@Override
@@ -65,7 +90,6 @@ public class EmpleadoSAImp implements EmpleadoSA {
 		em.getTransaction().begin();
 
 
-		
 		em.close();
 		emf.close();
 		return null;
@@ -97,7 +121,6 @@ public class EmpleadoSAImp implements EmpleadoSA {
 		}
 
 
-		
 		em.close();
 		emf.close();
 	}
@@ -144,7 +167,7 @@ public class EmpleadoSAImp implements EmpleadoSA {
 			}
 		}
 
-		
+
 		em.close();
 		emf.close();
 	}

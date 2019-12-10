@@ -9,15 +9,16 @@ import java.util.List;
 
 @Entity
 @NamedQueries({ @NamedQuery(name = "Empleado.READ", query = "SELECT emp FROM Empleado emp WHERE emp.DNI = :dni") })
-@Inheritance(strategy=InheritanceType.JOINED) //creo que se debe meter esto
+@Inheritance(strategy=InheritanceType.JOINED)
 public abstract class Empleado implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int id;
+	private Integer id;
 	private String DNI;
 	private int salarioBase;
 	private boolean activo;
 	private String nombre;
+	private String dtype;
 	@Version
 	private int version;
 	@ManyToOne
@@ -38,11 +39,11 @@ public abstract class Empleado implements Serializable {
 
 	public abstract int getSalario();
 
-	public int getId() {
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 
@@ -100,5 +101,13 @@ public abstract class Empleado implements Serializable {
 
 	public void setAsignaciones(List<AsignacionGrupo> asignaciones) {
 		this.asignaciones = asignaciones;
+	}
+
+	public String getType() {
+		return dtype;
+	}
+
+	public void setType(String dtype) {
+		this.dtype = dtype;
 	}
 }

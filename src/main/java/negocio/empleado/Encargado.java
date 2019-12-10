@@ -7,7 +7,7 @@ import java.io.Serializable;
 public class Encargado extends Empleado implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int id;
+	private Integer id;
 	private double multiplicador;
 
 	public Encargado() {

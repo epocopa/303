@@ -7,7 +7,7 @@ import java.io.Serializable;
 public class Dependiente extends Empleado implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int id;
+	private Integer id;
 	private int sumador;
 
 	public Dependiente() {
@@ -21,6 +21,14 @@ public class Dependiente extends Empleado implements Serializable {
 	public Dependiente(TDependiente e) {
 		super(e);
 		this.sumador = e.getSumador();
+	}
+
+	public int getSumador() {
+		return sumador;
+	}
+
+	public void setSumador(int sumador) {
+		this.sumador = sumador;
 	}
 
 	@Override
