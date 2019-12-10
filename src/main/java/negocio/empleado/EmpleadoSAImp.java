@@ -1,6 +1,7 @@
 package negocio.empleado;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 public class EmpleadoSAImp implements EmpleadoSA {
@@ -12,7 +13,7 @@ public class EmpleadoSAImp implements EmpleadoSA {
 		EntityManager em = emf.createEntityManager();
 		em.getTransaction().begin();
 
-		Query query = em.createNamedQuery("Empleado.READ", Empleado.class);
+		Query query = em.createNamedQuery("Empleado.READBYDNI", Empleado.class);
 		query.setParameter("dni", empleado.getDNI());
 		Empleado empl = null;
 		try {
@@ -73,7 +74,7 @@ public class EmpleadoSAImp implements EmpleadoSA {
 			empleado = new TEncargado(enc.getId(), enc.getNombre(), enc.getDNI(), enc.getSalarioBase(), enc.isActivo(), enc.getMultiplicador(), t);
 		} else {
 			Dependiente dep = (Dependiente) e;
-			empleado = new TEncargado(dep.getId(), dep.getNombre(), dep.getDNI(), dep.getSalarioBase(), dep.isActivo(), dep.getSumador(), t);
+			empleado = new TDependiente(dep.getId(), dep.getNombre(), dep.getDNI(), dep.getSalarioBase(), dep.isActivo(), dep.getSumador(), t);
 		}
 
 
@@ -89,10 +90,27 @@ public class EmpleadoSAImp implements EmpleadoSA {
 		EntityManager em = emf.createEntityManager();
 		em.getTransaction().begin();
 
+		Query query = em.createNamedQuery("Empleado.READALL", Empleado.class);
+		List<Empleado> result = query.getResultList();
+		List<TEmpleado> list = new ArrayList<>();
+
+		for (Empleado e : result) {
+			int t = -1;
+			if (e.getTurno() != null) {
+				t = e.getTurno().getId();
+			}
+			if (e.getType().equals("Encargado")) {
+				Encargado enc = (Encargado) e;
+				list.add(new TEncargado(enc.getId(), enc.getNombre(), enc.getDNI(), enc.getSalarioBase(), enc.isActivo(), enc.getMultiplicador(), t));
+			} else {
+				Dependiente dep = (Dependiente) e;
+				list.add(new TDependiente(dep.getId(), dep.getNombre(), dep.getDNI(), dep.getSalarioBase(), dep.isActivo(), dep.getSumador(), t));
+			}
+		}
 
 		em.close();
 		emf.close();
-		return null;
+		return list;
 	}
 
 	@Override
@@ -101,26 +119,41 @@ public class EmpleadoSAImp implements EmpleadoSA {
 		EntityManager em = emf.createEntityManager();
 		em.getTransaction().begin();
 
-		Empleado empl = null;
-		String statement = "SELECT emp FROM Empleado emp WHERE emp.id = :id";
-		Query query = em.createQuery(statement);
-		query.setParameter("id", empleado.getId());
+		Empleado e = em.find(Empleado.class, empleado.getId());
 
+		if (e == null) {
+			em.getTransaction().rollback();
+			em.close();
+			emf.close();
+			throw new Exception("No existe un empleado con ID =" + empleado.getId());
+		}
+
+		Query query = em.createNamedQuery("Empleado.READBYDNI", Empleado.class);
+		query.setParameter("dni", empleado.getDNI());
+		Empleado empl = null;
 		try {
 			empl = (Empleado) query.getSingleResult();
-		} catch (NoResultException e) {
+		} catch (NoResultException ignored) {}
+
+		if (empl != null && !e.getDNI().equals(empleado.getDNI())) {
+			em.getTransaction().rollback();
+			em.close();
+			emf.close();
+			throw new Exception("Ya existe un empleado con DNI =" + empleado.getDNI());
 		}
 
-		//Empl exists in DB
-		if (empl != null) {
-
-
-		}//Empl does not exists in DB
-		else {
-
+		if (e.getType().equals("Encargado")) {
+			((Encargado) e).setMultiplicador(((TEncargado) empleado).getMultiplicador());
+		} else {
+			((Dependiente) e).setSumador(((TDependiente) empleado).getSumador());
 		}
 
+		e.setDNI(empleado.getDNI());
+		e.setNombre(empleado.getNombre());
+		e.setSalarioBase(empleado.getSalarioBase());
+		e.setActivo(empleado.isActivo());
 
+		em.getTransaction().commit();
 		em.close();
 		emf.close();
 	}
