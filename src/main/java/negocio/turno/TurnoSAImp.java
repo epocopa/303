@@ -248,28 +248,19 @@ public class TurnoSAImp implements TurnoSA {
 		em.getTransaction().begin();
 
 		Turno turno = em.find(Turno.class, idTurno);
-		//TODO high priority
+		Empleado e = em.find(Empleado.class, empleado.getId());
 
 		if(turno == null){
-			//MENSAJE TURNO CON ESE ID NO EXISTE
-		}
-		else{
-/*			Empleado emp = new Empleado(empleado.getDNI(),empleado.getNombre(),
-							empleado.getSalarioBase(),empleado.isActivo(),empleado.getId());
-			
-			turno.getEmpleados().remove(emp);*/
-			
-			try{
-				em.getTransaction().commit();
-			}
-			catch(Exception e){
-				//MENSAJE ERROR CONCURRENCIA
-				em.getTransaction().rollback();
-			}
-		}
+			em.getTransaction().rollback();
+			em.close();
+			emf.close();
+			throw new Exception("No existe el turno con id "+idTurno);
+		} else {
+			e.setTurno(null);
+			em.getTransaction().commit();
 
-		
-		em.close();
-		emf.close();
+			em.close();
+			emf.close();
+		}
 	}
 }
