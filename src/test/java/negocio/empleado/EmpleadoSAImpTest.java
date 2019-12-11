@@ -27,31 +27,20 @@ class EmpleadoSAImpTest {
     void BeforeEach() {
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("303");
         EntityManager em = emf.createEntityManager();
-       // em.getTransaction().begin();
+        em.getTransaction().begin();
 
         Query query = em.createNamedQuery("Empleado.DELETEALL", Empleado.class);
+        query.executeUpdate();
 
         empleadoSAImp = new EmpleadoSAImp();
         //Empleado 1
-        tEmpleado1 = new TEmpleado();
-        tEmpleado1.setActivo(true);
-        tEmpleado1.setDNI("842582382H");
-        tEmpleado1.setEncargado(true);
-        tEmpleado1.setNombre("Olegario");
-        tEmpleado1.setSalarioBase(650);
-        tEmpleado1.setId(1);
-
-
+        tEmpleado1 = new TEncargado(1,"Olegario","842582382H",650,true,0.3,-1);
 
         //Empleado 2
-        tEmpleado2 = new TEmpleado();
-        tEmpleado2.setActivo(true);
-        tEmpleado2.setDNI("256256256F");
-        tEmpleado2.setEncargado(false);
-        tEmpleado2.setNombre("AlmeidaCP");
-        tEmpleado2.setSalarioBase(30);
-        tEmpleado2.setId(2);
-
+        tEmpleado2 = new TDependiente(2,"Pedro","256256256F",30,true,20,-1);
+        em.getTransaction().commit();
+        em.close();
+        emf.close();
     }
     @Test
     void testInsertar() {
@@ -121,9 +110,9 @@ class EmpleadoSAImpTest {
     }
 
     private boolean iguales(TEmpleado empleado1, TEmpleado auxiliar) {
-        return empleado1.getDNI() == auxiliar.getDNI() &&
+        return empleado1.getDNI().equals(auxiliar.getDNI()) &&
                 empleado1.getId() == auxiliar.getId() &&
-                empleado1.getNombre() == auxiliar.getNombre() &&
+                empleado1.getNombre().equals(auxiliar.getNombre()) &&
                 empleado1.getSalarioBase() == auxiliar.getSalarioBase();
     }
 }

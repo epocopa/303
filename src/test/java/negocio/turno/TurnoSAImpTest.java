@@ -1,22 +1,22 @@
 package negocio.turno;
 
-import negocio.empleado.EmpleadoSAImp;
-import negocio.empleado.TEmpleado;
-import org.junit.jupiter.api.AfterAll;
+import negocio.empleado.*;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
+import javax.persistence.Query;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.fail;
 
 class TurnoSAImpTest {
     private static Connection conn;
@@ -38,19 +38,26 @@ class TurnoSAImpTest {
 
     @BeforeEach
     void BeforeEach() {
-        try(Statement st=conn.createStatement()){
-            st.execute("DELETE FROM turno");
-        }catch(SQLException e) {
-            e.printStackTrace();
-        }
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("303");
+        EntityManager em = emf.createEntityManager();
+        em.getTransaction().begin();
+        Query query = em.createNamedQuery("AsignacionGrupo.DELETEALL", AsignacionGrupo.class);
+        query.executeUpdate();
+        query = em.createNamedQuery("Empleado.DELETEALL", Empleado.class);
+        query.executeUpdate();
+        query = em.createNamedQuery("Turno.DELETEALL", Turno.class);
+        query.executeUpdate();
 
         turnoSAImp = new TurnoSAImp();
-        turno1 = new TTurno(1,"mañana", LocalTime.of(8,00),LocalTime.of(14,00),true);
-        turno2 = new TTurno(2,"tarde", LocalTime.of(14,00),LocalTime.of(20,00),true);
+        turno1 = new TTurno(1,"manana", LocalTime.of(8,0),LocalTime.of(14,0),true);
+        turno2 = new TTurno(2,"tarde", LocalTime.of(14, 0),LocalTime.of(20,0),true);
 
-/*TODO
-        empleado1 = new TEmpleado(1,"Jose","578344400S",1000,true,false);
-*/
+        empleadoSAImp = new EmpleadoSAImp();
+        empleado1 = new TDependiente(1,"Jose","578344400S",1000,true,60,1);
+
+        em.getTransaction().commit();
+        em.close();
+        emf.close();
     }
     @Test
     void testInsertar() {
@@ -111,18 +118,26 @@ class TurnoSAImpTest {
 
     @Test
     void testAnadirEmpleado() {
+        try{
+            turnoSAImp.insertar(turno1);
+            empleadoSAImp.insertar(empleado1);
+            turnoSAImp.insertarEmpleado(turno1.getId(),empleado1);
+            assertTrue(empleado1.getIdTurno()==turno1.getId());
+        }catch (Exception e){
+            fail("Excepcion al anadir empleado");
+        }
     }
 
     @Test
     void testBorrarEmpleado() {
-    }
-
-    @AfterAll
-    static void afterAll() {
-        try {
-            conn.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
+        try{
+            turnoSAImp.insertar(turno1);
+            empleadoSAImp.insertar(empleado1);
+            turnoSAImp.insertarEmpleado(turno1.getId(),empleado1);
+            turnoSAImp.eliminarEmpleado(turno1.getId(),empleado1);
+            assertFalse(empleado1.getIdTurno()==turno1.getId());
+        }catch (Exception e){
+            fail("Excepcion al eliminar empleado");
         }
     }
 
@@ -130,6 +145,6 @@ class TurnoSAImpTest {
         return turno1.getHoraFin() == auxiliar.getHoraFin() &&
                 turno1.getHoraInicio() == auxiliar.getHoraInicio() &&
                 turno1.getId() == auxiliar.getId() &&
-                turno1.getNombre() == auxiliar.getNombre();
+                turno1.getNombre().equals(auxiliar.getNombre());
     }
 }

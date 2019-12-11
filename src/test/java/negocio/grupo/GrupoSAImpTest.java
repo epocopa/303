@@ -1,17 +1,14 @@
 package negocio.grupo;
 
-import negocio.empleado.EmpleadoSAImp;
-import negocio.empleado.TEmpleado;
-import negocio.empleado.TTrabaja;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
+import negocio.empleado.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
+import javax.persistence.Query;
 import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,32 +23,30 @@ class GrupoSAImpTest {
     private TEmpleado empleado1;
     private TTrabaja trabaja1;
 
-    @BeforeAll
-    static void beforeAll() {
 
-        try {
-            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/trescerotres", "empleado", "password");
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
 
     @BeforeEach
     void BeforeEach() {
-        try(Statement st=conn.createStatement()){
-            st.execute("DELETE FROM grupo");
-        }catch(SQLException e) {
-            e.printStackTrace();
-        }
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("303");
+        EntityManager em = emf.createEntityManager();
+        em.getTransaction().begin();
+        Query query = em.createNamedQuery("Empleado.DELETEALL", Empleado.class);
+        query.executeUpdate();
+        query=em.createNamedQuery("Grupo.DELETEALL", Grupo.class);
+        query.executeUpdate();
 
         grupo1 = new TGrupo(1,"textil",true);
         grupo2 = new TGrupo(2,"calzado",true);
 
-/*TODO
-        empleado1 = new TEmpleado(1,"Jose","578344400S",1000,true,false);
-*/
+
+        empleado1 = new TDependiente(1,"Jose","578344400S",1000,true,10,-1);
+
 
         trabaja1 = new TTrabaja(1,1,5);
+
+        em.getTransaction().commit();
+        em.close();
+        emf.close();
     }
     @Test
     void testInsertar() {
@@ -137,14 +132,7 @@ class GrupoSAImpTest {
         }
     }
 
-    @AfterAll
-    static void afterAll() {
-        try {
-            conn.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
+
 
     private boolean iguales(TGrupo tGrupo1, TGrupo auxiliar) {
         return tGrupo1.getId() == auxiliar.getId() &&

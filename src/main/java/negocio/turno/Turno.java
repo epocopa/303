@@ -8,7 +8,8 @@ import java.time.LocalTime;
 import java.util.List;
 
 @Entity
-@NamedQueries({ @NamedQuery(name = "Turno.READ", query = "SELECT trn FROM Turno trn WHERE trn.nombre = :nombre") })
+@NamedQueries({ @NamedQuery(name = "Turno.READ", query = "SELECT trn FROM Turno trn WHERE trn.nombre = :nombre"),
+		@NamedQuery(name = "Turno.DELETEALL", query = "DELETE FROM Turno")})
 public class Turno {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
