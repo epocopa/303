@@ -10,7 +10,8 @@ import java.util.List;
 @Entity
 @NamedQueries({
 		@NamedQuery(name = "Empleado.READBYDNI", query = "SELECT emp FROM Empleado emp WHERE emp.DNI = :dni"),
-		@NamedQuery(name = "Empleado.READALL", query = "SELECT emp FROM Empleado emp")
+		@NamedQuery(name = "Empleado.READALL", query = "SELECT emp FROM Empleado emp"),
+		@NamedQuery(name = "Empleado.DELETEALL", query = "DELETE FROM Empleado")
 })
 @Inheritance(strategy=InheritanceType.JOINED)
 public abstract class Empleado implements Serializable {
