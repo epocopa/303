@@ -1,9 +1,6 @@
 package negocio.grupo;
 
-import negocio.empleado.AsignacionGrupo;
-import negocio.empleado.AsignacionGrupoId;
-import negocio.empleado.Empleado;
-import negocio.empleado.TTrabaja;
+import negocio.empleado.*;
 import negocio.turno.Turno;
 
 import javax.persistence.*;
@@ -68,10 +65,12 @@ public class GrupoSAImp implements GrupoSA {
 		else{
 			grupo = new TGrupo(g.getId(),g.getSeccion(),g.isActivo());
 			int total = 0;
+
 			for (AsignacionGrupo a : g.getGrupos()) {
+				grupo.getListaEmpleados().add(new TTrabaja(a.getGrupo().getId(), a.getEmpleado().getId(), a.getEmpleado().getSalario()));
 				total += a.getEmpleado().getSalario();
-				System.out.println("Total -> " + total); //TODO WIP
 			}
+			grupo.setSalario(total);
 		}
 		
 		try{
@@ -102,6 +101,13 @@ public class GrupoSAImp implements GrupoSA {
 			for(int i = 0; i<listaGrupo.size();i++){
 				TGrupo t = new TGrupo(listaGrupo.get(i).getId(), listaGrupo.get(i).getSeccion(),
 						listaGrupo.get(i).isActivo());
+				int total = 0;
+
+				for (AsignacionGrupo a : listaGrupo.get(i).getGrupos()) {
+					t.getListaEmpleados().add(new TTrabaja(a.getGrupo().getId(), a.getEmpleado().getId(), a.getEmpleado().getSalario()));
+					total += a.getEmpleado().getSalario();
+				}
+				t.setSalario(total);
 				listaTransferGrupo.add(t);
 			}
 			em.getTransaction().commit();
