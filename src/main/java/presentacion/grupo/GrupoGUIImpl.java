@@ -71,7 +71,9 @@ public class GrupoGUIImpl extends JPanel implements GrupoGUI, GUI {
 	private JLabel mostrarIDText;
 	private JLabel mostrarSeccionText;
 	private JLabel mostrarActivoText;
-
+	private JLabel mostrarSalarioText;
+	
+	private DefaultTableModel mostrarEmpleadoModel;
 	private DefaultTableModel mostrarModel;
 
 	private JPanel editarGrupoPanel;
@@ -642,7 +644,7 @@ public class GrupoGUIImpl extends JPanel implements GrupoGUI, GUI {
 		tablePanel.setBackground(new Color(235, 237, 241));
 		tablePanel.setMaximumSize(new Dimension(800, 320));
 
-		String[] columns = { "ID Grupo", "Seccion", "Activo" };
+		String[] columns = { "ID Grupo", "Seccion", "Activo", "Salario Grupo"};
 		mostrarModel = new DefaultTableModel();
 		for (String column : columns) {
 			mostrarModel.addColumn(column);
@@ -732,32 +734,34 @@ public class GrupoGUIImpl extends JPanel implements GrupoGUI, GUI {
 		// --
 
 		JPanel dataPanel = new JPanel(new GridBagLayout());
-		dataPanel.setBackground(new Color(235, 237, 241));
+		dataPanel.setLayout(new BoxLayout(dataPanel, BoxLayout.Y_AXIS));
 		dataPanel.setAlignmentX(JComponent.CENTER_ALIGNMENT);
-		dataPanel.setMaximumSize(new Dimension(1024, 210));
+		dataPanel.setBackground(new Color(235, 237, 241));
+		dataPanel.setMaximumSize(new Dimension(600, 320));
+		
+		String[] columns = { "ID Empleado", "Horas" };
+
+		mostrarEmpleadoModel = new DefaultTableModel();
+		for (String column : columns) {
+			mostrarEmpleadoModel.addColumn(column);
+		}
+		JTable table = new JTable(mostrarEmpleadoModel);
+		table.setEnabled(false);
+		table.getTableHeader().setReorderingAllowed(false);
+		table.setPreferredScrollableViewportSize(new Dimension(450, 63));
+		table.setFillsViewportHeight(true);
+
+		JScrollPane scrollPane = new JScrollPane(table);
+		dataPanel.add(scrollPane);
 
 		GridBagConstraints c2 = new GridBagConstraints();
 		c2.gridx = 0;
 		c2.gridy = 0;
 		c2.anchor = GridBagConstraints.LINE_END;
 		c2.insets = new Insets(5, 5, 0, 0);
-		JLabel IDLabel2 = new JLabel("ID Grupo de trabajo: ");
-		IDLabel2.setFont(new Font("Arial", Font.PLAIN, 22));
-		dataPanel.add(IDLabel2, c2);
-
-		c2.gridy++;
-		JLabel seccionLabel = new JLabel("Seccion: ");
-		seccionLabel.setFont(new Font("Arial", Font.PLAIN, 22));
-		dataPanel.add(seccionLabel, c2);
-
-		c2.gridy++;
-		JLabel ActivoLabel = new JLabel("Activo: ");
-		ActivoLabel.setFont(new Font("Arial", Font.PLAIN, 22));
-		dataPanel.add(ActivoLabel, c2);
-
-		c2.gridx++;
-		c2.gridy = 0;
-		c2.anchor = GridBagConstraints.LINE_START;
+		JLabel separacion = new JLabel(" ");
+		dataPanel.add(separacion, c2);
+		
 		mostrarIDText = new JLabel("0");
 		mostrarIDText.setFont(new Font("Arial", Font.PLAIN, 18));
 		dataPanel.add(mostrarIDText, c2);
@@ -771,6 +775,11 @@ public class GrupoGUIImpl extends JPanel implements GrupoGUI, GUI {
 		mostrarActivoText = new JLabel("true");
 		mostrarActivoText.setFont(new Font("Arial", Font.PLAIN, 18));
 		dataPanel.add(mostrarActivoText, c2);
+		
+		c2.gridy++;
+		mostrarSalarioText = new JLabel("true");
+		mostrarSalarioText.setFont(new Font("Arial", Font.PLAIN, 18));
+		dataPanel.add(mostrarSalarioText, c2);
 
 		// --
 
@@ -1095,10 +1104,16 @@ public class GrupoGUIImpl extends JPanel implements GrupoGUI, GUI {
 		case EventosGrupo.MOSTRAR_GRUPO_OK:
 			grupo = (TGrupo) datos;
 			Integer id = grupo.getId();
+			Integer salario = grupo.getSalario();
 
-			mostrarIDText.setText(id.toString());
-			mostrarSeccionText.setText(grupo.getSeccion());
-			mostrarActivoText.setText(Boolean.toString(grupo.isActivo()));
+			mostrarIDText.setText("ID Grupo: " +  id.toString());
+			mostrarSeccionText.setText("Seccion: " + grupo.getSeccion());
+			mostrarActivoText.setText("Activo: " + Boolean.toString(grupo.isActivo()));
+			mostrarSalarioText.setText("Salario: " + salario.toString());
+			
+			for(TTrabaja t: grupo.getListaEmpleados()) {
+				mostrarEmpleadoModel.addRow(new Object[] { t.getIdEmpleado(), t.getHoras()});
+			}
 
 			mostrarGrupoPanelCL.show(mostrarGrupoPanel, "GRUPO");
 			System.out.println("Mostrar Grupo OK");
@@ -1118,7 +1133,7 @@ public class GrupoGUIImpl extends JPanel implements GrupoGUI, GUI {
 
 			for (TGrupo g : listaGrupos) {
 				mostrarModel.addRow(new Object[] { g.getId(), g.getSeccion(),
-						g.isActivo() });
+						g.isActivo(), g.getSalario() });
 			}
 
 			System.out.println("Listar Grupos OK");
