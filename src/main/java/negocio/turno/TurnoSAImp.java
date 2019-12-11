@@ -250,17 +250,29 @@ public class TurnoSAImp implements TurnoSA {
 		Turno turno = em.find(Turno.class, idTurno);
 		Empleado e = em.find(Empleado.class, empleado.getId());
 
-		if(turno == null){
+		if (turno == null) {
 			em.getTransaction().rollback();
 			em.close();
 			emf.close();
-			throw new Exception("No existe el turno con id "+idTurno);
-		} else {
-			e.setTurno(null);
-			em.getTransaction().commit();
-
+			throw new Exception("No existe el turno con id " + idTurno);
+		}
+		if (e.getTurno() == null) {
+			em.getTransaction().rollback();
 			em.close();
 			emf.close();
+			throw new Exception("El empleado " + empleado.getId() + " no esta en ningun turno ");
 		}
+		if (e.getTurno().getId() != idTurno) {
+			em.getTransaction().rollback();
+			em.close();
+			emf.close();
+			throw new Exception("El empleado " + empleado.getId() + " no esta en el turno " + idTurno);
+		}
+
+		e.setTurno(null);
+		em.getTransaction().commit();
+
+		em.close();
+		emf.close();
 	}
 }
