@@ -248,6 +248,7 @@ public class TurnoSAImp implements TurnoSA {
 		em.getTransaction().begin();
 
 		Turno turno = em.find(Turno.class, idTurno);
+		//TODO high priority
 
 		if(turno == null){
 			//MENSAJE TURNO CON ESE ID NO EXISTE

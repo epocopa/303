@@ -227,6 +227,9 @@ public class GrupoSAImp implements GrupoSA {
 		else if(!emp.isActivo()){
 			throw new Exception("El empleado con id "+empleado.getIdEmpleado() + " no esta activo");
 		}
+		else if(!grupo.isActivo()){
+			throw new Exception("El grupo con id "+grupo.getId() + " no esta activo");
+		}
 		else{
 			AsignacionGrupo asign = new AsignacionGrupo();
 			asign.setEmpleado(emp);
@@ -250,6 +253,6 @@ public class GrupoSAImp implements GrupoSA {
 
 	@Override
 	public void eliminarEmpleado(TTrabaja empleado) throws Exception {
-
+		//TODO high priority
 	}
 }
