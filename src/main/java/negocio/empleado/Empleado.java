@@ -9,7 +9,7 @@ import java.util.List;
 
 @Entity
 @NamedQueries({
-		@NamedQuery(name = "Empleado.READBYDNI", query = "SELECT emp FROM Empleado emp WHERE emp.DNI = :dni"),
+		@NamedQuery(name = "Empleado.READBYDNI", query = "SELECT emp FROM Empleado emp WHERE emp.DNI = :dni", lockMode = LockModeType.OPTIMISTIC),
 		@NamedQuery(name = "Empleado.READALL", query = "SELECT emp FROM Empleado emp"),
 		@NamedQuery(name = "Empleado.DELETEALL", query = "DELETE FROM Empleado")
 })

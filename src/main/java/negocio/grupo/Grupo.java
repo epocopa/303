@@ -18,6 +18,9 @@ public class Grupo {
 	
 	@Column(nullable = false)
 	private boolean activo;
+
+	@Version
+	private int version;
 	
 	@OneToMany(mappedBy = "grupo")
 	private List<AsignacionGrupo> grupos;
