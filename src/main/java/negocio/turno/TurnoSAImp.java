@@ -21,7 +21,13 @@ public class TurnoSAImp implements TurnoSA {
 			t = (Turno) query.getSingleResult();
 		}
 		catch(NoResultException ignored){}
-		
+
+		if (!turno.getHoraInicio().isBefore(turno.getHoraFin())) {
+			em.getTransaction().rollback();
+			em.close();
+			emf.close();
+			throw new Exception("La hora de inicio no puede ser posterior o igual a la hora de fin");
+		}
 
 		//turno does not exists in DB
 		if(t == null){
@@ -29,7 +35,6 @@ public class TurnoSAImp implements TurnoSA {
 			em.persist(trn);
 			em.getTransaction().commit();
 			turno.setId(trn.getId());
-			
 		} else {
 			if(t.isActivo()){
 				em.getTransaction().rollback();
@@ -121,6 +126,13 @@ public class TurnoSAImp implements TurnoSA {
 			emf.close();
 			throw new Exception("No existe un turno con ID =" + t.getId());
 		}
+
+		if (!turno.getHoraInicio().isBefore(turno.getHoraFin())) {
+			em.getTransaction().rollback();
+			em.close();
+			emf.close();
+			throw new Exception("La hora de inicio no puede ser posterior o igual a la hora de fin");
+		}
 		
 		Query query = em.createNamedQuery("Turno.READ", Turno.class);
 		query.setParameter("nombre", turno.getNombre());
@@ -208,14 +220,14 @@ public class TurnoSAImp implements TurnoSA {
 			em.getTransaction().rollback();
 			em.close();
 			emf.close();
-			throw new Exception("No existe un empleado con ID =" + empleado.getId());
+			throw new Exception("No existe un empleado con ID = " + empleado.getId());
 		}
 
 		if(turno == null){
 			em.getTransaction().rollback();
 			em.close();
 			emf.close();
-			throw new Exception("No existe el turno con id"+idTurno);
+			throw new Exception("No existe el turno con id "+idTurno);
 		}
 
 		if(!turno.isActivo()){
