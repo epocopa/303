@@ -124,7 +124,7 @@ public class TurnoSAImp implements TurnoSA {
 			em.getTransaction().rollback();
 			em.close();
 			emf.close();
-			throw new Exception("No existe un turno con ID =" + t.getId());
+			throw new Exception("No existe un turno con ID =" + turno.getId());
 		}
 
 		if (!turno.getHoraInicio().isBefore(turno.getHoraFin())) {
