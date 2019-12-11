@@ -121,7 +121,7 @@ public class GrupoSAImp implements GrupoSA {
 			em.getTransaction().rollback();
 			em.close();
 			emf.close();
-			throw new Exception("No existe un grupo con ID =" + g.getId());
+			throw new Exception("No existe un grupo con ID =" + grupo.getId());
 		}
 		
 		Query query = em.createNamedQuery("Grupo.READ", Turno.class);
