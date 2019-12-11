@@ -1,9 +1,6 @@
 package negocio.empleado;
 
 import javax.persistence.*;
-
-import negocio.grupo.Grupo;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,17 +38,17 @@ public class EmpleadoSAImp implements EmpleadoSA {
 				em.getTransaction().rollback();
 				em.close();
 				emf.close();
-				throw new Exception("Ya existe un empleado con DNI =" + empleado.getDNI());
+				throw new Exception("Ya existe un empleado con DNI = " + empleado.getDNI());
 			} else {
 				empl.setActivo(true);
+				em.getTransaction().commit();
+				em.close();
+				emf.close();
+				throw new Exception("Ya existe un empleado con DNI = " + empleado.getDNI() + ". Se ha reactivado");
 			}
 		}
-		
-
 		em.close();
 		emf.close();
-		
-		
 	}
 
 	@Override
@@ -145,7 +142,7 @@ public class EmpleadoSAImp implements EmpleadoSA {
 			em.getTransaction().rollback();
 			em.close();
 			emf.close();
-			throw new Exception("Ya existe un empleado con DNI =" + empleado.getDNI());
+			throw new Exception("Ya existe un empleado con DNI = " + empleado.getDNI());
 		}
 
 		if (e.getType().equals("Encargado")) {

@@ -3,24 +3,13 @@ package negocio.grupo;
 import negocio.empleado.AsignacionGrupo;
 import negocio.empleado.AsignacionGrupoId;
 import negocio.empleado.Empleado;
-import negocio.empleado.TEmpleado;
 import negocio.empleado.TTrabaja;
-import negocio.grupo.TGrupo;
-import negocio.grupo.Grupo;
 import negocio.turno.Turno;
 
+import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.LockModeType;
-import javax.persistence.NoResultException;
-import javax.persistence.Persistence;
-import javax.persistence.Query;
-import javax.persistence.RollbackException;
-import javax.persistence.TypedQuery;
 
 public class GrupoSAImp implements GrupoSA {
 	@Override
@@ -36,49 +25,28 @@ public class GrupoSAImp implements GrupoSA {
 		try{
 			g = (Grupo) query.getSingleResult();
 		}
-		catch(NoResultException e){}
+		catch(NoResultException ignored){}
 
 		//grupo does not exists in DB
 		if(g == null){
 			Grupo gr = new Grupo(grupo);
 			em.persist(gr);
+			em.getTransaction().commit();
 			grupo.setId(gr.getId());
-
-			try{
-				em.getTransaction().commit();
-				//MENSAJE DADO DE ALTA CON Ã‰XITO
-			}catch(Exception e){
-				em.getTransaction().rollback();
-				em.close();
-				emf.close();
-				throw new Exception("Error en concurrencia");
-			}
-			
-		}
-		//grupo exists in DB
-		else{
+		} else {
 			if(g.isActivo()){
 				em.getTransaction().rollback();
 				em.close();
 				emf.close();
 				throw new Exception("Ya existe un grupo con seccion = " + g.getSeccion());
-			}
-			//reactivamos el grupo
-			else{
+			} else{
 				g.setActivo(true);
-				try{
-					em.getTransaction().commit();
-				}
-				catch(Exception e){
-					em.getTransaction().rollback();
-					em.close();
-					emf.close();
-					throw new Exception("Error en concurrencia");
-				}
-				//MENSAJE DADO DE ALTA TRAS INACTIVIDAD
+				em.getTransaction().commit();
+				em.close();
+				emf.close();
+				throw new Exception("Ya existe un grupo con seccion = " + g.getSeccion() + ". Se ha reactivado");
 			}
 		}
-		
 		em.close();
 		emf.close();
 	}
@@ -201,7 +169,7 @@ public class GrupoSAImp implements GrupoSA {
 				em.getTransaction().rollback();
 				em.close();
 				emf.close();
-				throw new Exception("El grupo con id "+id+" ya está dado de baja");
+				throw new Exception("El grupo con id "+id+" ya esta dado de baja");
 			}
 			else{
 				if(grupo.getGrupos().size()>0){

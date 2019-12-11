@@ -1,14 +1,8 @@
 package negocio.turno;
 
-import negocio.empleado.Dependiente;
-import negocio.empleado.Empleado;
-import negocio.empleado.Encargado;
-import negocio.empleado.TDependiente;
 import negocio.empleado.TEmpleado;
-import negocio.empleado.TEncargado;
 
 import javax.persistence.*;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,50 +20,30 @@ public class TurnoSAImp implements TurnoSA {
 		try{
 			t = (Turno) query.getSingleResult();
 		}
-		catch(NoResultException e){}
+		catch(NoResultException ignored){}
 		
 
 		//turno does not exists in DB
 		if(t == null){
 			Turno trn = new Turno(turno);
 			em.persist(trn);
+			em.getTransaction().commit();
 			turno.setId(trn.getId());
-
-			try{
-				em.getTransaction().commit();
-			}
-			catch(Exception e){
-				em.getTransaction().rollback();
-				em.close();
-				emf.close();
-				throw new Exception("Error en concurrencia");
-			}
 			
-		}
-		//turno exists in DB
-		else{
+		} else {
 			if(t.isActivo()){
 				em.getTransaction().rollback();
 				em.close();
 				emf.close();
 				throw new Exception("Ya existe un turno con nombre = " + t.getNombre());
-			}
-			//reactivamos el turno
-			else{
+			} else{
 				t.setActivo(true);
-				try{
-					em.getTransaction().commit();
-				}
-				catch(Exception e){
-					em.getTransaction().rollback();
-					em.close();
-					emf.close();
-					throw new Exception("Error en concurrencia");
-				}
+				em.getTransaction().commit();
+				em.close();
+				emf.close();
+				throw new Exception("Ya existe un turno con nombre  = " + t.getNombre() + ". Se ha reactivado");
 			}
 		}
-
-		
 		em.close();
 		emf.close();
 	}
