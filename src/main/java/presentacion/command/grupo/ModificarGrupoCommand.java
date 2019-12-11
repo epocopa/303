@@ -14,7 +14,6 @@ public class ModificarGrupoCommand implements Command{
 		String mensaje;
 		TGrupo grupo = (TGrupo) datos;
 		GrupoSA grupoSA = FactoriaSA.getInstancia().generaGrupoSA();
-		
 		try{
 			grupoSA.modificar(grupo);
 			mensaje = "El grupo de trabajo seleccionado ha sido editado correctamente.";

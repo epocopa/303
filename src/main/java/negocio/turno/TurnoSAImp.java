@@ -1,6 +1,6 @@
 package negocio.turno;
 
-import negocio.empleado.TEmpleado;
+import negocio.empleado.*;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -172,12 +172,13 @@ public class TurnoSAImp implements TurnoSA {
 			}
 			else{
 				if(turno.getEmpleados().size()>0){
-					//MENSAJE: ESE TURNO TIENE EMPLEADOS
 					em.getTransaction().rollback();
+					em.close();
+					emf.close();
+					throw new Exception("El turno con id "+id+" tiene empleados activos");
 				}
 				else{
 					turno.setActivo(false);
-					//MENSAJE BAJA CORRECTA
 				}
 
 				try{
@@ -201,6 +202,14 @@ public class TurnoSAImp implements TurnoSA {
 		em.getTransaction().begin();
 
 		Turno turno = em.find(Turno.class, idTurno);
+		Empleado e = em.find(Empleado.class, empleado.getId());
+
+		if (e == null) {
+			em.getTransaction().rollback();
+			em.close();
+			emf.close();
+			throw new Exception("No existe un empleado con ID =" + empleado.getId());
+		}
 
 		if(turno == null){
 			em.getTransaction().rollback();
@@ -208,20 +217,23 @@ public class TurnoSAImp implements TurnoSA {
 			emf.close();
 			throw new Exception("No existe el turno con id"+idTurno);
 		}
-		else{
-	/*		Empleado emp = new Empleado(empleado.getDNI(),empleado.getNombre(),
-							empleado.getSalarioBase(),empleado.isActivo(),empleado.getId());
-			turno.getEmpleados().add(emp);*/
 
-			try{
-				em.getTransaction().commit();
-			}
-			catch(Exception e){
-				em.getTransaction().rollback();
-				em.close();
-				emf.close();
-				throw new Exception("Error en concurrencia");
-			}
+		if(!turno.isActivo()){
+			throw new Exception("El turno con id "+turno.getId() + " no esta activo");
+		}
+		if(!e.isActivo()){
+			throw new Exception("El empleado con id "+ e.getId() + " no esta activo");
+		}
+
+		e.setTurno(turno);
+
+		try {
+			em.getTransaction().commit();
+		} catch (Exception e1) {
+			em.getTransaction().rollback();
+			em.close();
+			emf.close();
+			throw new Exception("Error en concurrencia");
 		}
 
 

@@ -66,8 +66,12 @@ public class GrupoSAImp implements GrupoSA {
 			throw new Exception("No existe el grupo con id: "+id);
 		}
 		else{
-			//MIRAR SI FALTA ANADIR LISTA DE EMPLEADOS COMO CAMPO EN EL TRANSFER
-			grupo = new TGrupo(g.getId(),g.getSeccion(),g.isActivo()); 
+			grupo = new TGrupo(g.getId(),g.getSeccion(),g.isActivo());
+			int total = 0;
+			for (AsignacionGrupo a : g.getGrupos()) {
+				total += a.getEmpleado().getSalario();
+				System.out.println("Total -> " + total); //TODO WIP
+			}
 		}
 		
 		try{
@@ -180,7 +184,7 @@ public class GrupoSAImp implements GrupoSA {
 					throw new Exception("El grupo no se puede borrar ya que contiene empleados");
 				}
 				else{
-				grupo.setActivo(false);
+					grupo.setActivo(false);
 					//MENSAJE BAJA CORRECTA
 				}
 
@@ -193,8 +197,6 @@ public class GrupoSAImp implements GrupoSA {
 					emf.close();
 					throw new Exception("Error en concurrencia");
 				}
-				
-			//}
 			}
 		}
 
@@ -221,6 +223,9 @@ public class GrupoSAImp implements GrupoSA {
 		}
 		else if(emp == null){
 			throw new Exception("No existe el empleado con id "+empleado.getIdEmpleado());
+		}
+		else if(!emp.isActivo()){
+			throw new Exception("El empleado con id "+empleado.getIdEmpleado() + " no esta activo");
 		}
 		else{
 			AsignacionGrupoId asigId = new AsignacionGrupoId();
