@@ -1,14 +1,14 @@
 package negocio.empleado;
 
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
+import javax.persistence.Query;
 import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,23 +21,15 @@ class EmpleadoSAImpTest {
     private TEmpleado tEmpleado2;
     private Empleado empleado1;
     private Empleado empleado2;
-    @BeforeAll
-    static void beforeAll() {
 
-        try {
-            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/trescerotres", "empleado", "password");
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
 
     @BeforeEach
     void BeforeEach() {
-        try(Statement st=conn.createStatement()){
-            st.execute("DELETE FROM empleado");
-        }catch(SQLException e) {
-            e.printStackTrace();
-        }
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("303");
+        EntityManager em = emf.createEntityManager();
+       // em.getTransaction().begin();
+
+        Query query = em.createNamedQuery("Empleado.DELETEALL", Empleado.class);
 
         empleadoSAImp = new EmpleadoSAImp();
         //Empleado 1
@@ -49,9 +41,7 @@ class EmpleadoSAImpTest {
         tEmpleado1.setSalarioBase(650);
         tEmpleado1.setId(1);
 
-/* TODO
-        empleado1 = new Empleado(tEmpleado1);
-*/
+
 
         //Empleado 2
         tEmpleado2 = new TEmpleado();
@@ -62,9 +52,6 @@ class EmpleadoSAImpTest {
         tEmpleado2.setSalarioBase(30);
         tEmpleado2.setId(2);
 
-/*TODO
-        empleado2 = new Empleado(tEmpleado2);
-*/
     }
     @Test
     void testInsertar() {
@@ -124,13 +111,13 @@ class EmpleadoSAImpTest {
         }
     }
 
-    @AfterAll
-    static void afterAll() {
-        try {
-            conn.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+    @AfterEach
+    void afterEach(){
+        /*EntityManagerFactory emf = Persistence.createEntityManagerFactory("303");
+        EntityManager em = emf.createEntityManager();
+
+        em.close();
+        emf.close();*/
     }
 
     private boolean iguales(TEmpleado empleado1, TEmpleado auxiliar) {
