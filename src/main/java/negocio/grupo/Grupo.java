@@ -7,9 +7,11 @@ import javax.persistence.*;
 import java.util.List;
 
 @Entity
-@NamedQueries({ @NamedQuery(name = "Grupo.READ", query = "SELECT g FROM Grupo g WHERE g.seccion = :seccion"),
+@NamedQueries({
+		@NamedQuery(name = "Grupo.READ", query = "SELECT g FROM Grupo g WHERE g.seccion = :seccion", lockMode = LockModeType.OPTIMISTIC),
 		@NamedQuery(name = "Grupo.DELETEALL", query = "DELETE FROM Grupo"),
-		@NamedQuery(name = "AsignacionGrupo.DELETEALL", query = "DELETE FROM AsignacionGrupo ")})
+		@NamedQuery(name = "AsignacionGrupo.DELETEALL", query = "DELETE FROM AsignacionGrupo ")
+})
 public class Grupo {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
