@@ -124,7 +124,7 @@ public class TurnoSAImp implements TurnoSA {
 			em.getTransaction().rollback();
 			em.close();
 			emf.close();
-			throw new Exception("No existe un turno con ID =" + t.getId());
+			throw new Exception("No existe un turno con ID =" + turno.getId());
 		}
 
 		if (!turno.getHoraInicio().isBefore(turno.getHoraFin())) {
@@ -267,6 +267,12 @@ public class TurnoSAImp implements TurnoSA {
 			em.close();
 			emf.close();
 			throw new Exception("No existe el turno con id " + idTurno);
+		}
+		if(e == null){
+			em.getTransaction().rollback();
+			em.close();
+			emf.close();
+			throw new Exception("No existe el empleado con id " + empleado.getId());
 		}
 		if (e.getTurno() == null) {
 			em.getTransaction().rollback();

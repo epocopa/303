@@ -26,6 +26,9 @@ public class Turno {
 	
 	@Column(nullable=false)
 	private LocalTime fin;
+
+	@Version
+	private int version;
 	
 	@OneToMany(mappedBy = "turno")
 	private List<Empleado> empleados;

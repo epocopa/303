@@ -67,8 +67,11 @@ public class GrupoSAImp implements GrupoSA {
 			int total = 0;
 
 			for (AsignacionGrupo a : g.getGrupos()) {
+				em.lock(a.getEmpleado(), LockModeType.OPTIMISTIC);
 				grupo.getListaEmpleados().add(new TTrabaja(a.getGrupo().getId(), a.getEmpleado().getId(), a.getEmpleado().getSalario()));
-				total += a.getEmpleado().getSalario();
+				if (a.getEmpleado().isActivo()) {
+					total += a.getEmpleado().getSalario();
+				}
 			}
 			grupo.setSalario(total);
 		}
@@ -104,8 +107,11 @@ public class GrupoSAImp implements GrupoSA {
 				int total = 0;
 
 				for (AsignacionGrupo a : listaGrupo.get(i).getGrupos()) {
+					em.lock(a.getEmpleado(), LockModeType.OPTIMISTIC);
 					t.getListaEmpleados().add(new TTrabaja(a.getGrupo().getId(), a.getEmpleado().getId(), a.getEmpleado().getSalario()));
-					total += a.getEmpleado().getSalario();
+					if (a.getEmpleado().isActivo()) {
+						total += a.getEmpleado().getSalario();
+					}
 				}
 				t.setSalario(total);
 				listaTransferGrupo.add(t);
@@ -276,11 +282,14 @@ public class GrupoSAImp implements GrupoSA {
 
 		if (grupo == null && emp == null) {
 			throw new Exception("No existe el grupo con id " + trabaja.getIdGrupo() + " ni el empleado con id " + trabaja.getIdEmpleado());
-		} else if (grupo == null) {
+		}
+		if (grupo == null) {
 			throw new Exception("No existe el grupo con id " + trabaja.getIdGrupo());
-		} else if (emp == null) {
+		}
+		if (emp == null) {
 			throw new Exception("No existe el empleado con id " + trabaja.getIdEmpleado());
-		} else if (ag == null) {
+		}
+		if (ag == null) {
 			throw new Exception("El empleado " + trabaja.getIdEmpleado() + " no esta en el grupo " + trabaja.getIdGrupo());
 		}
 
