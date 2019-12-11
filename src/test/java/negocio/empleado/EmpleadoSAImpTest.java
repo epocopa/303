@@ -1,5 +1,7 @@
 package negocio.empleado;
 
+import negocio.grupo.Grupo;
+import negocio.turno.Turno;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -29,7 +31,13 @@ class EmpleadoSAImpTest {
         EntityManager em = emf.createEntityManager();
         em.getTransaction().begin();
 
-        Query query = em.createNamedQuery("Empleado.DELETEALL", Empleado.class);
+        Query query = em.createNamedQuery("AsignacionGrupo.DELETEALL", AsignacionGrupo.class);
+        query.executeUpdate();
+        query = em.createNamedQuery("Grupo.DELETEALL", Grupo.class);
+        query.executeUpdate();
+        query = em.createNamedQuery("Empleado.DELETEALL", Empleado.class);
+        query.executeUpdate();
+        query = em.createNamedQuery("Turno.DELETEALL", Turno.class);
         query.executeUpdate();
 
         empleadoSAImp = new EmpleadoSAImp();

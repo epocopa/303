@@ -1,7 +1,7 @@
 package negocio.turno;
 
 import negocio.empleado.*;
-import org.junit.jupiter.api.BeforeAll;
+import negocio.grupo.Grupo;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -10,8 +10,6 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import javax.persistence.Query;
 import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -26,22 +24,14 @@ class TurnoSAImpTest {
     private EmpleadoSAImp empleadoSAImp;
     private TEmpleado empleado1;
 
-    @BeforeAll
-    static void beforeAll() {
-
-        try {
-            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/trescerotres", "empleado", "password");
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
     @BeforeEach
     void BeforeEach() {
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("303");
         EntityManager em = emf.createEntityManager();
         em.getTransaction().begin();
         Query query = em.createNamedQuery("AsignacionGrupo.DELETEALL", AsignacionGrupo.class);
+        query.executeUpdate();
+        query = em.createNamedQuery("Grupo.DELETEALL", Grupo.class);
         query.executeUpdate();
         query = em.createNamedQuery("Empleado.DELETEALL", Empleado.class);
         query.executeUpdate();
@@ -122,7 +112,8 @@ class TurnoSAImpTest {
             turnoSAImp.insertar(turno1);
             empleadoSAImp.insertar(empleado1);
             turnoSAImp.insertarEmpleado(turno1.getId(),empleado1);
-            assertTrue(empleado1.getIdTurno()==turno1.getId());
+            empleado1 = empleadoSAImp.mostrar(empleado1.getId());
+            assertEquals(empleado1.getIdTurno(), turno1.getId());
         }catch (Exception e){
             fail("Excepcion al anadir empleado");
         }
@@ -135,7 +126,8 @@ class TurnoSAImpTest {
             empleadoSAImp.insertar(empleado1);
             turnoSAImp.insertarEmpleado(turno1.getId(),empleado1);
             turnoSAImp.eliminarEmpleado(turno1.getId(),empleado1);
-            assertFalse(empleado1.getIdTurno()==turno1.getId());
+            empleado1 = empleadoSAImp.mostrar(empleado1.getId());
+            assertNotEquals(empleado1.getIdTurno(), turno1.getId());
         }catch (Exception e){
             fail("Excepcion al eliminar empleado");
         }

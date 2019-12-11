@@ -1,6 +1,7 @@
 package negocio.grupo;
 
 import negocio.empleado.*;
+import negocio.turno.Turno;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -30,19 +31,23 @@ class GrupoSAImpTest {
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("303");
         EntityManager em = emf.createEntityManager();
         em.getTransaction().begin();
-        Query query = em.createNamedQuery("Empleado.DELETEALL", Empleado.class);
+        Query query = em.createNamedQuery("AsignacionGrupo.DELETEALL", AsignacionGrupo.class);
         query.executeUpdate();
-        query=em.createNamedQuery("Grupo.DELETEALL", Grupo.class);
+        query = em.createNamedQuery("Grupo.DELETEALL", Grupo.class);
+        query.executeUpdate();
+        query = em.createNamedQuery("Empleado.DELETEALL", Empleado.class);
+        query.executeUpdate();
+        query = em.createNamedQuery("Turno.DELETEALL", Turno.class);
         query.executeUpdate();
 
         grupo1 = new TGrupo(1,"textil",true);
         grupo2 = new TGrupo(2,"calzado",true);
 
-
+        grupoSAImpl = new GrupoSAImp();
         empleado1 = new TDependiente(1,"Jose","578344400S",1000,true,10,-1);
 
+        empleadoSAImp = new EmpleadoSAImp();
 
-        trabaja1 = new TTrabaja(1,1,5);
 
         em.getTransaction().commit();
         em.close();
@@ -110,7 +115,9 @@ class GrupoSAImpTest {
         try{
            empleadoSAImp.insertar(empleado1);
            grupoSAImpl.insertar(grupo1);
+           trabaja1 = new TTrabaja(grupo1.getId(),empleado1.getId(),5);
            grupoSAImpl.insertarEmpleado(trabaja1);
+           empleado1 = empleadoSAImp.mostrar(empleado1.getId());
            assertTrue(trabaja1.getIdEmpleado()==empleado1.getId() &&
                    trabaja1.getIdGrupo() == grupo1.getId());
         }catch(Exception e){
@@ -123,10 +130,12 @@ class GrupoSAImpTest {
         try{
             empleadoSAImp.insertar(empleado1);
             grupoSAImpl.insertar(grupo1);
+            trabaja1 = new TTrabaja(grupo1.getId(),empleado1.getId(),5);
             grupoSAImpl.insertarEmpleado(trabaja1);
             grupoSAImpl.eliminarEmpleado(trabaja1);
-            //assertTrue(trabaja1.getIdEmpleado()==empleado1.getId() &&
-            //        trabaja1.getIdGrupo() == grupo1.getId());
+            empleado1 = empleadoSAImp.mostrar(empleado1.getId());
+            assertTrue(trabaja1.getIdEmpleado()==empleado1.getId() &&
+                    trabaja1.getIdGrupo() == grupo1.getId());
         }catch(Exception e){
             fail("Excepcion al eliminar empleado en turno");
         }
@@ -136,6 +145,6 @@ class GrupoSAImpTest {
 
     private boolean iguales(TGrupo tGrupo1, TGrupo auxiliar) {
         return tGrupo1.getId() == auxiliar.getId() &&
-                tGrupo1.getSeccion() == auxiliar.getSeccion();
+                tGrupo1.getSeccion().equals(auxiliar.getSeccion());
     }
 }
