@@ -54,7 +54,7 @@ public class GrupoSAImp implements GrupoSA {
 		EntityManager em = emf.createEntityManager();
 		em.getTransaction().begin();
 		
-		Grupo g = em.find(Grupo.class,id);
+		Grupo g = em.find(Grupo.class, id, LockModeType.OPTIMISTIC);
 		TGrupo grupo = null;
 		if(g==null){
 			em.getTransaction().rollback();
@@ -131,7 +131,7 @@ public class GrupoSAImp implements GrupoSA {
 		EntityManager em = emf.createEntityManager();
 		em.getTransaction().begin();
 		
-		Grupo g = em.find(Grupo.class, grupo.getId());
+		Grupo g = em.find(Grupo.class, grupo.getId(), LockModeType.OPTIMISTIC);
 
 		if (g == null) {
 			em.getTransaction().rollback();
@@ -170,7 +170,7 @@ public class GrupoSAImp implements GrupoSA {
 		EntityManager em = emf.createEntityManager();
 		em.getTransaction().begin();
 
-		Grupo grupo = em.find(Grupo.class, id);
+		Grupo grupo = em.find(Grupo.class, id, LockModeType.OPTIMISTIC);
 
 		//turno no existe
 		if(grupo == null){
@@ -224,8 +224,8 @@ public class GrupoSAImp implements GrupoSA {
 		EntityManager em = emf.createEntityManager();
 		em.getTransaction().begin();
 
-		Grupo grupo = em.find(Grupo.class, trabaja.getIdGrupo());
-		Empleado emp = em.find(Empleado.class, trabaja.getIdEmpleado());
+		Grupo grupo = em.find(Grupo.class, trabaja.getIdGrupo(), LockModeType.OPTIMISTIC);
+		Empleado emp = em.find(Empleado.class, trabaja.getIdEmpleado(), LockModeType.OPTIMISTIC);
 		AsignacionGrupoId agId = new AsignacionGrupoId();
 		agId.setEmpleado(trabaja.getIdEmpleado());
 		agId.setGrupo( trabaja.getIdGrupo());
@@ -273,8 +273,8 @@ public class GrupoSAImp implements GrupoSA {
 		EntityManager em = emf.createEntityManager();
 		em.getTransaction().begin();
 
-		Grupo grupo = em.find(Grupo.class, trabaja.getIdGrupo());
-		Empleado emp = em.find(Empleado.class, trabaja.getIdEmpleado());
+		Grupo grupo = em.find(Grupo.class, trabaja.getIdGrupo(), LockModeType.OPTIMISTIC);
+		Empleado emp = em.find(Empleado.class, trabaja.getIdEmpleado(), LockModeType.OPTIMISTIC);
 		AsignacionGrupoId agId = new AsignacionGrupoId();
 		agId.setEmpleado(trabaja.getIdEmpleado());
 		agId.setGrupo( trabaja.getIdGrupo());

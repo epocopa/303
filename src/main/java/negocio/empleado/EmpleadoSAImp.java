@@ -57,7 +57,7 @@ public class EmpleadoSAImp implements EmpleadoSA {
 		EntityManager em = emf.createEntityManager();
 		em.getTransaction().begin();
 
-		Empleado e = em.find(Empleado.class, id);
+		Empleado e = em.find(Empleado.class, id, LockModeType.OPTIMISTIC);
 
 		if (e == null) {
 			em.getTransaction().rollback();
@@ -122,7 +122,7 @@ public class EmpleadoSAImp implements EmpleadoSA {
 		EntityManager em = emf.createEntityManager();
 		em.getTransaction().begin();
 
-		Empleado e = em.find(Empleado.class, empleado.getId());
+		Empleado e = em.find(Empleado.class, empleado.getId(), LockModeType.OPTIMISTIC);
 
 		if (e == null) {
 			em.getTransaction().rollback();
@@ -167,7 +167,7 @@ public class EmpleadoSAImp implements EmpleadoSA {
 		EntityManager em = emf.createEntityManager();
 		em.getTransaction().begin();
 
-		Empleado e = em.find(Empleado.class, id);
+		Empleado e = em.find(Empleado.class, id, LockModeType.OPTIMISTIC);
 
 		if (e == null) {
 			em.getTransaction().rollback();

@@ -59,7 +59,7 @@ public class TurnoSAImp implements TurnoSA {
 		EntityManager em = emf.createEntityManager();
 		em.getTransaction().begin();
 		
-		Turno t = em.find(Turno.class,id);
+		Turno t = em.find(Turno.class,id, LockModeType.OPTIMISTIC);
 		TTurno turno = null;
 		if(t==null){
 			em.getTransaction().rollback();
@@ -118,7 +118,7 @@ public class TurnoSAImp implements TurnoSA {
 		EntityManager em = emf.createEntityManager();
 		em.getTransaction().begin();
 		
-		Turno t = em.find(Turno.class, turno.getId());
+		Turno t = em.find(Turno.class, turno.getId(), LockModeType.OPTIMISTIC);
 
 		if (t == null) {
 			em.getTransaction().rollback();
@@ -165,7 +165,7 @@ public class TurnoSAImp implements TurnoSA {
 		EntityManager em = emf.createEntityManager();
 		em.getTransaction().begin();
 
-		Turno turno = em.find(Turno.class, id);
+		Turno turno = em.find(Turno.class, id, LockModeType.OPTIMISTIC);
 
 		//turno no existe
 		if(turno == null){
@@ -213,8 +213,8 @@ public class TurnoSAImp implements TurnoSA {
 		EntityManager em = emf.createEntityManager();
 		em.getTransaction().begin();
 
-		Turno turno = em.find(Turno.class, idTurno);
-		Empleado e = em.find(Empleado.class, empleado.getId());
+		Turno turno = em.find(Turno.class, idTurno, LockModeType.OPTIMISTIC);
+		Empleado e = em.find(Empleado.class, empleado.getId(), LockModeType.OPTIMISTIC);
 
 		if (e == null) {
 			em.getTransaction().rollback();
@@ -259,8 +259,8 @@ public class TurnoSAImp implements TurnoSA {
 		EntityManager em = emf.createEntityManager();
 		em.getTransaction().begin();
 
-		Turno turno = em.find(Turno.class, idTurno);
-		Empleado e = em.find(Empleado.class, empleado.getId());
+		Turno turno = em.find(Turno.class, idTurno, LockModeType.OPTIMISTIC);
+		Empleado e = em.find(Empleado.class, empleado.getId(), LockModeType.OPTIMISTIC);
 
 		if (turno == null) {
 			em.getTransaction().rollback();
