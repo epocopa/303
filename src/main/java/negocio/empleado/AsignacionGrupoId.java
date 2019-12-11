@@ -7,7 +7,7 @@ import java.io.Serializable;
 public class AsignacionGrupoId implements Serializable {
 	private int empleado;
 	private int grupo;
-	
+
 	public AsignacionGrupoId(){}
 
 	public int getEmpleado() {

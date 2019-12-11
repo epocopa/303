@@ -22,7 +22,7 @@ public class AsignacionGrupo {
 	private Grupo grupo;
 
 	private LocalDate fecha;
-	
+
 	public AsignacionGrupo(){}
 	
 	public AsignacionGrupoId getId() {

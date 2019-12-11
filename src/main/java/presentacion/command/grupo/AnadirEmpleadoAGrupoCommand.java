@@ -17,7 +17,7 @@ public class AnadirEmpleadoAGrupoCommand implements Command {
 
 		try {
 			grupoSA.insertarEmpleado(trabaja);
-			mensaje = "El empleado se ha a�adido al grupo de trabajo con exito.";
+			mensaje = "El empleado se ha anadido al grupo de trabajo con exito.";
 			return new Context(EventosGrupo.ANADIR_EMPLEADO_A_GRUPO_OK, mensaje);
 		} catch (Exception e) {
 			mensaje = e.getMessage();

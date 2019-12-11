@@ -228,17 +228,12 @@ public class GrupoSAImp implements GrupoSA {
 			throw new Exception("El empleado con id "+empleado.getIdEmpleado() + " no esta activo");
 		}
 		else{
-			AsignacionGrupoId asigId = new AsignacionGrupoId();
-			asigId.setEmpleado(emp.getId());
-			asigId.setGrupo(grupo.getId());
 			AsignacionGrupo asign = new AsignacionGrupo();
 			asign.setEmpleado(emp);
-			asign.setFecha(LocalDate.now());
 			asign.setGrupo(grupo);
-			asign.setId(asigId);
-			
-			grupo.getGrupos().add(asign);
 
+			asign.setFecha(LocalDate.now());
+			em.persist(asign);
 			try{
 				em.getTransaction().commit();
 			}
