@@ -268,6 +268,12 @@ public class TurnoSAImp implements TurnoSA {
 			emf.close();
 			throw new Exception("No existe el turno con id " + idTurno);
 		}
+		if(e == null){
+			em.getTransaction().rollback();
+			em.close();
+			emf.close();
+			throw new Exception("No existe el empleado con id " + empleado.getId());
+		}
 		if (e.getTurno() == null) {
 			em.getTransaction().rollback();
 			em.close();
