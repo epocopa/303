@@ -41,7 +41,7 @@ public abstract class Empleado implements Serializable {
 		this.nombre = e.getNombre();
 	}
 
-	public abstract int getSalario();
+	public abstract int calcularSalario();
 
 	public Integer getId() {
 		return id;

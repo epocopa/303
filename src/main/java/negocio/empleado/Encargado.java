@@ -32,7 +32,7 @@ public class Encargado extends Empleado implements Serializable {
 	}
 
 	@Override
-	public int getSalario() {
+	public int calcularSalario() {
 		return (int) (getSalarioBase() * multiplicador);
 	}
 }

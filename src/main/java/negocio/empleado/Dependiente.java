@@ -32,7 +32,7 @@ public class Dependiente extends Empleado implements Serializable {
 	}
 
 	@Override
-	public int getSalario() {
+	public int calcularSalario() {
 		return getSalarioBase() + sumador;
 	}
 }

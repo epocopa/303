@@ -68,9 +68,9 @@ public class GrupoSAImp implements GrupoSA {
 
 			for (AsignacionGrupo a : g.getGrupos()) {
 				em.lock(a.getEmpleado(), LockModeType.OPTIMISTIC);
-				grupo.getListaEmpleados().add(new TTrabaja(a.getGrupo().getId(), a.getEmpleado().getId(), a.getEmpleado().getSalario()));
+				grupo.getListaEmpleados().add(new TTrabaja(a.getGrupo().getId(), a.getEmpleado().getId(), a.getEmpleado().calcularSalario()));
 				if (a.getEmpleado().isActivo()) {
-					total += a.getEmpleado().getSalario();
+					total += a.getEmpleado().calcularSalario();
 				}
 			}
 			grupo.setSalario(total);
@@ -108,9 +108,9 @@ public class GrupoSAImp implements GrupoSA {
 
 				for (AsignacionGrupo a : listaGrupo.get(i).getGrupos()) {
 					em.lock(a.getEmpleado(), LockModeType.OPTIMISTIC);
-					t.getListaEmpleados().add(new TTrabaja(a.getGrupo().getId(), a.getEmpleado().getId(), a.getEmpleado().getSalario()));
+					t.getListaEmpleados().add(new TTrabaja(a.getGrupo().getId(), a.getEmpleado().getId(), a.getEmpleado().calcularSalario()));
 					if (a.getEmpleado().isActivo()) {
-						total += a.getEmpleado().getSalario();
+						total += a.getEmpleado().calcularSalario();
 					}
 				}
 				t.setSalario(total);
