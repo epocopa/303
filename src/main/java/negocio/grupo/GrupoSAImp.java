@@ -1,6 +1,7 @@
 package negocio.grupo;
 
 import negocio.empleado.AsignacionGrupo;
+import negocio.empleado.AsignacionGrupoId;
 import negocio.empleado.Empleado;
 import negocio.empleado.TTrabaja;
 import negocio.turno.Turno;
@@ -213,23 +214,24 @@ public class GrupoSAImp implements GrupoSA {
 
 		Grupo grupo = em.find(Grupo.class, trabaja.getIdGrupo());
 		Empleado emp = em.find(Empleado.class, trabaja.getIdEmpleado());
-		
-		if(grupo == null && emp == null){
-			throw new Exception("No existe el grupo con id "+trabaja.getIdGrupo()+" ni el empleado con id "+trabaja.getIdEmpleado());
-		}
-		else if(grupo == null){
-			throw new Exception("No existe el grupo con id "+trabaja.getIdGrupo());
-		}
-		else if(emp == null){
-			throw new Exception("No existe el empleado con id "+trabaja.getIdEmpleado());
-		}
-		else if(!emp.isActivo()){
-			throw new Exception("El empleado con id "+trabaja.getIdEmpleado() + " no esta activo");
-		}
-		else if(!grupo.isActivo()){
-			throw new Exception("El grupo con id "+grupo.getId() + " no esta activo");
-		}
-		else{
+		AsignacionGrupoId agId = new AsignacionGrupoId();
+		agId.setEmpleado(trabaja.getIdEmpleado());
+		agId.setGrupo( trabaja.getIdGrupo());
+		AsignacionGrupo ag = em.find(AsignacionGrupo.class, agId);
+
+		if (grupo == null && emp == null) {
+			throw new Exception("No existe el grupo con id " + trabaja.getIdGrupo() + " ni el empleado con id " + trabaja.getIdEmpleado());
+		} else if (grupo == null) {
+			throw new Exception("No existe el grupo con id " + trabaja.getIdGrupo());
+		} else if (emp == null) {
+			throw new Exception("No existe el empleado con id " + trabaja.getIdEmpleado());
+		} else if (!emp.isActivo()) {
+			throw new Exception("El empleado con id " + trabaja.getIdEmpleado() + " no esta activo");
+		} else if (!grupo.isActivo()) {
+			throw new Exception("El grupo con id " + grupo.getId() + " no esta activo");
+		} else if (ag != null) {
+			throw new Exception("El empleado " + trabaja.getIdEmpleado() + " ya esta en el grupo " + trabaja.getIdGrupo());
+		} else {
 			AsignacionGrupo asign = new AsignacionGrupo();
 			asign.setEmpleado(emp);
 			asign.setGrupo(grupo);
@@ -241,7 +243,7 @@ public class GrupoSAImp implements GrupoSA {
 			} catch (RollbackException e) {
 				em.close();
 				emf.close();
-				throw new Exception("Ya existe el grupo con id "+trabaja.getIdGrupo()+" asignado al empleado con id "+trabaja.getIdEmpleado());
+				throw new Exception("Ya existe el grupo con id " + trabaja.getIdGrupo() + " asignado al empleado con id " + trabaja.getIdEmpleado());
 			} catch (Exception e) {
 				em.getTransaction().rollback();
 				em.close();
@@ -249,14 +251,36 @@ public class GrupoSAImp implements GrupoSA {
 				throw new Exception("Error en concurrencia");
 			}
 		}
-
-
 		em.close();
 		emf.close();
 	}
 
 	@Override
-	public void eliminarEmpleado(TTrabaja empleado) throws Exception {
-		//TODO high priority
+	public void eliminarEmpleado(TTrabaja trabaja) throws Exception {
+		EntityManagerFactory emf = Persistence.createEntityManagerFactory("303");
+		EntityManager em = emf.createEntityManager();
+		em.getTransaction().begin();
+
+		Grupo grupo = em.find(Grupo.class, trabaja.getIdGrupo());
+		Empleado emp = em.find(Empleado.class, trabaja.getIdEmpleado());
+		AsignacionGrupoId agId = new AsignacionGrupoId();
+		agId.setEmpleado(trabaja.getIdEmpleado());
+		agId.setGrupo( trabaja.getIdGrupo());
+		AsignacionGrupo ag = em.find(AsignacionGrupo.class, agId);
+
+		if (grupo == null && emp == null) {
+			throw new Exception("No existe el grupo con id " + trabaja.getIdGrupo() + " ni el empleado con id " + trabaja.getIdEmpleado());
+		} else if (grupo == null) {
+			throw new Exception("No existe el grupo con id " + trabaja.getIdGrupo());
+		} else if (emp == null) {
+			throw new Exception("No existe el empleado con id " + trabaja.getIdEmpleado());
+		} else if (ag == null) {
+			throw new Exception("El empleado " + trabaja.getIdEmpleado() + " no esta en el grupo " + trabaja.getIdGrupo());
+		}
+
+		em.remove(ag);
+		em.getTransaction().commit();
+		em.close();
+		emf.close();
 	}
 }
