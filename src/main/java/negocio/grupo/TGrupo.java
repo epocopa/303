@@ -1,5 +1,6 @@
 package negocio.grupo;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import negocio.empleado.TTrabaja;
@@ -31,6 +32,7 @@ public class TGrupo {
 		this.id = id;
 		this.seccion = seccion;
 		this.activo = activo;
+		empleadosGrupo = new ArrayList<>();
 	}
 	
 	public TGrupo() {}

@@ -739,7 +739,7 @@ public class GrupoGUIImpl extends JPanel implements GrupoGUI, GUI {
 		dataPanel.setBackground(new Color(235, 237, 241));
 		dataPanel.setMaximumSize(new Dimension(600, 320));
 		
-		String[] columns = { "ID Empleado", "Horas" };
+		String[] columns = { "ID Empleado", "Salario" };
 
 		mostrarEmpleadoModel = new DefaultTableModel();
 		for (String column : columns) {
