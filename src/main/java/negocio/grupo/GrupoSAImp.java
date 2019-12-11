@@ -1,7 +1,6 @@
 package negocio.grupo;
 
 import negocio.empleado.AsignacionGrupo;
-import negocio.empleado.AsignacionGrupoId;
 import negocio.empleado.Empleado;
 import negocio.empleado.TTrabaja;
 import negocio.turno.Turno;
@@ -207,25 +206,25 @@ public class GrupoSAImp implements GrupoSA {
 	}
 
 	@Override
-	public void insertarEmpleado(TTrabaja empleado) throws Exception {
+	public void insertarEmpleado(TTrabaja trabaja) throws Exception {
 		EntityManagerFactory emf = Persistence.createEntityManagerFactory("303");
 		EntityManager em = emf.createEntityManager();
 		em.getTransaction().begin();
 
-		Grupo grupo = em.find(Grupo.class, empleado.getIdGrupo());
-		Empleado emp = em.find(Empleado.class, empleado.getIdEmpleado());
+		Grupo grupo = em.find(Grupo.class, trabaja.getIdGrupo());
+		Empleado emp = em.find(Empleado.class, trabaja.getIdEmpleado());
 		
 		if(grupo == null && emp == null){
-			throw new Exception("No existe el grupo con id "+empleado.getIdGrupo()+" ni el empleado con id "+empleado.getIdEmpleado());
+			throw new Exception("No existe el grupo con id "+trabaja.getIdGrupo()+" ni el empleado con id "+trabaja.getIdEmpleado());
 		}
 		else if(grupo == null){
-			throw new Exception("No existe el grupo con id "+empleado.getIdGrupo());
+			throw new Exception("No existe el grupo con id "+trabaja.getIdGrupo());
 		}
 		else if(emp == null){
-			throw new Exception("No existe el empleado con id "+empleado.getIdEmpleado());
+			throw new Exception("No existe el empleado con id "+trabaja.getIdEmpleado());
 		}
 		else if(!emp.isActivo()){
-			throw new Exception("El empleado con id "+empleado.getIdEmpleado() + " no esta activo");
+			throw new Exception("El empleado con id "+trabaja.getIdEmpleado() + " no esta activo");
 		}
 		else if(!grupo.isActivo()){
 			throw new Exception("El grupo con id "+grupo.getId() + " no esta activo");
@@ -237,11 +236,16 @@ public class GrupoSAImp implements GrupoSA {
 
 			asign.setFecha(LocalDate.now());
 			em.persist(asign);
-			try{
+			try {
 				em.getTransaction().commit();
-			}
-			catch(Exception e){
+			} catch (RollbackException e) {
+				em.close();
+				emf.close();
+				throw new Exception("Ya existe el grupo con id "+trabaja.getIdGrupo()+" asignado al empleado con id "+trabaja.getIdEmpleado());
+			} catch (Exception e) {
 				em.getTransaction().rollback();
+				em.close();
+				emf.close();
 				throw new Exception("Error en concurrencia");
 			}
 		}
